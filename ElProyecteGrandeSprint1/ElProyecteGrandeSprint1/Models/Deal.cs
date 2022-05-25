@@ -7,7 +7,7 @@ namespace ElProyecteGrandeSprint1.Models
     public class Deal
     {
         [JsonProperty("storeId")]
-        public Stores StoreName { get; set; }
+        public String StoreName { get; set; }
         [JsonProperty("title")]
         public string Title { get; set; }
         [JsonProperty("salePrice")]
