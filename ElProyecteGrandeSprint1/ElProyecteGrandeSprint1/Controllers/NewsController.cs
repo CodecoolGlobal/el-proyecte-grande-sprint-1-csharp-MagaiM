@@ -46,13 +46,14 @@ namespace ElProyecteGrandeSprint1.Controllers
             return deserialisation;
         }
 
-        private static async void GetNews()
+        private static async Task<List<News>> GetResidentEvilNews()
         {
+            var result = "";
             var client = new HttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("https://video-game-news.p.rapidapi.com/"),
+                RequestUri = new Uri("https://video-game-news.p.rapidapi.com/resident_evil"),
                 Headers =
                 {
                     { "X-RapidAPI-Host", "video-game-news.p.rapidapi.com" },
@@ -62,9 +63,12 @@ namespace ElProyecteGrandeSprint1.Controllers
             using (var response = await client.SendAsync(request))
             {
                 response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(body);
+                result = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(result);
             }
+            var deserialisation = JsonConvert.DeserializeObject<List<News>>(result);
+
+            return deserialisation;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
