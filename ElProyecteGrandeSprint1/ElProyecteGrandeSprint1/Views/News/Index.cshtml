@@ -6,20 +6,36 @@
 }
 
 <div class="container">
-    <div class="recent-news">
-        @foreach (var element in Model)
-        {
-            <div class="col-lg-3 col-lg-3" style="display: inline-block; height: 350px; width: 90%">
-                <div class="card">
-                    <img class="product-image" src="@(element.Image)">
-                    <div class="card-body inner-card">
-                        <a href="@element.Link"><h5 class="card-title text-center">@element.Title</h5></a>
-                        <p class="card-text">@element.Description.</p>
-                        <p class="card-text">@element.Date</p>
+    <div class="news-container" style="display: flex; flex-direction: row">
+        <div class="recent-news" style="width: 70%">
+            <h3>Latest news</h3>
+            @foreach (var element in Model)
+            {
+                <div class="col-lg-3 col-lg-3" style="display: inline-block; height: 350px; width: 100%">
+                    <div class="card" style="flex-direction: row">
+                        <img class="product-image" src="@(element.Image)" style="width: 50%">
+                        <div class="card-body inner-card" style="width: 50%">
+                            <a href="@element.Link" style="text-decoration: none"><h5 class="card-title">@element.Title</h5></a>
+                            <p class="card-text">@element.Description</p>
+                            <p class="card-text">@element.Date</p>
+                        </div>
                     </div>
+                    <br/>
                 </div>
-                <br/>
-            </div>
-        }
+            }
+        </div>
+        <div class="other-news" style="width: 30%; padding: 0 0 0 2rem">
+            <h4>Resident Evil news</h4>
+            <h4>Hollow Knight news</h4>
+            <h4>Mega Man news</h4>
+            <h4>Sonic the Hedgehog news</h4>
+            <h4>Pokemon news</h4>
+            <h4>Call of Duty news</h4>
+            <h4>Grand Theft Auto news</h4>
+            <h4>The Sims news</h4>
+            <h4>Tetris new</h4>
+            <h4>Assassin's Creed news</h4>
+            <h4>Final Fantasy news</h4>
+        </div>
     </div>
 </div>
