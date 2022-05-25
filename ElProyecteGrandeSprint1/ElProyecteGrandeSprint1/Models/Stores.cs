@@ -1,0 +1,38 @@
+﻿namespace ElProyecteGrandeSprint1.Models;
+
+public enum Stores
+{
+    Steam = 1,
+    GamersGate,
+    GreenManGaming,
+    Amazon,
+    GameStop,
+    Direct2Drive,
+    GOG,
+    Origin,
+    GetGames,
+    ShinyLoot,
+    HumbleStore,
+    Desura,
+    Uplay,
+    IndieGameStand,
+    Fanatical,
+    Gamesrocket,
+    GamesRepublic,
+    SilaGames,
+    Playfield,
+    ImperialGames,
+    WinGameStore,
+    FunStockDigital,
+    GameBillet,
+    Voidu,
+    EpicGamesStore,
+    RazerGameStore,
+    Gamesplanet,
+    Gamesload,
+    N2Game,
+    IndieGala,
+    BlizzardShop,
+    AllYouPlay,
+    DLGamer
+}
