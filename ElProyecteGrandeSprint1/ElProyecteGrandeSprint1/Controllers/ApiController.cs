@@ -2,8 +2,11 @@
 
 namespace ElProyecteGrandeSprint1.Controllers
 {
-    [ApiController]
-    public class ApiController
+    public class ApiController : Controller
     {
+        public IActionResult GetTopTenNews()
+        {
+            return null;
+        }
     }
 }
