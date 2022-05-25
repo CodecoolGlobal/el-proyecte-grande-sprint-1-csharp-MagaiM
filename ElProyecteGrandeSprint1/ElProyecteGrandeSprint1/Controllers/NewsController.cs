@@ -46,14 +46,14 @@ namespace ElProyecteGrandeSprint1.Controllers
             return deserialisation;
         }
 
-        private static async Task<List<News>> GetResidentEvilNews()
+        private static async Task<List<News>> GetGameNews(string game)
         {
             var result = "";
             var client = new HttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("https://video-game-news.p.rapidapi.com/resident_evil"),
+                RequestUri = new Uri($"https://video-game-news.p.rapidapi.com/{game}"),
                 Headers =
                 {
                     { "X-RapidAPI-Host", "video-game-news.p.rapidapi.com" },
