@@ -69,6 +69,31 @@ namespace ElProyecteGrandeSprint1.Controllers
             return null;
         }
 
+        public async Task<string> RecentFreeToPlayGames()
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://free-to-play-games-database.p.rapidapi.com/api/games?sort-by=release-date"),
+                Headers =
+                {
+                    { "X-RapidAPI-Host", "free-to-play-games-database.p.rapidapi.com" },
+                    { "X-RapidAPI-Key", "44c0067568mshcd96a9adc6db887p13ebcfjsnc1d0ab0bf882" },
+                },
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var body = await response.Content.ReadAsStringAsync();
+                List<FreeGame> deserialisation = JsonConvert.DeserializeObject<List<FreeGame>>(body);
+                string newdata = System.Text.Json.JsonSerializer.Serialize<List<FreeGame>>(deserialisation);
+                return newdata;
+            }
+
+            return null;
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
