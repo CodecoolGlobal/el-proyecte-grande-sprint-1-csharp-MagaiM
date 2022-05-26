@@ -45,7 +45,7 @@ function gameNewsHtmlBuilder(gameNews) {
         result += `<div class="news" style="width: 100%">
                         <div class="col-lg-3 col-lg-3" style="display: inline-block; width: 100%">
                             <div class="card" style="flex-direction: row; background-color: #3A373F">
-                                <img class="product-image" src="${item.Image}" style="max-width: 50%">
+                                <img class="product-image" src="${item.Image}" style="max-width: 50%; max-height: 300px">
                                 <div class="card-body inner-card" style="width: 50%">
                                     <a href="${item.Link}" style="text-decoration: none; color: #c9b18e"><h5 class="card-title">${item.Title}</h5></a>
                                     <p class="card-text">${item.Description}</p>
