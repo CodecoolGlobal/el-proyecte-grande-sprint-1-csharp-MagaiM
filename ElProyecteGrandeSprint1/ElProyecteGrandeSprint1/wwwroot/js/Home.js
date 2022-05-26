@@ -1,13 +1,14 @@
 ﻿let slideIndex = 0;
 
+
 async  function fetchAndInsertFastDeals() {
-    await  window.fetch(`Home/GetApi?pageSize=10`).then((response) => {
+    await  window.fetch(`Home/GetApi?pageSize=20`).then((response) => {
         console.log(response)
         response.json().then((data) => {
             console.log(data);
             for (var element in data) {
                 console.log(element);
-                let jumbotronBody = slidesBodyBuilder(data[element].Image, data[element].Title, data[element].StoreName, data[element].DealRating, data[element].SteamRatingPercent, data[element].SalePrice, data[element].NormalPrice, element);
+                let jumbotronBody = slidesBodyBuilder(data[element].Image, data[element].StoreName, data[element].SalePrice, data[element].NormalPrice, data[element].Title);
                 document.querySelector("#slideshow-container").insertAdjacentHTML('beforeend', jumbotronBody);
             }
             showSlides();
@@ -16,80 +17,78 @@ async  function fetchAndInsertFastDeals() {
 }
 
 
-
 async function fetchAndInsertFreeGames() {
     await window.fetch(`Home/RecentFreeToPlayGames`).then((response) => {
         console.log(response);
         response.json().then((data) => {
             console.log(data);
+            data = data.slice(0, 15);
             for (var element in data) {
                 console.log(element);
-                let jumbotronBody = jumbotronBodyBuilder(data[element].Image, data[element].Title, data[element].StoreName, data[element].DealRating, data[element].SteamRatingPercent, data[element].SalePrice, data[element].NormalPrice, element);
+                let jumbotronBody = jumbotronBodyBuilder(data[element].Thumbnail, data[element].Title, data[element].ShortDescription, data[element].Genre, data[element].Platform, data[element].GameUrl, data[element].ReleaseDate);
                 document.querySelector("#containerbody").insertAdjacentHTML('beforeend', jumbotronBody);
+                collapseCards();
             }
         });
     });
 }
-function slidesBodyBuilder(Image, Title, StoreName, DealRating, SteamRatingPercent, SalePrice, NormalPrice, element) {
-    //let jumbotronBody = `
-    //            <div class="col-lg-3 col-lg-3" style="display: inline-block; max-width: 350px; height: 350px mySlides fade">
-    //        <div class="card">
-    //            <div class="numbertext">1 / 3</div>
-    //            <img src="${Image}" style="width:100%">
-    //            <div class="Title">Caption Text</div>
-    //            <div class="card-body inner-card">
-    //                <h5 class="card-title text-center">${Title}</h5>
-    //                <p class="card-text">Store name: ${StoreName}</p>
-    //                <p class="card-text">Deal rating: ${DealRating}</p>
-    //                <p class="card-text">Steam rating: ${SteamRatingPercent} %</p>
-    //                <p class="card-text text-center"><strong>Sale price: $ ${String(SalePrice)}</strong></p>
-    //                <p class="card-text text-center"><strong>Normal price: $ ${String(NormalPrice)}</strong></p>
-    //            </div>
-    //        </div>
-    //        <br/>
-    //    </div>
-    //`;
 
+
+function collapseCards() {
+    let cards = document.getElementsByClassName("mySlides");
+    let cardTitleList = [];
+    for (let i = 1; i < cards.length; i++) {
+        let cardTitle = document.querySelector(`#slideshow-container > div:nth-child(${i}) > h5`).innerHTML;
+        let card = document.querySelector(`#slideshow-container > div:nth-child(${i})`);
+        if (cardTitleList.includes(cardTitle)) {
+            card.remove();
+            i--;
+        } else {
+            cardTitleList.push(cardTitle);
+        }
+
+    }
+}
+
+
+function slidesBodyBuilder(Image, StoreName, SalePrice, NormalPrice, Title) {
+    if (StoreName === "N2Game") {
+        StoreName = "2Game";
+    }
     let body = `
     <div class="mySlides fade" style="display: none;">
-        <img clas="class="product-image" src="${Image}" style="width:100% max-height:1000px">
-        <p class="card-text"><strong>Store name: ${StoreName} <br> Sale price: $${String(SalePrice)} <br> Normal price: $ ${String(NormalPrice)}</strong></p>
+        <img class="slide-show-image" src="${Image}">
+        <h5 class="card-title text-center">${Title}</h5>
+        <p class="card-text"><strong> Store name: ${StoreName} <br> Sale price: $${String(SalePrice)} <br> Normal price: $ ${String(NormalPrice)}</strong></p>
         </div>`;
     return body;
 }
 
-function jumbotronBodyBuilder(Image, Title, StoreName, DealRating, SteamRatingPercent, SalePrice, NormalPrice, element) {
-    //let jumbotronBody = `
-    //            <div class="col-lg-3 col-lg-3" style="display: inline-block; max-width: 350px; height: 350px mySlides fade">
-    //        <div class="card">
-    //            <div class="numbertext">1 / 3</div>
-    //            <img src="${Image}" style="width:100%">
-    //            <div class="Title">Caption Text</div>
-    //            <div class="card-body inner-card">
-    //                <h5 class="card-title text-center">${Title}</h5>
-    //                <p class="card-text">Store name: ${StoreName}</p>
-    //                <p class="card-text">Deal rating: ${DealRating}</p>
-    //                <p class="card-text">Steam rating: ${SteamRatingPercent} %</p>
-    //                <p class="card-text text-center"><strong>Sale price: $ ${String(SalePrice)}</strong></p>
-    //                <p class="card-text text-center"><strong>Normal price: $ ${String(NormalPrice)}</strong></p>
-    //            </div>
-    //        </div>
-    //        <br/>
-    //    </div>
-    //`;
 
-    let body = `
-    <div class="fade" style="display: none;">
-        <img clas="class="product-image" src="${Image}" style="width:100% max-height:1000px">
-        <p class="card-text"><strong>Store name: ${StoreName} <br> Sale price: $${String(SalePrice)} <br> Normal price: $ ${String(NormalPrice)}</strong></p>
+function jumbotronBodyBuilder(Thumbnail, Title, ShortDescription, Genre, Platform, GameUrl, ReleaseDate) {
+    let jumbotronBody = `
+                <div class="col-md-auto col-md-auto bg-dark" style="display: inline-block; max-width: 300px; height: auto mySlides fade">
+            <div class="card bg-dark" style="box-shadow: 1px 2px 3px 4px rgba(112,128,144,0.4); margin:10px 10px 10px 20px">
+                <a href="${GameUrl}"><img src="${Thumbnail}" style="width:100%"> </a>
+                <div class="card-body inner-card bg-secondary">
+                    <h5 class="card-title text-center">${Title}</h5>
+                    <p class="card-text">Short Description: ${ShortDescription}</p>
+                    <p class="card-text">Genre: ${Genre}</p>
+                    <p class="card-text">Platform: ${Platform}</p>
+                    <p class="card-text text-center"><strong>ReleaseDate: ${ReleaseDate}</strong></p>
+                </div>
+            </div>
+            <br/>
         </div>`;
-    return body;
+    return jumbotronBody;
 }
+
 
 function populateMainMenu() {
     fetchAndInsertFastDeals();
     fetchAndInsertFreeGames();
 } populateMainMenu();
+
 
 function showSlides() {
     let i;
@@ -100,10 +99,10 @@ function showSlides() {
     }
     slideIndex++;
     if (slideIndex > slides.length) { slideIndex = 1 }
-    for (i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active", "");
-    }
+    //for (i = 0; i < dots.length; i++) {
+    //    dots[i].className = dots[i].className.replace(" active", "");
+    //}
     slides[slideIndex - 1].style.display = "block";
-    dots[slideIndex - 1].className += " active";
+/*    dots[slideIndex - 1].className += " active";*/
     setTimeout(showSlides, 5000); // Change image every 2 seconds
 }
