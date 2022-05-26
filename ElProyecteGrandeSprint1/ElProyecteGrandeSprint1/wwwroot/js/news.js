@@ -34,10 +34,6 @@ function showLatestNews() {
 }
 
 function gameNewsHtmlBuilder(gameNews) {
-
-    console.log(`HTMLBuilder data:`);
-    console.log(gameNews);
-
     let result = `<div class="game-news">
                     <button class="top-news-button" type="button" style="float: right; margin-bottom: 5px;">
                         <span class="">Latest News</span>
@@ -45,7 +41,7 @@ function gameNewsHtmlBuilder(gameNews) {
     for (let item of gameNews) {
         result += `<div class="news" style="width: 100%">
                         <div class="col-lg-3 col-lg-3" style="display: inline-block; width: 100%">
-                            <div class="card" style="flex-direction: row">
+                            <div class="card" style="flex-direction: row; background-color: #3A373F">
                                 <img class="product-image" src="${item.Image}" style="max-width: 50%">
                                 <div class="card-body inner-card" style="width: 50%">
                                     <a href="${item.Link}" style="text-decoration: none"><h5 class="card-title">${item.Title}</h5></a>
@@ -77,7 +73,6 @@ async function showGameNews(game, event) {
         }
     }
 
-    console.log(game.textContent);
     const data = await fetchResource(game.textContent);
     const gameNewsBody = gameNewsHtmlBuilder(data);
     allNews.insertAdjacentHTML("afterbegin", gameNewsBody);
