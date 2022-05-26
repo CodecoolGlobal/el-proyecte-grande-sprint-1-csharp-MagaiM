@@ -21,7 +21,7 @@ function jumbotronBodyBuilder(Image, Title, StoreName, DealRating, SteamRatingPe
                 <div class="col-md-auto col-md-auto bg-dark" style="display: inline-block; width: 300px; height: auto">
                 <div class="card" style="box-shadow: 1px 2px 3px 4px rgba(112,128,144,0.4); margin:10px 10px 10px 20px">
                 <img class="product-image" src="${Image}" style="max-width: auto; max-height: auto;">
-                <div class="card-body inner-card bg-secondary">
+                <div class="card-body inner-card" style="background-color: #3A373F">
                 <h5 class="card-title text-center">${Title}</h5>
                     <p class="card-text">Store name: ${StoreName}</p>
                     <p class="card-text">Deal rating: ${DealRating}</p>
