@@ -18,31 +18,53 @@ namespace ElProyecteGrandeSprint1.Controllers
 
         public IActionResult Index()
         {
-            
-            var deals = GetDeals();
-            Console.WriteLine((Stores)7);
-            ViewBag.Deals = deals.Result;
+
             return View();
         }
 
-        public static async Task<List<Deal>> GetDeals()
+        public async Task<string> GetApi(int pageSize)
         {
-            var client = new HttpClient();
-            var body = "";
-            var request = new HttpRequestMessage
+            string apiUrl = $"https://www.cheapshark.com/api/1.0/deals?pageSize={pageSize}";
+
+            using (HttpClient client = new HttpClient())
             {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("https://www.cheapshark.com/api/1.0/deals"),
-            };
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                body = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine(body);
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = response.Content.ReadAsStringAsync().Result;
+                    List<Deal> deserialisation = JsonConvert.DeserializeObject<List<Deal>>(data);
+                    List<Deal> newListDeal = new List<Deal>();
+                    foreach (var element in deserialisation)
+                    {
+                        newListDeal.Add(new Deal
+                        {
+                            StoreName = ((Stores)Int32.Parse(element.StoreName)).ToString(),
+                            Title = element.Title,
+                            SalePrice = element.SalePrice,
+                            NormalPrice = element.NormalPrice,
+                            IsOnSale = element.IsOnSale,
+                            MetacriticScore = element.MetacriticScore,
+                            SteamRatingCount = element.SteamRatingCount,
+                            SteamRatingPercent = element.SteamRatingPercent,
+                            SteamRatingText = element.SteamRatingText,
+                            DealRating = element.DealRating,
+                            Image = element.Image,
+
+                        });
+                    }
+                    string newdata = System.Text.Json.JsonSerializer.Serialize<List<Deal>>(newListDeal);
+                    return newdata;
+
+                }
+
+
             }
 
-            List<Deal> deserialisation = JsonConvert.DeserializeObject<List<Deal>>(body);
-            return deserialisation;
+            return null;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
