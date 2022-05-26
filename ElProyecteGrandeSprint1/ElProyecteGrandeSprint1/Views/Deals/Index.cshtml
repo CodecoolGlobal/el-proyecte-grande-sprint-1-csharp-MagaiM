@@ -1,26 +1,8 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    ViewData["Title"] = "Deals Page";
+﻿@{
+    ViewData["Title"] = "Home Page";
+    <script src="~/js/deals.js" asp-append-version="true" defer="true"></script>
 }
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<div id="containerbody" style="max-width: 100%">
 
-<div class="container">
-    @foreach (Deal element in ViewBag.Deals)
-    {
-        <div class="col-lg-3 col-lg-3" style="display: inline-block; max-width: 350px; height: 350px">
-            <div class="card">
-                <img class="product-image" src="@(element.Image)">
-                <div class="card-body inner-card">
-                    <h5 class="card-title text-center">@element.Title</h5>
-                    <p class="card-text">Store name: @element.StoreName</p>
-                    <p class="card-text">Deal rating: @element.DealRating</p>
-                    <p class="card-text">Steam rating: @element.SteamRatingPercent %</p>
-                    <p class="card-text text-center"><strong>Sale price: $ @element.SalePrice.ToString()</strong></p>
-                    <p class="card-text text-center"><strong>Normal price: $ @element.NormalPrice.ToString()</strong></p>
-                </div>
-            </div>
-            <br/>
-        </div>
-    }
 </div>
