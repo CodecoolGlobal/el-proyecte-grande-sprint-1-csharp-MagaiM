@@ -25,7 +25,7 @@ namespace ElProyecteGrandeSprint1.Helpers
 
         public string SerializeData<T>(List<T> deserializedData)
         {
-            return System.Text.Json.JsonSerializer.Serialize<List<T>>(deserializedData);
+            return System.Text.Json.JsonSerializer.Serialize(deserializedData);
         }
 
         public List<Deal> MakeDealsObject(List<Deal>? deserializedData)
