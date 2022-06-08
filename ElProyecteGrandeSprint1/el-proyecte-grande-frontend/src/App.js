@@ -3,6 +3,7 @@ import { useState } from "react";
 import Container from './components/Container';
 import Header from './components/Header';
 import News from './components/News';
+import Deals from './components/Deals';
 
 function App(){
 
@@ -20,13 +21,16 @@ function App(){
         setText(<News fetchData={fetchData} showGameNews={showGameNews} />)
     }
 
+    const loadDeals = () => {
+        setText(<Deals fetchData={fetchData} showDeals={showGameNews} />)
+    }
     const showGameNews = (event) => {
         console.log("ShowGameNewsEvent");
     };
 
     return (
         <div className='bg-dark text-white'>
-            <Header loadNews={loadNews} />
+            <Header loadNews={loadNews} loadDeals={loadDeals} />
             <Container text={text} />
         </div>
     );
