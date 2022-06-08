@@ -7,6 +7,7 @@ namespace ElProyecteGrandeSprint1.Controllers
 {
     public class NewsController : Controller
     {
+        private readonly ApiController _apiController = new ApiController();
         private readonly ILogger<NewsController> _logger;
         private readonly string apiToken = "1763716cc7950373caaf84e0980fd9da";
         private readonly string language = "en";
