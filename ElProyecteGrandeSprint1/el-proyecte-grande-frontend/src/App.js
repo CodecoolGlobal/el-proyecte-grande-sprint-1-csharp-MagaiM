@@ -1,66 +1,44 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
+import { useState } from "react";
+import Container from './components/Container';
+import Header from './components/Header';
+import News from './components/News';
 
-export default class App extends Component {
-    static displayName = App.name;
+function App(){
 
-    constructor(props) {
-        super(props);
-        this.state = { forecasts: [], loading: true };
+    const [text , setText] = useState("")
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        fetchData('https://localhost:7064/News')
+        .then(data => {
+            setData(data);
+        })
+    }, [])
+   
+    const loadNews = () => {
+        setText(<News fetchData={fetchData} showGameNews={showGameNews} />)
     }
 
-    componentDidMount() {
-        this.populateWeatherData();
-        this.fos();
-    }
+    const showGameNews = (event) => {
+        console.log("ShowGameNewsEvent");
+    };
 
-    static renderForecastsTable(forecasts) {
-        return (
-            <table className='table table-striped' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {forecasts.map(forecast =>
-                        <tr key={forecast.date}>
-                            <td>{forecast.date}</td>
-                            <td>{forecast.temperatureC}</td>
-                            <td>{forecast.temperatureF}</td>
-                            <td>{forecast.summary}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-        );
-    }
-
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-            : App.renderForecastsTable(this.state.forecasts);
-
-        return (
-            <div>
-                <h1 id="tabelLabel" >Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
-                {contents}
-            </div>
-        );
-    }
-
-    async populateWeatherData() {
-        const response = await fetch('https://localhost:7064/Deals/60');
-        const data = await response.json();
-        this.setState({ forecasts: data, loading: false });
-    }
-
-    async fos() {
-        const response = await fetch('https://localhost:7064/News');
-        const data = await response.json();
-        this.setState({ forecasts: data, loading: false });
-    }
+    return (
+        <div className='bg-dark text-white'>
+            <Header loadNews={loadNews} />
+            <Container text={text} />
+        </div>
+    );
 }
+
+    async function fetchData(url) {
+        const response = await fetch(url);
+        if (response.ok){
+            const data = await response.json();
+            return data;
+        }
+        throw response;
+    }
+
+export default App;
