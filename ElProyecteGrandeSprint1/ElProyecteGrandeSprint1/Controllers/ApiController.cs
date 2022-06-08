@@ -13,18 +13,27 @@ namespace ElProyecteGrandeSprint1.Controllers
         {
             var body = _serviceHelper.GetJsonStringFromApi(request);
             string newData;
+
             try
             {
-                var deserializedData = _serviceHelper.DeserializeData<T>(body.Result);
-                newData = _serviceHelper.SerializeData(deserializedData);
+                if (typeof(T) == typeof(GNewsResponse))
+                {
+                    var deserialization = JsonConvert.DeserializeObject<GNewsResponse>(body.Result);
+                    newData = _serviceHelper.SerializeData(deserialization.Articles);
+                }
+                else
+                {
+                    var deserializedData = _serviceHelper.DeserializeData<T>(body.Result);
+                    newData = _serviceHelper.SerializeData(deserializedData);
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
+
             return newData;
-            
         }
 
         public async Task<string> GetDeals(HttpRequestMessage request)
