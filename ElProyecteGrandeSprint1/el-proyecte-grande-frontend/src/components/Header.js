@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const Header = ({loadNews}) => {
+const Header = ({loadNews, loadDeals}) => {
   return (
         <header>
             <nav className="navbar-dark navbar navbar-expand-sm navbar-toggleable-sm bg-black border-bottom box-shadow mb-3">
@@ -18,7 +18,7 @@ const Header = ({loadNews}) => {
                                 <a className="nav-link text-light" type='button' onClick={loadNews}>News</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link text-light">Deals</a>
+                                <a className="nav-link text-light" type='button' onClick={loadDeals}>Deals</a>
                             </li>
                         </ul>
                     </div>
