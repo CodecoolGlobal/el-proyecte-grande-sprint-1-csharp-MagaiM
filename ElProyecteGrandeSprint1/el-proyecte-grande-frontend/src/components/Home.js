@@ -14,7 +14,7 @@ const Home = ({fetchData})  => {
 
 
        useEffect(() => {
-        fetchData('https://localhost:7064/Deals/20')
+        fetchData('https://localhost:7064/Deals?sortBy=Deal Rating&pageSize=20')
         .then(data => {
             data = data.slice(0, 15);
             setSlideData(data);

@@ -1,7 +1,6 @@
 import React, { Component, useEffect } from 'react';
 import PropTypes from 'prop-types'
 import { useState } from "react";
-import DealsPageSidebar from './DealsPageSidebar';
 import { DropdownButton, Dropdown} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -14,6 +13,7 @@ const Deals = ({fetchData}) => {
             setDealsData(dealsData);
         })
     }, [])
+
     const dealsPageContent = 
     (<div className="deals-page-container">
         <div className='collum'>
