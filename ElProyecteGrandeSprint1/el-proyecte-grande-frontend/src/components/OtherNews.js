@@ -9,7 +9,7 @@ const OtherNews = ({newsData, showLatestNews}) => {
         const dd = x.getDate();
         const mm = x.getMonth() + 1;
         const yy = x.getFullYear();
-        return dd + "/" + mm + "/" + yy;
+        return dd + " / " + mm + " / " + yy;
     }
 
     return (
