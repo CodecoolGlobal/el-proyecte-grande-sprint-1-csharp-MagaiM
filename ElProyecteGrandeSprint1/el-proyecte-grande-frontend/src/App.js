@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useCallback } from 'react';
 import { useState } from "react";
 import Container from './components/Container';
 import Header from './components/Header';
@@ -13,34 +13,42 @@ function App() {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetchData('https://localhost:7064/News')
-        .then(data => {
-            setData(data);
+        fetchData('https://localhost:7064/News/wtf').then(fetchedData => {
+            setData(fetchedData)
+        })
+    }, [])
+
+    const loadNews = useCallback( () => {
+        fetchData(`https://localhost:7064/News/`)
+            .then(data => {
+            setText(<News fetchData={data} showGameNews={showGameNews} showLatestNews={loadNews} searchedNews={""} />)
+            window.localStorage.setItem('state', 'NewsMain');
         })
     }, [])
 
     useEffect(() => {
         switch(window.localStorage.getItem('state')) {
-          case 'News':
-            setText(<News fetchData={fetchData} showGameNews={showGameNews} />)
+          case 'NewsMain':
+            loadNews();
+            break;
+          case 'NewsSpecific':
+            let searchedNews = window.localStorage.getItem('searchedNews')
+            fetchData(`https://localhost:7064/News/${searchedNews}`)
+            .then(data => {
+                setText(<News fetchData={data} showGameNews={showGameNews} showLatestNews={loadNews} searchedNews={searchedNews} />)
+            })
             break;
           case 'Deals':
-            setText(<Deals fetchData={fetchData} showDeals={showGameNews} />)
+            loadDeals();
             break;
             case 'home':
-                setText(<Home fetchData={fetchData} />)
+                loadHome();
                 break;
           default:
-            setText(<Home fetchData={fetchData} />)
+            loadHome();
             break;
             }
             }, [])
-
-//    console.log(JSON.parse(window.localStorage.getItem('text')))
-    const loadNews = () => {
-        setText(<News fetchData={fetchData} showGameNews={showGameNews} />)
-        window.localStorage.setItem('state', 'News');
-    }
 
     const loadDeals = () => {
         setText(<Deals fetchData={fetchData} showDeals={showGameNews} />)
@@ -49,15 +57,20 @@ function App() {
 
     const loadHome = () => {
         setText(<Home fetchData={fetchData} />)
-        wait(2000).then(x => {showSlides()
-        })
+        wait(2000).then(x => {showSlides()})
         window.localStorage.setItem('state', 'Home');
     }
 
-    const showGameNews = (event) => {
-        console.log("ShowGameNewsEvent");
-    };
-    
+    const showGameNews = useCallback((event) => {
+        const searchedNews = event.target.textContent;
+        fetchData(`https://localhost:7064/News/${searchedNews}`)
+            .then(data => {
+                setText(<News fetchData={data} showGameNews={showGameNews} showLatestNews={loadNews} searchedNews={searchedNews} />)
+                window.localStorage.setItem('state', 'NewsSpecific');
+                window.localStorage.setItem('searchedNews', searchedNews)
+            })
+    }, [])
+
     return (
         <div className='bg-dark text-white'>
             <Header loadNews={loadNews} loadDeals={loadDeals} loadHome={loadHome}/>
@@ -66,17 +79,17 @@ function App() {
     );
 }
 
-    async function fetchData(url) {
-        const response = await fetch(url);
-        if (response.ok){
-            const data = await response.json();
-            return data;
-        }
-        throw response;
+async function fetchData(url) {
+    const response = await fetch(url);
+    if (response.ok){
+        const data = await response.json();
+        return data;
     }
+    throw response;
+}
 
 
-    function showSlides() {
+function showSlides() {
     let i;
     let slides = document.getElementsByClassName("mySlides");
     for (i = 0; i < slides.length; i++) {
