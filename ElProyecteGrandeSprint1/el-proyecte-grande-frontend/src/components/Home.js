@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types'
 
-const Home =  ({fetchData}) => {
+const Home = ({fetchData})  => {
         const [homeData, setHomeData] = useState([]);
         const [slideData, setSlideData] = useState([]);
         useEffect(() => {
-        fetchData('https://localhost:7064/Home')
+            fetchData('https://localhost:7064/Home')
         .then(data => {
             data = data.slice(0, 15);
             setHomeData(data);
@@ -13,7 +13,7 @@ const Home =  ({fetchData}) => {
     }, [])
 
 
-        useEffect(() => {
+       useEffect(() => {
         fetchData('https://localhost:7064/Deals/20')
         .then(data => {
             data = data.slice(0, 15);
