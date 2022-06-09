@@ -39,7 +39,7 @@ namespace ElProyecteGrandeSprint1.Controllers
         public async Task<string> GetDeals(HttpRequestMessage request)
         {
             var body = await _serviceHelper.GetJsonStringFromApi(request);
-            var deserializedData = _serviceHelper.DeserializeData<Deal>(body);
+            List<Deal> deserializedData = _serviceHelper.DeserializeData<Deal>(body);
             var newListDeal = _serviceHelper.MakeDealsObject(deserializedData);
             var newData = _serviceHelper.SerializeData(newListDeal ?? throw new NullReferenceException());
             return newData;
