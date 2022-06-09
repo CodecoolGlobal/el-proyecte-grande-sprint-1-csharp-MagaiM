@@ -75,10 +75,9 @@ body {
 }
 
 .slide-show-image {
-    width: 25%;
-    max-height: 350px;
-    min-height: 200px;
-    max-width: 300px;
+    width: 25% !important;
+    height: 350px;
+    width: 300px;
 }
 
 /* Caption text */

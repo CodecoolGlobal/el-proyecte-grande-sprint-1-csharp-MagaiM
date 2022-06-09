@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import {wait} from "@testing-library/user-event/dist/utils";
 
 let slideIndex = 0;
+let timeout = '';
 function App() {
     const [text, setText] = useState('');
     const [data, setData] = useState([]);
@@ -90,6 +91,8 @@ async function fetchData(url) {
 
 
 function showSlides() {
+    if(timeout)
+        stopTimeout(timeout);
     let i;
     let slides = document.getElementsByClassName("mySlides");
     for (i = 0; i < slides.length; i++) {
@@ -98,8 +101,10 @@ function showSlides() {
     slideIndex++;
     if (slideIndex > slides.length) { slideIndex = 1 }
     slides[slideIndex - 1].style.display = "block";
-    setTimeout(showSlides, 5000); // Change image every 2 seconds
+    timeout = setTimeout(showSlides, 5000); // Change image every 2 seconds
 }
-
+function stopTimeout(timeout) {
+    clearTimeout(timeout);
+}
 
 export default App;
