@@ -13,6 +13,7 @@ const Deals = ({fetchData}) => {
             setDealsData(dealsData);
         })
     }, [])
+
     const dealsPageContent = 
     (<div className="deals-page-container">
         <div className='collum'>

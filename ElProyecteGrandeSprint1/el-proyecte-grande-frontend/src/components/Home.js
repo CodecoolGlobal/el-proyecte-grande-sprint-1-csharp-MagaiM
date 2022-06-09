@@ -14,7 +14,7 @@ const Home = ({fetchData})  => {
 
 
        useEffect(() => {
-        fetchData('https://localhost:7064/Deals/20')
+        fetchData('https://localhost:7064/Deals?sortBy=Deal Rating&pageSize=20')
         .then(data => {
             data = data.slice(0, 15);
             setSlideData(data);
@@ -40,8 +40,8 @@ const Home = ({fetchData})  => {
                 <div id='containerbody' style={{textAlign: 'center'}}>
                     {homeData.map((data, index) => (
                         <div key={index} className="col-md-auto col-md-auto bg-dark"
-                             style={{display: 'inline-block', maxWidth: '300px', maxHeight: '475px'}}>
-                            <div className="card bg-dark" style={{boxShadow: '1px 2px 3px 4px rgba(112,128,144,0.4)', margin:'10px 10px 10px 20px'}}>
+                             style={{display: 'inline-block', width: '300px', height: '475px', marginTop: '10px', marginBottom: '10px'}}>
+                            <div className="card bg-dark" style={{boxShadow: '1px 2px 3px 4px rgba(112,128,144,0.4)', margin:'10px 15px 20px 20px',height: '465px'}}>
                                 <a href={data.GameUrl}><img src={data.Thumbnail} alt={"Thumbnail"}
                                                             style={{width: '100%'}}/></a>
                                 <div className="card-body inner-card" style={{backgroundColor: '#3A373F'}}>
