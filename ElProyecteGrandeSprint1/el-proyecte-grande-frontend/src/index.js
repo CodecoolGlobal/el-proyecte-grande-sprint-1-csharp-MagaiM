@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './Design/index.css';
+import './Design/App.css';
+import './Design/Imgs/KVMResized.jpg';
+import './Design/Imgs/KVM.jpg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
