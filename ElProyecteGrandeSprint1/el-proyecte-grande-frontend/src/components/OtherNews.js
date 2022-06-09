@@ -14,14 +14,14 @@ const OtherNews = ({newsData, showLatestNews}) => {
 
     return (
         <div className='game-news'>
-            <button className="top-news-button btn-outline-light" type="button" onClick={showLatestNews} style={{float: 'right', backgroundColor: '#c9b18e', color: '#303030', marginBottom: '10px'}}>
-                <span className="" style={{backgroundColor: '#c9b18e', color: '#303030', marginBottom: '10px'}} >Latest News</span>
+            <button className="top-news-button btn-outline-light" type="button" onClick={showLatestNews}>
+                <span className="top-news-button-content">Recent News</span>
             </button>
             {newsData.map((item, index) => {
                 let date = new Date(item.Date);
                 let formattedDate = formatDate(date);
                 return(
-                <div key={index} className="news" style={{width: '100%'}}>
+                <div key={index} className="other-news-card">
                     <OtherNewsCard item={item} formattedDate={formattedDate}/>
                     <br/>
                 </div>
@@ -32,4 +32,5 @@ const OtherNews = ({newsData, showLatestNews}) => {
 OtherNews.prototype = {
     showLatestNews: PropTypes.func
 }
+
 export default OtherNews

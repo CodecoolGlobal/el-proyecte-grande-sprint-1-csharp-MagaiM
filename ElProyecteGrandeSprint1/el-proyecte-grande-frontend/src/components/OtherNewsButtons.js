@@ -23,8 +23,9 @@ const OtherNewsButtons = ({showGameNews}) => {
         {title: "Assassin's Creed"},
         {title: "Final Fantasy"}
     ]
+    
   return (
-    <div className="other-news" style={{width: '30%', padding: '0 0 0 2rem', float: 'right'}}>
+    <div className="other-news">
         <h2>Popular Games:</h2>
         <br/>
         {buttons.map((button, index) => (
