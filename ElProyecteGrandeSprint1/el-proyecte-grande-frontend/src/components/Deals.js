@@ -24,7 +24,7 @@ const Deals = ({fetchData}) => {
 
       </div>
         <div style={{display: 'flex', flexDirection: 'row'}}>
-            <div className="deals-container" style={{width: '85%'}}>
+            <div className="deals-container" style={{width: '90%'}}>
                     {dealsData.map((deals) => (
                         <div key={deals.Title} className="col-md-auto col-md-auto bg-dark" style={{display: 'inline-block', width: '265px', height: '500px'}}>
                             <div className="card" style={{boxShadow: '1px 2px 3px 4px rgba(112,128,144,0.4)', margin:'10px 10px 50px 10px'}}>
