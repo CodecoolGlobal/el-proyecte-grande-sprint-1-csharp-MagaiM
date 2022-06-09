@@ -11,13 +11,6 @@ let slideIndex = 0;
 let timeout = '';
 function App() {
     const [text, setText] = useState('');
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        fetchData('https://localhost:7064/News/wtf').then(fetchedData => {
-            setData(fetchedData)
-        })
-    }, [])
 
     const loadNews = useCallback( () => {
         fetchData(`https://localhost:7064/News/`)
@@ -31,13 +24,10 @@ function App() {
         switch(window.localStorage.getItem('state')) {
           case 'NewsMain':
             loadNews();
+            console.log("Load Recent News");
             break;
           case 'NewsSpecific':
-            let searchedNews = window.localStorage.getItem('searchedNews')
-            fetchData(`https://localhost:7064/News/${searchedNews}`)
-            .then(data => {
-                setText(<News fetchData={data} showGameNews={showGameNews} showLatestNews={loadNews} searchedNews={searchedNews} />)
-            })
+            reloadSpecificGameNews();
             break;
           case 'Deals':
             loadDeals();
@@ -48,8 +38,17 @@ function App() {
           default:
             loadHome();
             break;
-            }
-            }, [])
+        }
+    }, [])
+    
+    const reloadSpecificGameNews = () => {
+        let searchedNews = window.localStorage.getItem('searchedNews')
+            fetchData(`https://localhost:7064/News/${searchedNews}`)
+            .then(data => {
+                console.log("Load Specific Game News");
+                setText(<News fetchData={data} showGameNews={showGameNews} showLatestNews={loadNews} searchedNews={searchedNews} />)
+            })
+    }
 
     const loadDeals = () => {
         setText(<Deals fetchData={fetchData} showDeals={showGameNews} />)
