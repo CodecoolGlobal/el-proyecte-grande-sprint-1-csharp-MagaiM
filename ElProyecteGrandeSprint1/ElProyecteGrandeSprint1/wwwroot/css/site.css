@@ -93,3 +93,23 @@ body {
         opacity: 1
     }
 }
+.deal-info {
+    box-shadow: rgba(112, 128, 144, 0.4) -3px 8px 3px -3px;
+    margin: 10px 0px
+}
+.deal-title {
+    height: 90px
+}
+.price-info {
+    margin: 5px
+}
+.collum {
+    background-color: aliceblue;
+    width: 250px;
+    height: auto;
+    margin-left: auto;
+}
+
+.deals-page-container {
+    margin: 0% 0% 0% 5%
+}

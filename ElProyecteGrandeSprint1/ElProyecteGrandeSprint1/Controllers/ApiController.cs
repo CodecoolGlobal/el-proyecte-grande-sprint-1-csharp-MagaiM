@@ -40,6 +40,7 @@ namespace ElProyecteGrandeSprint1.Controllers
         {
             var body = await _serviceHelper.GetJsonStringFromApi(request);
             List<Deal> deserializedData = _serviceHelper.DeserializeData<Deal>(body);
+            deserializedData = new List<Deal>(deserializedData.DistinctBy(x => x.Title));
             var newListDeal = _serviceHelper.MakeDealsObject(deserializedData);
             var newData = _serviceHelper.SerializeData(newListDeal ?? throw new NullReferenceException());
             return newData;
