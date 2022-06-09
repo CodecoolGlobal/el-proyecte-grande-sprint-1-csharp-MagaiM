@@ -140,3 +140,8 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+.news-page-container {
+  display: flex;
+  flex-direction: row;
+}

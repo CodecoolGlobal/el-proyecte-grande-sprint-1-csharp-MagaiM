@@ -8,7 +8,7 @@ const News = ({ fetchData, showGameNews, searchedNews, showLatestNews }) => {
 
     return searchedNews == "" ? (
     <div className="container">
-        <div style={{display: 'flex', flexDirection: 'row'}}>
+        <div className='news-page-container'>
             <div className="news-container" style={{width: '70%'}}>
                 <RecentNews newsData={fetchData}/>
             </div>
@@ -17,7 +17,7 @@ const News = ({ fetchData, showGameNews, searchedNews, showLatestNews }) => {
     </div>
   ) : (
     <div className="container">
-        <div style={{display: 'flex', flexDirection: 'row'}}>
+        <div className='news-page-container'>
             <div className="news-container" style={{width: '70%'}}>
                 <OtherNews newsData={fetchData} showLatestNews={showLatestNews}/>
             </div>
