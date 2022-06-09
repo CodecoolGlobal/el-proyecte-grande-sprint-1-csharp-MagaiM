@@ -8,8 +8,8 @@ import Home from "./components/Home";
 import {wait} from "@testing-library/user-event/dist/utils";
 
 let slideIndex = 0;
-function App(){
-    const [text , setText] = useState("")
+function App() {
+    const [text, setText] = useState('');
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -22,17 +22,43 @@ function App(){
         fetchData(`https://localhost:7064/News/`)
             .then(data => {
             setText(<News fetchData={data} showGameNews={showGameNews} showLatestNews={loadNews} searchedNews={""} />)
+            window.localStorage.setItem('state', 'NewsMain');
         })
     }, [])
 
+    useEffect(() => {
+        switch(window.localStorage.getItem('state')) {
+          case 'NewsMain':
+            loadNews();
+            break;
+          case 'NewsSpecific':
+            let searchedNews = window.localStorage.getItem('searchedNews')
+            fetchData(`https://localhost:7064/News/${searchedNews}`)
+            .then(data => {
+                setText(<News fetchData={data} showGameNews={showGameNews} showLatestNews={loadNews} searchedNews={searchedNews} />)
+            })
+            break;
+          case 'Deals':
+            loadDeals();
+            break;
+            case 'home':
+                loadHome();
+                break;
+          default:
+            loadHome();
+            break;
+            }
+            }, [])
+
     const loadDeals = () => {
         setText(<Deals fetchData={fetchData} showDeals={showGameNews} />)
+        window.localStorage.setItem('state', 'Deals');
     }
 
     const loadHome = () => {
-        setText(<Home fetchData={fetchData}/>)
-        wait(1000).then(x => showSlides())
-
+        setText(<Home fetchData={fetchData} />)
+        wait(2000).then(x => {showSlides()})
+        window.localStorage.setItem('state', 'Home');
     }
 
     const showGameNews = useCallback((event) => {
@@ -40,6 +66,8 @@ function App(){
         fetchData(`https://localhost:7064/News/${searchedNews}`)
             .then(data => {
                 setText(<News fetchData={data} showGameNews={showGameNews} showLatestNews={loadNews} searchedNews={searchedNews} />)
+                window.localStorage.setItem('state', 'NewsSpecific');
+                window.localStorage.setItem('searchedNews', searchedNews)
             })
     }, [])
 
