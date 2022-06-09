@@ -6,6 +6,7 @@ using System.Text.Json;
 namespace ElProyecteGrandeSprint1.Controllers
 {
     [ApiController]
+    [Route("[controller]")]
     public class HomeController : Controller
     {
         private readonly ApiController _apiController = new ApiController();

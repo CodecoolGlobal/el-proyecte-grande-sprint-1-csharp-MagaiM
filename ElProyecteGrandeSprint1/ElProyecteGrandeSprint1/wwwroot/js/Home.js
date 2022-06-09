@@ -67,19 +67,19 @@ function slidesBodyBuilder(Image, StoreName, SalePrice, NormalPrice, Title) {
 
 function jumbotronBodyBuilder(Thumbnail, Title, ShortDescription, Genre, Platform, GameUrl, ReleaseDate) {
     let jumbotronBody = `
-                <div class="col-md-auto col-md-auto bg-dark" style="display: inline-block; max-width: 300px; height: auto mySlides fade">
-            <div class="card bg-dark" style="box-shadow: 1px 2px 3px 4px rgba(112,128,144,0.4); margin:10px 10px 10px 20px">
-                <a href="${GameUrl}"><img src="${Thumbnail}" style="width:100%"> </a>
-                <div class="card-body inner-card" style="background-color: #3A373F">
-                    <h5 class="card-title text-center">${Title}</h5>
-                    <p class="card-text">Short Description: ${ShortDescription}</p>
-                    <p class="card-text">Genre: ${Genre}</p>
-                    <p class="card-text">Platform: ${Platform}</p>
-                    <p class="card-text text-center"><strong>ReleaseDate: ${ReleaseDate}</strong></p>
+            <div class="col-md-auto col-md-auto bg-dark" style="display: inline-block; max-width: 300px; height: auto mySlides fade">
+                <div class="card bg-dark" style="box-shadow: 1px 2px 3px 4px rgba(112,128,144,0.4); margin:10px 10px 10px 20px">
+                    <a href="${GameUrl}"><img src="${Thumbnail}" style="width:100%"> </a>
+                    <div class="card-body inner-card" style="background-color: #3A373F">
+                        <h5 class="card-title text-center">${Title}</h5>
+                        <p class="card-text">Short Description: ${ShortDescription}</p>
+                        <p class="card-text">Genre: ${Genre}</p>
+                        <p class="card-text">Platform: ${Platform}</p>
+                        <p class="card-text text-center"><strong>ReleaseDate: ${ReleaseDate}</strong></p>
+                    </div>
                 </div>
-            </div>
-            <br/>
-        </div>`;
+                <br/>
+            </div>`;
     return jumbotronBody;
 }
 
