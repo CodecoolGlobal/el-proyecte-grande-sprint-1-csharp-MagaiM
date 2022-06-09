@@ -8,8 +8,8 @@ import Home from "./components/Home";
 import {wait} from "@testing-library/user-event/dist/utils";
 
 let slideIndex = 0;
-function App(){
-    const [text , setText] = useState("")
+function App() {
+    const [text, setText] = useState('');
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -18,24 +18,46 @@ function App(){
             setData(data);
         })
     }, [])
-   
+
+    useEffect(() => {
+        switch(window.localStorage.getItem('state')) {
+          case 'News':
+            setText(<News fetchData={fetchData} showGameNews={showGameNews} />)
+            break;
+          case 'Deals':
+            setText(<Deals fetchData={fetchData} showDeals={showGameNews} />)
+            break;
+            case 'home':
+                setText(<Home fetchData={fetchData} />)
+                break;
+          default:
+            setText(<Home fetchData={fetchData} />)
+            break;
+            }
+            }, [])
+
+//    console.log(JSON.parse(window.localStorage.getItem('text')))
     const loadNews = () => {
         setText(<News fetchData={fetchData} showGameNews={showGameNews} />)
+        window.localStorage.setItem('state', 'News');
     }
 
     const loadDeals = () => {
         setText(<Deals fetchData={fetchData} showDeals={showGameNews} />)
+        window.localStorage.setItem('state', 'Deals');
     }
 
     const loadHome = () => {
-        setText(<Home fetchData={fetchData}/>)
-        wait(1000).then(x => showSlides())
-
+        setText(<Home fetchData={fetchData} />)
+        wait(2000).then(x => {showSlides()
+        })
+        window.localStorage.setItem('state', 'Home');
     }
+
     const showGameNews = (event) => {
         console.log("ShowGameNewsEvent");
     };
-
+    
     return (
         <div className='bg-dark text-white'>
             <Header loadNews={loadNews} loadDeals={loadDeals} loadHome={loadHome}/>
