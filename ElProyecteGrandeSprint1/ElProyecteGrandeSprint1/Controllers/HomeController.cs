@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Text.Json;
 namespace ElProyecteGrandeSprint1.Controllers
 {
+    [ApiController]
     public class HomeController : Controller
     {
         private readonly ApiController _apiController = new ApiController();
@@ -15,28 +16,8 @@ namespace ElProyecteGrandeSprint1.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public async Task<string> GetApi(int pageSize)
-        {
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://www.cheapshark.com/api/1.0/deals?pageSize={pageSize}")
-            };
-            var deals = await _apiController.GetDeals(request);
-            return deals;
-        }
-
-        public async Task<string> RecentFreeToPlayGames()
+        [HttpGet]
+        public async Task<string> GetRecentFreeToPlayGames()
         {
             var request = new HttpRequestMessage
             {
@@ -49,12 +30,6 @@ namespace ElProyecteGrandeSprint1.Controllers
                 },
             };
             return _apiController.GetDataFromApi<FreeGame>(request);
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
