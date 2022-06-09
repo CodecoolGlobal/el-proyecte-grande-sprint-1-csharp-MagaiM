@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { Component, useEffect } from 'react';
 import PropTypes from 'prop-types'
+import { useState } from "react";
 
-const Header = ({loadNews, loadDeals}) => {
+const Header = ({loadNews, loadDeals, loadHome}) => {
   return (
         <header>
             <nav className="navbar-dark navbar navbar-expand-sm navbar-toggleable-sm bg-black border-bottom box-shadow mb-3">
                 <div className="container-fluid">
                     
-                    <a className="navbar-brand"><img className="" src="Imgs/KVMResized.jpg" style={{width: '100px', height: '40px'}}/></a>
+                    <a className="navbar-brand" type='button' onClick={loadHome}><img className="" src="src/Design/Imgs/KVMResized.jpg" alt={'KWMGAMING'} style={{width: '100px', height: '40px'}}/></a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
@@ -30,7 +31,9 @@ const Header = ({loadNews, loadDeals}) => {
 
 
 Header.prototype = {
-    loadNews: PropTypes.func
+    loadNews: PropTypes.func,
+    loadDeals: PropTypes.func,
+    loadHome: PropTypes.func,
 }
 
 export default Header
