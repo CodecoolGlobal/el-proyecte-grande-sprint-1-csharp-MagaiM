@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using ElProyecteGrandeSprint1.Models;
+using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
