@@ -7,18 +7,19 @@ namespace ElProyecteGrandeSprint1.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NewsController : Controller
+    public class NewsController : ControllerBase
     {
-        private readonly ApiController _apiController = new ApiController();
+        private readonly ApiHelper _apiController;
         private readonly ILogger<NewsController> _logger;
 
         //private readonly string apiToken = "1763716cc7950373caaf84e0980fd9da";
         private readonly string apiToken = "4a489f19e465971200db4a380416fc12";
         private readonly string language = "en";
 
-        public NewsController(ILogger<NewsController> logger)
+        public NewsController(ILogger<NewsController> logger, ApiHelper apiController)
         {
             _logger = logger;
+            _apiController = apiController;
         }
 
         [HttpGet]

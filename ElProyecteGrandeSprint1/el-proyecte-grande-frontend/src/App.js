@@ -11,9 +11,9 @@ let slideIndex = 0;
 let timeout = '';
 function App() {
     const [text, setText] = useState('');
-
+    const baseurl = 'https://localhost:7064/';
     const loadNews = useCallback( () => {
-        fetchData(`https://localhost:7064/News/`)
+        fetchData(`${baseurl}News/`)
             .then(data => {
             setText(<News fetchData={data} showGameNews={showGameNews} showLatestNews={loadNews} searchedNews={""} />)
             window.localStorage.setItem('state', 'NewsMain');
@@ -43,7 +43,7 @@ function App() {
     
     const reloadSpecificGameNews = () => {
         let searchedNews = window.localStorage.getItem('searchedNews')
-            fetchData(`https://localhost:7064/News/${searchedNews}`)
+            fetchData(`${baseurl}News/${searchedNews}`)
             .then(data => {
                 console.log("Load Specific Game News");
                 setText(<News fetchData={data} showGameNews={showGameNews} showLatestNews={loadNews} searchedNews={searchedNews} />)

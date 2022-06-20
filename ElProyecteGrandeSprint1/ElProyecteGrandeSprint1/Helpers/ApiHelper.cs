@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace ElProyecteGrandeSprint1.Controllers
 {
 
-    public class ApiController : Controller
+    public class ApiHelper
     {
         private readonly ServiceHelper _serviceHelper = new ServiceHelper();
         public string GetDataFromApi<T>(HttpRequestMessage request)

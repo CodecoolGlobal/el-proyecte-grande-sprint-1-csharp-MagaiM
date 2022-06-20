@@ -1,3 +1,5 @@
+using ElProyecteGrandeSprint1.Controllers;
+
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 
@@ -15,6 +17,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<ApiHelper>();
 
 var app = builder.Build();
 

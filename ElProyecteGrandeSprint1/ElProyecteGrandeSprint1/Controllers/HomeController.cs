@@ -7,14 +7,15 @@ namespace ElProyecteGrandeSprint1.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
-        private readonly ApiController _apiController = new ApiController();
+        private readonly ApiHelper _apiController;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApiHelper apiController)
         {
             _logger = logger;
+            _apiController = apiController;
         }
 
         [HttpGet]

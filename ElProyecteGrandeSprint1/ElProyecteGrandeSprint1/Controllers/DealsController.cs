@@ -10,14 +10,15 @@ namespace ElProyecteGrandeSprint1.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DealsController : Controller
+    public class DealsController : ControllerBase
     {
-        private readonly ApiController _apiController = new ApiController();
+        private readonly ApiHelper _apiController;
         private readonly ILogger<DealsController> _logger;
 
-        public DealsController(ILogger<DealsController> logger)
+        public DealsController(ILogger<DealsController> logger, ApiHelper apiController)
         {
             _logger = logger;
+            _apiController = apiController;
         }
 
         [HttpGet]

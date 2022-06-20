@@ -19,7 +19,7 @@ const Deals = ({fetchData}) => {
         <div className='collum'>
         <DropdownButton id="dropdown-basic-button" title="Order by" variant='secondary' menuVariant='dark'>
           <Dropdown.Item onClick={()=>fetchData('https://localhost:7064/Deals?sortBy=Deal Rating').then(dealsData=>{setDealsData(dealsData)})}>Deal Rating</Dropdown.Item>
-          <Dropdown.Item onClick={()=>fetchData('https://localhost:7064/Deals?sortBy=Title').then(dealsData=>{setDealsData(dealsData)})}>Title</Dropdown.Item>
+          <Dropdown.Item onClick={()=>fetchData('https://localhost:7064/Deals?sortBy=Title&desc=1').then(dealsData=>{setDealsData(dealsData)})}>Title</Dropdown.Item>
         </DropdownButton>
 
       </div>
@@ -32,7 +32,7 @@ const Deals = ({fetchData}) => {
                                 <div className="card-body inner-card" style={{backgroundColor: '#3A373F', height:'250px'}}>
                                     <h5 className="text-center deal-title">{deals.Title}</h5>
                                         <h6 className="card-text deal-info" >Store: {deals.StoreName}</h6>
-                                        <h6 className="card-text deal-info">Deal rating: {deals.DealRating}</h6>
+                                        <h6 className="card-text deal-info">Deal rating: {deals.DealRating}({Math.floor(100-(deals.SalePrice/deals.NormalPrice)*100)}%)</h6>
                                         <p className="card-text text-center price-info"><strong>Sale price: $ {String(deals.SalePrice)}</strong></p>
                                         <p className="card-text text-center price-info"><strong>Normal price: $ {String(deals.NormalPrice)}</strong></p>
                                 </div>
