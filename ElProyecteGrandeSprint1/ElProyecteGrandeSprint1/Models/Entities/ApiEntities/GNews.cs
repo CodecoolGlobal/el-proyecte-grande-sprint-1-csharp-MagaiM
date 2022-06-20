@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ElProyecteGrandeSprint1.Models
+namespace ElProyecteGrandeSprint1.Models.Entities.ApiEntities
 {
     public class GNews
     {
