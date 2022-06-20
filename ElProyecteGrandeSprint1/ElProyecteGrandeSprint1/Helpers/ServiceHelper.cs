@@ -1,5 +1,7 @@
 ﻿using ElProyecteGrandeSprint1.Controllers;
 using ElProyecteGrandeSprint1.Models;
+using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
+using ElProyecteGrandeSprint1.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 

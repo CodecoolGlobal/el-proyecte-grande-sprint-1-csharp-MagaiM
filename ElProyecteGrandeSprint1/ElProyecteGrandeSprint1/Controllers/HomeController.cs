@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Text.Json;
+using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
+
 namespace ElProyecteGrandeSprint1.Controllers
 {
     [ApiController]
