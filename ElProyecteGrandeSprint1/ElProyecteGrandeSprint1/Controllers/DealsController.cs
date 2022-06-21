@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Text.Json.Nodes;
 using ElProyecteGrandeSprint1.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -21,14 +22,23 @@ namespace ElProyecteGrandeSprint1.Controllers
             _apiController = apiController;
         }
 
-        [HttpGet]
-        public async Task<string> GetDeals(int pageSize=60, int desc = 0, string sortBy = "Title")
+        [HttpGet] public async Task<string> GetDeals(string? sortBy = "Deal Rating", int pageSize = 60, int desc = 0, string? storeId="")
         {
+            Uri requestUri;
+            if (storeId == "" || storeId == null)
+            {
+                requestUri = new Uri($"https://www.cheapshark.com/api/1.0/deals?pageSize={pageSize}&desc={desc}&sortBy={sortBy}");
+            }
+            else
+            {
+                requestUri = new Uri($"https://www.cheapshark.com/api/1.0/deals?pageSize={pageSize}&desc={desc}&sortBy={sortBy}&storeID={storeId}");
+            }
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://www.cheapshark.com/api/1.0/deals?pageSize={pageSize}&desc={desc}&sortBy={sortBy}")
-            };
+               
+                RequestUri = requestUri
+        };
             var deals = await _apiController.GetDeals(request);
             return deals;
         }
