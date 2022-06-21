@@ -18,9 +18,9 @@ namespace ElProyecteGrandeSprint1
 
             var users = new User[]
             {
-            new User{UserName = "Admin", Password = new Password(){UserPassword = "Admin"}.UserPassword, Reputation = 5000, Rank = Rank.Admin},
-            new User{UserName = "Developer", Password = new Password(){UserPassword = "Developer"}.UserPassword, Reputation = 500000, Rank = Rank.Developer},
-            new User{UserName = "Moderator", Password = new Password(){UserPassword = "Moderator"}.UserPassword, Reputation = 5, Rank = Rank.Moderator},
+            new User{UserName = "Admin", Password = new Password(){UserPassword = "Admin"}, Reputation = 5000, Rank = Rank.Admin},
+            new User{UserName = "Developer", Password = new Password(){UserPassword = "Developer"}, Reputation = 500000, Rank = Rank.Developer},
+            new User{UserName = "Moderator", Password = new Password(){UserPassword = "Moderator"}, Reputation = 5, Rank = Rank.Moderator},
             };
             foreach (User s in users)
             {
