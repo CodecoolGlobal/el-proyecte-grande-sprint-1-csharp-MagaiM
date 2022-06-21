@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using ElProyecteGrandeSprint1.Models.Enums;
 
 namespace ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities
@@ -10,7 +12,10 @@ namespace ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities
 
         public string UserName { get; set; }
 
-        public String Password { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public Password Password { get; set; }
 
         public Rank Rank { get; set; }
 
