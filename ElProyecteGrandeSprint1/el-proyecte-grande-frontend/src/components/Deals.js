@@ -1,52 +1,79 @@
 import React, { Component, useEffect } from 'react';
 import PropTypes from 'prop-types'
 import { useState } from "react";
-import { DropdownButton, Dropdown} from 'react-bootstrap';
+import { DropdownButton, Dropdown, Table, FormCheck} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import DealCards from './DealCards';
+import DealsTable from './DealsTable';
 
 const Deals = ({fetchData}) => {
     const [dealsData, setDealsData] = useState([]);
-
+    const [isChecked, setIsChecked] = useState(new Array(2).fill(false));
+    const [sortBy, setSortBy] = useState("Deal Rating");
+    const [pageSize, setPageSize] = useState(60);
+    const [filterDirection, setFilterDirection] = useState(0);
+    const [storeId, setStoreId] = useState("")
+    const [lastUrl, setLastUrl] = useState(`https://localhost:7064/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
+    const [Url, setUrl] = useState(`https://localhost:7064/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
     useEffect(() => {
-        fetchData('https://localhost:7064/Deals?sortBy=Deal Rating')
-        .then(dealsData => {
-            setDealsData(dealsData);
-        })
-    }, [])
+      fetchData(Url)
+      .then(dealsData => {
+          setDealsData(dealsData);
+      })
+  }, [])
 
-    const dealsPageContent = 
-    (<div className="deals-page-container">
-        <div className='collum'>
-        <DropdownButton id="dropdown-basic-button" title="Order by" variant='secondary' menuVariant='dark'>
-          <Dropdown.Item onClick={()=>fetchData('https://localhost:7064/Deals?sortBy=Deal Rating').then(dealsData=>{setDealsData(dealsData)})}>Deal Rating</Dropdown.Item>
-          <Dropdown.Item onClick={()=>fetchData('https://localhost:7064/Deals?sortBy=Title&desc=1').then(dealsData=>{setDealsData(dealsData)})}>Title</Dropdown.Item>
-        </DropdownButton>
+useEffect(() => {
+    fetchData(Url)
+    .then(dealsData => {
+        setDealsData(dealsData);
+    })
+}, [Url]);
 
+useEffect(() => {
+  if(isChecked){
+    setUrl(`https://localhost:7064/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
+  }else{
+    setUrl(lastUrl)
+  }
+}, [isChecked]);
+
+
+  const handleOnChange = (value) => {
+    const updatedCheckedState = isChecked.map((item, index) =>
+      index === value ? !item : item
+    );
+    setIsChecked(updatedCheckedState);
+    };
+  const dealsPageContent = 
+  (
+  
+  <div className="deals-page-container">
+    <div className='filter-bar'>
+      <div className="checkbox">
+      <input
+        type="checkbox"
+        checked={isChecked[0]}
+        onChange={e => {setSortBy("Title"); handleOnChange(0)}}
+        
+      />Title
       </div>
-        <div style={{display: 'flex', flexDirection: 'row'}}>
-            <div className="deals-container" style={{width: '90%'}}>
-                    {dealsData.map((deals) => (
-                        <div key={deals.Title} className="col-md-auto col-md-auto bg-dark" style={{display: 'inline-block', width: '265px', height: '500px'}}>
-                            <div className="card" style={{boxShadow: '1px 2px 3px 4px rgba(112,128,144,0.4)', margin:'10px 10px 50px 10px'}}>
-                                <img className="product-image" src={String(deals.Image)} style={{width: 'auto', height: '200px'}}/>
-                                <div className="card-body inner-card" style={{backgroundColor: '#3A373F', height:'250px'}}>
-                                    <h5 className="text-center deal-title">{deals.Title}</h5>
-                                        <h6 className="card-text deal-info" >Store: {deals.StoreName}</h6>
-                                        <h6 className="card-text deal-info">Deal rating: {deals.DealRating}({Math.floor(100-(deals.SalePrice/deals.NormalPrice)*100)}%)</h6>
-                                        <p className="card-text text-center price-info"><strong>Sale price: $ {String(deals.SalePrice)}</strong></p>
-                                        <p className="card-text text-center price-info"><strong>Normal price: $ {String(deals.NormalPrice)}</strong></p>
-                                </div>
-                            </div>
-                            <br/>
-                        </div>
-                       
-                    ))}
-                </div>
-            </div>
-        </div>
-    )
+      <div className="checkbox">
+      <input
+        type="checkbox"
+        checked={isChecked[1]}
+        onChange={e => {setFilterDirection(1); handleOnChange(1)}}
+        
+      />Sort Direction
+      </div>
+    </div>
+    <div>
+      <DealCards dealsData={dealsData}></DealCards>
+      <DealsTable dealsData={dealsData}></DealsTable>
+    </div>
+  </div>
+  )
 
-  return dealsPageContent;
+return dealsPageContent;
 }
 
 Deals.prototype = {
