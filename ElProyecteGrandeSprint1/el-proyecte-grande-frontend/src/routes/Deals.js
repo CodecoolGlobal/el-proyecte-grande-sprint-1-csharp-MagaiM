@@ -1,10 +1,9 @@
 import React, { Component, useEffect } from 'react';
-import PropTypes from 'prop-types'
 import { useState } from "react";
 import { DropdownButton, Dropdown} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Deals = ({fetchData}) => {
+const Deals = () => {
     const [dealsData, setDealsData] = useState([]);
 
     useEffect(() => {
@@ -19,7 +18,7 @@ const Deals = ({fetchData}) => {
         <div className='collum'>
         <DropdownButton id="dropdown-basic-button" title="Order by" variant='secondary' menuVariant='dark'>
           <Dropdown.Item onClick={()=>fetchData('https://localhost:7064/Deals?sortBy=Deal Rating').then(dealsData=>{setDealsData(dealsData)})}>Deal Rating</Dropdown.Item>
-          <Dropdown.Item onClick={()=>fetchData('https://localhost:7064/Deals?sortBy=Title&desc=1').then(dealsData=>{setDealsData(dealsData)})}>Title</Dropdown.Item>
+          <Dropdown.Item onClick={()=>fetchData('https://localhost:7064/Deals?sortBy=Title&desc=0').then(dealsData=>{setDealsData(dealsData)})}>Title</Dropdown.Item>
         </DropdownButton>
 
       </div>
@@ -39,7 +38,6 @@ const Deals = ({fetchData}) => {
                             </div>
                             <br/>
                         </div>
-                       
                     ))}
                 </div>
             </div>
@@ -49,8 +47,13 @@ const Deals = ({fetchData}) => {
   return dealsPageContent;
 }
 
-Deals.prototype = {
-    fetchData: PropTypes.func
+async function fetchData(url) {
+    const response = await fetch(url);
+    if (response.ok){
+        const data = await response.json();
+        return data;
+    }
+    throw response;
 }
 
 export default Deals

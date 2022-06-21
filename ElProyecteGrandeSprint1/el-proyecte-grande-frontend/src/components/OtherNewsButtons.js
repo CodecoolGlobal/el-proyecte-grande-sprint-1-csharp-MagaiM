@@ -1,7 +1,7 @@
 import React from 'react'
 import SearchByGameNewsButton from './SearchByGameNewsButton'
 
-const OtherNewsButtons = ({showGameNews}) => {
+const OtherNewsButtons = () => {
     const buttons = [
         {title: "Overwatch"},
         {title: "World of Warcraft"},
@@ -29,7 +29,7 @@ const OtherNewsButtons = ({showGameNews}) => {
         <h2>Popular Games:</h2>
         <br/>
         {buttons.map((button, index) => (
-            <SearchByGameNewsButton key={index} button={button} showGameNews={showGameNews}/>
+            <SearchByGameNewsButton key={index} button={button} />
         ))}
     </div>
   )

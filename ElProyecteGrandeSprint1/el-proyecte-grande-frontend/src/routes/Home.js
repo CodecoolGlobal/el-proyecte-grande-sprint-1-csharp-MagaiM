@@ -1,26 +1,59 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types'
+import {wait} from "@testing-library/user-event/dist/utils";
 
-const Home = ({fetchData})  => {
-        const [homeData, setHomeData] = useState([]);
-        const [slideData, setSlideData] = useState([]);
-        useEffect(() => {
-            fetchData('https://localhost:7064/Home')
-        .then(data => {
-            data = data.slice(0, 15);
-            setHomeData(data);
-        })
+const Home = ()  => {
+    const [homeData, setHomeData] = useState([]);
+    const [slideData, setSlideData] = useState([]);
+    
+    let slideIndex = 0;
+    let timeout = '';
+
+    useEffect(() => {
+        fetchData('https://localhost:7064/Home')
+            .then(data => {
+                data = data.slice(0, 15);
+                setHomeData(data);
+        });
+    wait(2000).then(x => {showSlides()})
     }, [])
 
 
-       useEffect(() => {
+    useEffect(() => {
         fetchData('https://localhost:7064/Deals?sortBy=Deal Rating&pageSize=20')
-        .then(data => {
+            .then(data => {
             data = data.slice(0, 15);
             setSlideData(data);
         })
     }, [])
 
+    async function fetchData(url) {
+        const response = await fetch(url);
+        if (response.ok){
+            const data = await response.json();
+            return data;
+        }
+        throw response;
+    }
+    
+    function showSlides() {
+         try {
+            if(timeout)
+                stopTimeout(timeout);
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            slides[slideIndex - 1].style.display = "block";
+            timeout = setTimeout(showSlides, 5000); // Change image every 2 seconds
+         } catch {}
+    }
+    
+    function stopTimeout(timeout) {
+        clearTimeout(timeout);
+    }
 
     return (
             <div>
@@ -57,11 +90,7 @@ const Home = ({fetchData})  => {
                     ))}
                 </div>
             </div>
-        );
+    );
 }
-Home.prototype = {
-    fetchData: PropTypes.func,
-}
-
 
 export default Home;
