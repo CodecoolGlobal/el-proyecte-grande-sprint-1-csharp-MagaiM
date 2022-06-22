@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElProyecteGrandeSprint1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220620115243_addedUser")]
+    [Migration("20220620125835_addedUser")]
     partial class addedUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
