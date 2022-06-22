@@ -11,7 +11,7 @@ const OtherNews = () => {
     useEffect(() => {
         fetchData(`${baseurl}News/${searchName}`)
             .then(data=>{setSearchedNewsData(data)})
-    }, [])
+    }, [searchName])
 
     const formatDate = (timestamp) => {
         const x = new Date(timestamp);
