@@ -6,30 +6,31 @@ namespace ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+
 public class Password
 {
-    private string _sSourceData;
-    private byte[] _tmpSource;
-    private byte[] _tmpHash;
     private string _sPassword;
-    private MD5 _hasher;
+    private readonly MD5 _hasher;
 
     public Password()
     {
         _hasher = MD5.Create();
-        this._sSourceData = "";
-        this._tmpSource = new byte[16];
-        this._tmpHash = new byte[16];
     }
+
+    public Password(string sPassword) : this()
+    {
+        _sPassword = sPassword;
+    }
+
     public string UserPassword
     {
         get => _sPassword;
         set
         {
-            _sSourceData = value;
-            _tmpSource = Encoding.ASCII.GetBytes(_sSourceData);
-            _tmpHash = _hasher.ComputeHash(_tmpSource);
-            _sPassword = ByteArrayToString(_tmpHash);
+            var sSourceData = value;
+            var tmpSource = Encoding.ASCII.GetBytes(sSourceData);
+            var tmpHash = _hasher.ComputeHash(tmpSource);
+            _sPassword = ByteArrayToString(tmpHash);
         }
     }
 
@@ -41,6 +42,17 @@ public class Password
         {
             sOutput.Append(arrInput[i].ToString("X2"));
         }
+
         return sOutput.ToString();
+    }
+
+    public bool ValidatePassword(string NewPassword)
+    {
+
+        var newtmpSource = Encoding.ASCII.GetBytes(NewPassword);
+        var tmpNewHash = _hasher.ComputeHash(newtmpSource);
+        var newsPassword = ByteArrayToString(tmpNewHash);
+        bool bEqual = false;
+        return newsPassword.Equals(_sPassword);
     }
 }
