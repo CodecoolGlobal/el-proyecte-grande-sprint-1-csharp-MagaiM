@@ -1,7 +1,15 @@
-import React from 'react'
-import RecentNewsCard from './RecentNewsCard'
+import RecentNewsCard from '../components/RecentNewsCard'
+import React, { useEffect, useState } from 'react';
 
-const RecentNews = ({newsData}) => {
+const RecentNews = () => {
+
+    const [newsData, setNewsData] = useState([]);
+    const baseurl = 'https://localhost:7064/';
+
+    useEffect(() => {
+        fetchData(`${baseurl}News/`)
+            .then(data=>{setNewsData(data)})
+    }, [])
 
     const formatDate = (timestamp) => {
         const x = new Date(timestamp);
@@ -25,6 +33,15 @@ const RecentNews = ({newsData}) => {
             )})}
         </div>
     )
+}
+
+async function fetchData(url) {
+    const response = await fetch(url);
+    if (response.ok){
+        const data = await response.json();
+        return data;
+    }
+    throw response;
 }
 
 export default RecentNews

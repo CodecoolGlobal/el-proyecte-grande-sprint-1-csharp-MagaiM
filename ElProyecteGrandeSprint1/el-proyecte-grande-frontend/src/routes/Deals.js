@@ -1,12 +1,11 @@
 import React, { Component, useEffect } from 'react';
-import PropTypes from 'prop-types'
 import { useState } from "react";
 import { DropdownButton, Dropdown, Table, FormCheck} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DealCards from './DealCards';
 import DealsTable from './DealsTable';
 
-const Deals = ({fetchData}) => {
+const Deals = () => {
     const [dealsData, setDealsData] = useState([]);
     const [isChecked, setIsChecked] = useState(new Array(2).fill(false));
     const [sortBy, setSortBy] = useState("Deal Rating");
@@ -76,8 +75,13 @@ useEffect(() => {
 return dealsPageContent;
 }
 
-Deals.prototype = {
-    fetchData: PropTypes.func
+async function fetchData(url) {
+    const response = await fetch(url);
+    if (response.ok){
+        const data = await response.json();
+        return data;
+    }
+    throw response;
 }
 
 export default Deals
