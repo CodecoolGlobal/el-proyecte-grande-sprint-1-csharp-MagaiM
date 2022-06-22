@@ -2,8 +2,8 @@ import React, { Component, useEffect } from 'react';
 import { useState } from "react";
 import { DropdownButton, Dropdown, Table, FormCheck} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import DealCards from './DealCards';
-import DealsTable from './DealsTable';
+import DealCards from '../components/DealCards'
+import DealsTable from '../components/DealsTable';
 
 const Deals = () => {
     const [dealsData, setDealsData] = useState([]);
