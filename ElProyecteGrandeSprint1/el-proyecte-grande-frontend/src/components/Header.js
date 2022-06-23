@@ -1,9 +1,13 @@
-import React from 'react'
-import logo from '../Design/Imgs/KVMResized.jpg'
+import React from 'react';
+import logo from '../Design/Imgs/KVMResized.jpg';
 import { Link } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 
 const Header = ({}) => {
-  return (
+    const [cookies, setCookie, removeCookie] = useCookies(['user_id']);
+    console.log(cookies);
+
+    return (
         <header>
             <nav className="navbar-dark navbar navbar-expand-sm navbar-toggleable-sm bg-black border-bottom box-shadow mb-3">
                 <div className="container-fluid">
@@ -32,16 +36,18 @@ const Header = ({}) => {
                                     Register
                                 </Link>
                             </li>
-                            <li className="nav-item">
-                                <Link className="nav-link text-light" type='button' to="/Logout">
+                            { cookies.user_id ? 
+                            (<li className="nav-item">
+                                <button className="nav-link text-light" type='button' onClick={() => {removeCookie("user_id")}}>
                                     Logout
-                                </Link>
-                            </li>
-                            <li className="nav-item">
+                                </button>
+                            </li>) :
+                            (<li className="nav-item">
                                 <Link className="nav-link text-light" type='button' to="/Login">
                                     Login
                                 </Link>
-                            </li>
+                            </li>)
+                            }
                         </ul>
                     </div>
                 </div>
@@ -49,7 +55,6 @@ const Header = ({}) => {
         </header>
   )
 }
-
 
 export default Header
                             // <li className="nav-item">
