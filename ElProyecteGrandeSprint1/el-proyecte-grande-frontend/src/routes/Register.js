@@ -5,13 +5,13 @@ import UserForm from "../components/UserForm";
 const Register = ({postData}) => {
 
 
-  const SendDataToBackEnd = (inputs) => {
-      console.log(postData("User", inputs));
+  const SendDataToBackEnd = async (inputs) => {
+       return await postData("User", inputs);
   }
 
 
   return (
-    <UserForm postData={postData} SendDataToBackEnd={SendDataToBackEnd}></UserForm>
+    <UserForm postData={postData} SendDataToBackEnd={SendDataToBackEnd} Page={"Register"}></UserForm>
   )
 }
 Register.prototype = {
