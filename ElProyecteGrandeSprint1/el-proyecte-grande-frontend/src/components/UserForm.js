@@ -15,7 +15,9 @@ const UserForm = ({SendDataToBackEnd}) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(inputs);
-    SendDataToBackEnd(inputs);
+    SendDataToBackEnd(inputs).then(_ => {
+      window.location.href="/";
+    })
   }
 
   return (
@@ -28,7 +30,7 @@ const UserForm = ({SendDataToBackEnd}) => {
         onChange={handleChange}
       />
       </label>
-      <label>Enter your age:
+      <label>Enter your password:
         <input
           type="text"
           name="password"
@@ -36,7 +38,7 @@ const UserForm = ({SendDataToBackEnd}) => {
           onChange={handleChange}
         />
         </label>
-        <input type="submit" />
+          <input type="submit" />
     </form>
   )
 }
