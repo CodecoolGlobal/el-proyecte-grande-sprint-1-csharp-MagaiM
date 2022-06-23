@@ -2,7 +2,7 @@ import React from 'react'
 import logo from '../Design/Imgs/KVMResized.jpg'
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = ({}) => {
   return (
         <header>
             <nav className="navbar-dark navbar navbar-expand-sm navbar-toggleable-sm bg-black border-bottom box-shadow mb-3">
@@ -27,6 +27,21 @@ const Header = () => {
                                     Deals
                                 </Link>
                             </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" type='button' to="/Register">
+                                    Register
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" type='button' to="/Logout">
+                                    Logout
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" type='button' to="/Login">
+                                    Login
+                                </Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -35,4 +50,10 @@ const Header = () => {
   )
 }
 
+
 export default Header
+                            // <li className="nav-item">
+                            //     <Link className="nav-link text-light" type='button' to="/Profile">
+                            //         <img src={profilePicture} alt="Avatar"/>
+                            //     </Link>
+                            // </li>

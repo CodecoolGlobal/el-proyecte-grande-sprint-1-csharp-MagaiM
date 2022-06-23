@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const OtherNews = () => {
     const [searchedNewsData, setSearchedNewsData] = useState([]);
-    const baseurl = 'https://localhost:7064/';
+    const baseurl = 'https://localhost:44321/';
     const search = useLocation().search;
     const searchName = new URLSearchParams(search).get('search');
 

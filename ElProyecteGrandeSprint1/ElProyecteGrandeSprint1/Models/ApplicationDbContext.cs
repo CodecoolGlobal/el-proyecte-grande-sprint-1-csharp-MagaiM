@@ -116,14 +116,15 @@ namespace ElProyecteGrandeSprint1.Models
             }
         }
 
-        private  User GetUserByName(string Username)
+        public async Task<User> GetUserByName(string Username)
         {
             return Users.ToListAsync().Result.First(x => x.UserName == Username);
         }
         public async Task<string> ValidateLogin(RegisterUser user)
         {
-            User validateUser = GetUserByName(user.UserName);
+            User validateUser = await GetUserByName(user.UserName);
             return JsonSerializer.Serialize(validateUser.Password.ValidatePassword(user.Password).ToString());
+            
         }
     }
 }
