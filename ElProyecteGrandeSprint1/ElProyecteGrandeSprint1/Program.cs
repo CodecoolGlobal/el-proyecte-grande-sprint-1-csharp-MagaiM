@@ -16,7 +16,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("https://localhost:3000");
+            policy.WithOrigins("https://localhost:3000", "https://localhost:3000/register").AllowAnyHeader().AllowAnyMethod();
         });
 });
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

@@ -1,11 +1,14 @@
 ﻿using ElProyecteGrandeSprint1.Models;
 using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
+using Microsoft.AspNetCore.Cors;
+
 using Microsoft.AspNetCore.Mvc;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ElProyecteGrandeSprint1.Controllers
 {
+    [EnableCors]
     [Route("[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -29,7 +32,13 @@ namespace ElProyecteGrandeSprint1.Controllers
             return await _context.GetUserDataFromDataBase(id);
         }
 
-        [HttpGet("/validate")]
+        [HttpGet("/name/{name}")]
+        public async Task<User> GetUserData(string name)
+        {
+            return await _context.GetUserByName(name);
+        }
+
+        [HttpPost("/validate")]
         public async Task<string> ValidateLogin(RegisterUser user)
         {
             return await _context.ValidateLogin(user);
