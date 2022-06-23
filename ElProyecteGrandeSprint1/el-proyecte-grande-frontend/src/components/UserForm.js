@@ -20,7 +20,7 @@ const UserForm = ({SendDataToBackEnd}) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>Enter your name:
+      <label>Username
       <input
         type="text"
         name="username"
@@ -28,7 +28,7 @@ const UserForm = ({SendDataToBackEnd}) => {
         onChange={handleChange}
       />
       </label>
-      <label>Enter your age:
+      <label>Password
         <input
           type="text"
           name="password"
