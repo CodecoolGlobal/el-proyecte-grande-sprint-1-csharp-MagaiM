@@ -1,51 +1,165 @@
 import React, { Component, useEffect } from 'react';
 import { useState } from "react";
-import { DropdownButton, Dropdown} from 'react-bootstrap';
+import { DropdownButton, Dropdown, Table, FormCheck} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import DealCards from '../components/DealCards';
+import DealsTable from '../components/DealsTable';
+import {sortByList} from '../utils/Sortby';
+import { filterDirectionList } from '../utils/FilterDirection';
+import { storeNames } from '../utils/StoreNames';
 
 const Deals = () => {
     const [dealsData, setDealsData] = useState([]);
-
+    const [isChecked, setIsChecked] = useState(new Array(sortByList.length+filterDirectionList.length).fill(false));
+    const [baseSortBy, setBaseSortBy] = useState("Deal Rating");
+    const [sortBy, setSortBy] = useState("Deal Rating");
+    const [basePageSize, setBasePageSize] = useState(60);
+    const [pageSize, setPageSize] = useState(60);
+    const [baseFilterDirection, setBaseFilterDirection] = useState(0);
+    const [filterDirection, setFilterDirection] = useState(0);
+    const [baseStoreId, setBaseStoreId] = useState("")
+    const [storeId, setStoreId] = useState("")
+    const [lastUrl, setLastUrl] = useState(`https://localhost:7064/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
+    const [Url, setUrl] = useState(`https://localhost:7064/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
     useEffect(() => {
-        fetchData('https://localhost:7064/Deals?sortBy=Deal Rating')
-        .then(dealsData => {
-            setDealsData(dealsData);
-        })
-    }, [])
+      fetchData(Url)
+      .then(dealsData => {
+          setDealsData(dealsData);
+      })
+  }, [])
 
-    const dealsPageContent = 
-    (<div className="deals-page-container">
-        <div className='collum'>
-        <DropdownButton id="dropdown-basic-button" title="Order by" variant='secondary' menuVariant='dark'>
-          <Dropdown.Item onClick={()=>fetchData('https://localhost:7064/Deals?sortBy=Deal Rating').then(dealsData=>{setDealsData(dealsData)})}>Deal Rating</Dropdown.Item>
-          <Dropdown.Item onClick={()=>fetchData('https://localhost:7064/Deals?sortBy=Title&desc=0').then(dealsData=>{setDealsData(dealsData)})}>Title</Dropdown.Item>
-        </DropdownButton>
 
-      </div>
-        <div style={{display: 'flex', flexDirection: 'row'}}>
-            <div className="deals-container" style={{width: '90%'}}>
-                    {dealsData.map((deals) => (
-                        <div key={deals.Title} className="col-md-auto col-md-auto bg-dark" style={{display: 'inline-block', width: '265px', height: '500px'}}>
-                            <div className="card" style={{boxShadow: '1px 2px 3px 4px rgba(112,128,144,0.4)', margin:'10px 10px 50px 10px'}}>
-                                <img className="product-image" src={String(deals.Image)} style={{width: 'auto', height: '200px'}}/>
-                                <div className="card-body inner-card" style={{backgroundColor: '#3A373F', height:'250px'}}>
-                                    <h5 className="text-center deal-title">{deals.Title}</h5>
-                                        <h6 className="card-text deal-info" >Store: {deals.StoreName}</h6>
-                                        <h6 className="card-text deal-info">Deal rating: {deals.DealRating}({Math.floor(100-(deals.SalePrice/deals.NormalPrice)*100)}%)</h6>
-                                        <p className="card-text text-center price-info"><strong>Sale price: $ {String(deals.SalePrice)}</strong></p>
-                                        <p className="card-text text-center price-info"><strong>Normal price: $ {String(deals.NormalPrice)}</strong></p>
-                                </div>
-                            </div>
-                            <br/>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-    )
+useEffect(() => {
+    fetchData(Url)
+    .then(dealsData => {
+        setDealsData(dealsData);
+    })
+}, [Url]);
 
-  return dealsPageContent;
+useEffect(() => {
+  setUrl(`https://localhost:7064/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
+}, [isChecked]);
+
+
+  const handleOnChange = (checkboxIndex, value) => {
+    const updatedCheckedState = isChecked.map((item, index) =>{
+      if(index === checkboxIndex){
+        item=true;
+      }else{
+        item=false;
+      }
+    }
+    );
+    updatedCheckedState.map((item, index)  =>{
+      if(checkboxIndex === index && item === false){
+        switch(index){
+          case 0:
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+          case 5:
+          case 6:
+          case 7:
+          case 8:
+            setSortBy(baseSortBy)
+            break;
+          case 9:
+          case 10:
+            setFilterDirection(baseFilterDirection)
+            break;
+          case 11:
+          case 12:
+          case 13:
+          case 14:
+          case 15:
+          case 16:
+          case 17:
+          case 18:
+          case 19:
+          case 20:
+          case 21:
+          case 22:
+          case 23:
+          case 24:
+          case 25:
+          case 26:
+          case 27:
+          case 28:
+          case 29:
+          case 30:
+          case 31:
+          case 32:
+            setStoreId(baseStoreId)
+            break;
+
+        }
+      }});
+    setIsChecked(updatedCheckedState);
+    
+
+    };
+  const dealsPageContent = 
+  (
+  
+  <div className="deals-page-container">
+    <div className='filter-bar'>
+      <ul className='checkbox-div'>
+        <div className='checkbox-div-title'>SortBy</div>
+
+      {sortByList.map(({setData, Title},index)=>(
+         <li className="checkbox" key={index}>
+         <input
+           type="radio"
+           name='sortBy'
+           checked={isChecked[index]}
+           onChange={e => {setSortBy(setData); handleOnChange(index)}}></input>
+         {Title}
+         </li>
+        ))}
+      </ul>
+      <ul className='checkbox-div'>
+      <div className='checkbox-div-title'>Direction</div>
+
+      {filterDirectionList.map(({setData, Title},index)=>(
+        <li className="checkbox" key={sortByList.length+index}>
+        <input
+          type="radio"
+          name='direction'
+          checked={isChecked[sortByList.length+index]}
+          onChange={e => {setFilterDirection(setData); handleOnChange(sortByList.length+index)}}></input>
+        {Title}
+        </li>
+      ))}
+      </ul>
+      <ul className='checkbox-div'>
+      <div className='checkbox-div-title'>Stores</div>
+
+      {storeNames.map(({setData, Title},index)=>(
+        <li className="checkbox" key={sortByList.length+index}>
+        <input
+          type="radio"
+          name='Stores'
+          checked={isChecked[sortByList.length+filterDirectionList.length+index]}
+          onChange={e => {setStoreId(setData); handleOnChange(sortByList.length+filterDirectionList.length+index)}}></input>
+        {Title}
+        </li>
+      ))}
+      </ul>
+      <div className='checkbox-div'></div>
+    </div>
+    <div className='divider'></div>
+    <div className='cards-div'>
+      {/* <DealCards dealsData={dealsData}></DealCards> */}
+      <DealsTable dealsData={dealsData}></DealsTable>
+    </div>
+  </div>
+  )
+
+return dealsPageContent;
 }
+
+
 
 async function fetchData(url) {
     const response = await fetch(url);

@@ -217,7 +217,12 @@ body {
 }
 
 .deal-title {
-    height: 90px
+    height: 50px;
+    /* display: -webkit-box; */
+    /* -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; */
+    /* overflow: hidden; */
+    
 }
 
 .price-info {
@@ -231,6 +236,109 @@ body {
     margin-left: auto;
 }
 
+
+
+.scrolling-wrapper {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  max-width: 100%;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+
+}
+
+::-webkit-scrollbar {
+  background: transparent; /* make scrollbar transparent */
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+
+
+}
+.deal-card {
+  margin:10px 20px 50px 40px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 1px 2px 3px 4px rgba(112,128,144,0.4);
+  overflow: hidden;
+  width: 250px;
+}
+
+.scroll-button{
+  border: 0;
+  color: rgb(0, 0, 0);
+  background-color: rgb(69, 69, 69);
+  font-size: 24px;
+  margin: 0 1% 0 1%;
+}
+
+.scrollable-deals-container{
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product-image{
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+
+}
+
+.image-div{
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+
+}
+
+.checkbox-div{
+  margin-top: 0;
+  float: left;
+  width: 83%;
+
+}
+
+.filter-bar{
+  display: inline-block;
+  background-color: rgb(69, 69, 69);
+  border-radius: 25px;
+
+}
+
+.checkbox{
+  display: inline;
+  list-style-type: none;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
+
+.divider{
+  margin: 15px auto;
+  height: 3px;
+  background: rgb(215,215,215);
+  background: radial-gradient(circle, rgba(215,215,215,1) 0%, rgba(78,78,78,1) 46%, rgb(51, 51, 51) 100%);
+  border-bottom: 1px inset rgb(69, 69, 69);
+}
+
 .deals-page-container {
-    margin: 0% 0% 0% 5%
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin: 0% 1% 0% 1%
+}
+
+.card-body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  min-height: 250px;
+}
+
+.deal-div{
+  display: inline-block;
 }
