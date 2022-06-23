@@ -9,7 +9,8 @@ const Login = ({postData, getData}) => {
 const { userHasAuthenticated } = useAppContext();
 let User;
   const SendDataToBackEnd = async (inputs) => {
-      let validateResponse = await postData("Validate", inputs)
+      let validateResponse = await postData("Validate", inputs);
+      console.log(validateResponse);
       if (validateResponse === "True") {
           User = await getData(`name/${inputs["username"]}`)
           userHasAuthenticated(true);

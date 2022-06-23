@@ -5,9 +5,9 @@ import UserForm from "../components/UserForm";
 const Register = ({postData}) => {
 
 
-  const SendDataToBackEnd = (inputs) =>{
-        console.log(postData("User", inputs))
-    }
+  const SendDataToBackEnd = (inputs) => {
+      console.log(postData("User", inputs));
+  }
 
 
   return (

@@ -19,8 +19,8 @@ const Deals = () => {
     const [filterDirection, setFilterDirection] = useState(0);
     const [baseStoreId, setBaseStoreId] = useState("")
     const [storeId, setStoreId] = useState("")
-    const [lastUrl, setLastUrl] = useState(`https://localhost:7064/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
-    const [Url, setUrl] = useState(`https://localhost:7064/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
+    const [lastUrl, setLastUrl] = useState(`https://localhost:44321/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
+    const [Url, setUrl] = useState(`https://localhost:44321/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
     useEffect(() => {
       fetchData(Url)
       .then(dealsData => {
@@ -43,7 +43,7 @@ useEffect(() => {
 }, [Url]);
 
 useEffect(() => {
-  setUrl(`https://localhost:7064/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
+    setUrl(`https://localhost:44321/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
 }, [isChecked]);
 
 
