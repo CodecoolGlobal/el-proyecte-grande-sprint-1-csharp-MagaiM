@@ -6,13 +6,17 @@ const Login = ({postData, getData}) => {
 
   let User;
   const [cookies, setCookie] = useCookies(['user_id']);
+  
 
   const SendDataToBackEnd = async (inputs) => {
       let validateResponse = await postData("Validate", inputs);
-      console.log(validateResponse);
       if (validateResponse === "True") {
-          User = await getData(`name/${inputs["username"]}`)
-          setCookie('user_id', User["id"], { path: '/' });
+        User = await getData(`name/${inputs["username"]}`)
+        setCookie('user_id', User["id"], { path: '/' });
+        localStorage.setItem('user_id', User["id"]);
+        localStorage.setItem('user_name', User["userName"]);
+        localStorage.setItem('user_reputation', User["reputation"]);
+        localStorage.setItem('user_rank', User["rank"]);
       }
     }
 
