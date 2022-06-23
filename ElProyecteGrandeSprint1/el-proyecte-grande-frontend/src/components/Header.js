@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '../Design/Imgs/KVMResized.jpg';
+import avatar from '../Design/Imgs/BaseProfilepicture.jpg';
 import { Link } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 
+
 const Header = ({}) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user_id']);
-    console.log(cookies);
+    const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+    const [userName, setUserName] = useState(localStorage.getItem('user_name'));
+
+    useEffect(() => {
+        if (cookies.user_id !== undefined && userId !== null) {
+            if (cookies.user_id !== userId) {
+                OnLogout();
+            }
+        }
+    }, [cookies, userId])
+
+    const OnLogout = () => {
+        removeCookie("user_id");
+        localStorage.clear();
+    }
 
     return (
         <header>
@@ -31,24 +47,34 @@ const Header = ({}) => {
                                     Deals
                                 </Link>
                             </li>
+                            { cookies.user_id ? 
+                            (<>
+                                <li className="nav-item">
+                                    <span className="nav-link text-light" type='button' onClick={OnLogout}>Logout</span>
+                                </li>
+                            </>
+                            ) :
+                            (<>
+                            <li className="nav-item">
+                                <Link className="nav-link text-light" type='button' to="/Login">
+                                    Login
+                                </Link>
+                            </li>
                             <li className="nav-item">
                                 <Link className="nav-link text-light" type='button' to="/Register">
                                     Register
                                 </Link>
                             </li>
-                            { cookies.user_id ? 
-                            (<li className="nav-item">
-                                <button className="nav-link text-light" type='button' onClick={() => {removeCookie("user_id")}}>
-                                    Logout
-                                </button>
-                            </li>) :
-                            (<li className="nav-item">
-                                <Link className="nav-link text-light" type='button' to="/Login">
-                                    Login
-                                </Link>
-                            </li>)
+                            </>)
                             }
                         </ul>
+                        { cookies.user_id ? 
+                        (<div className="nav-item user-card">
+                            <img className='avatar' src={avatar} alt="Avatar"></img>
+                            <span>{userName}</span>
+                        </div>
+                        ):
+                        (<></>)}
                     </div>
                 </div>
             </nav>
@@ -57,8 +83,3 @@ const Header = ({}) => {
 }
 
 export default Header
-                            // <li className="nav-item">
-                            //     <Link className="nav-link text-light" type='button' to="/Profile">
-                            //         <img src={profilePicture} alt="Avatar"/>
-                            //     </Link>
-                            // </li>
