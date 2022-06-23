@@ -23,14 +23,6 @@ const Deals = () => {
     const [storeId, setStoreId] = useState("")
     const [Url, setUrl] = useState(`https://localhost:44321/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
 
-
-    useEffect(() => {
-      fetchData(Url)
-      .then(dealsData => {
-          setDealsData(dealsData);
-      })
-  }, [])
-
   useEffect(() => {
     fetchData(Url)
     .then(dealsData => {

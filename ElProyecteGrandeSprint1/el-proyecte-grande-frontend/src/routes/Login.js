@@ -17,11 +17,13 @@ const Login = ({postData, getData}) => {
         localStorage.setItem('user_name', User["userName"]);
         localStorage.setItem('user_reputation', User["reputation"]);
         localStorage.setItem('user_rank', User["rank"]);
+      }else{
+          return validateResponse;
       }
     }
 
   return (
-    <UserForm postData={postData} SendDataToBackEnd={SendDataToBackEnd}></UserForm>
+    <UserForm postData={postData} SendDataToBackEnd={SendDataToBackEnd} Page={"Login"}></UserForm>
   )
 }
 
