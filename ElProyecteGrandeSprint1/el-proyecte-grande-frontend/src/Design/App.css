@@ -297,8 +297,8 @@ body {
 .checkbox-div{
   margin-top: 0;
   float: left;
-  width: 83%;
-
+  width: 81%;
+  color: #c9b18e;
 }
 
 .filter-bar{
@@ -310,11 +310,19 @@ body {
 
 .checkbox{
   display: inline;
+  border: #c9b18e;
+  color: #c9b18e;
   list-style-type: none;
   padding-right: 10px;
   padding-top: 10px;
 }
 
+
+
+.inpu{
+  accent-color: #000000;
+  border: #000000;
+}
 
 .divider{
   margin: 15px auto;
