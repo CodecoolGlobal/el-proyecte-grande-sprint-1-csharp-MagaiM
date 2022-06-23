@@ -1,7 +1,4 @@
 import React from 'react';
-import { useState, useEffect } from "react";
-import { useRef } from 'react';
-import PropTypes from 'prop-types';
 
 const DealsTable = ({dealsData}) => {
 
@@ -16,9 +13,9 @@ const DealsTable = ({dealsData}) => {
                                 <div className="card-body inner-card" style={{backgroundColor: '#3A373F', height:'auto'}}>
                                     <h6 className=" deal-title">{deals.Title}</h6>
                                     <p className="card-text">Store: {deals.StoreName}</p>
-                                        <p className="card-text deal-info">Deal rating: {deals.DealRating}({Math.floor(100-(deals.SalePrice/deals.NormalPrice)*100)}%)</p>
-                                        <p className="card-text price-info">Sale price: ${String(deals.SalePrice)}</p>
-                                        <p className="card-text price-info">Normal price: ${String(deals.NormalPrice)}</p>
+                                    <p className="card-text deal-info">Deal rating: {deals.DealRating}({Math.floor(100-(deals.SalePrice/deals.NormalPrice)*100)}%)</p>
+                                    <p className="card-text price-info">Sale price: ${String(deals.SalePrice)}</p>
+                                    <p className="card-text price-info">Normal price: ${String(deals.NormalPrice)}</p>
                                 </div>
                             </div>
                             <br/>
