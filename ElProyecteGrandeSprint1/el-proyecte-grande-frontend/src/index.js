@@ -3,6 +3,7 @@ import './Design/index.css';
 import './Design/App.css';
 import './Design/Imgs/KVMResized.jpg';
 import './Design/Imgs/KVM.jpg';
+import './Design/Imgs/BaseProfilepicture.jpg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -15,32 +16,32 @@ import OtherNews from './routes/OtherNews';
 import Login from "./routes/Login";
 import Register from "./routes/Register";
 import React from 'react';
-
+import { CookiesProvider } from 'react-cookie';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
     <React.StrictMode>
-        <BrowserRouter>
-
-            <Routes>
-                <Route path="/" element={<App/>}>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/news" element={<News/>}>
-                        <Route path='' element={<RecentNews/>}/>
-                        <Route path='/news/other-news' element={<OtherNews/>}/>
+        <CookiesProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<App/>}>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/news" element={<News/>}>
+                            <Route path='' element={<RecentNews/>}/>
+                            <Route path='/news/other-news' element={<OtherNews/>}/>
+                        </Route>
+                        <Route path="deals" element={<Deals/>}/>
+                        <Route path="/login" element={<Login postData={postData} getData={getData} />}/>
+                        <Route path="/register" element={<Register postData={postData}/>}/>
+                        <Route path="*" element={
+                            <main style={{padding: "1rem"}}>
+                                <p>There's nothing here!</p>
+                            </main>}/>
                     </Route>
-                    <Route path="deals" element={<Deals/>}/>
-                    <Route path="/login" element={<Login postData={postData} getData={getData}/>}/>
-                    <Route path="/register" element={<Register postData={postData}/>}/>
-                    <Route path="*" element={
-                        <main style={{padding: "1rem"}}>
-                            <p>There's nothing here!</p>
-                        </main>}/>
-                </Route>
-            </Routes>
-
-        </BrowserRouter>
+                </Routes>
+            </BrowserRouter>
+        </CookiesProvider>
     </React.StrictMode>
 );
 
@@ -49,7 +50,6 @@ async function getData(url) {
     let response = await fetch(`https://localhost:44321/${url}`);
     return response.json();
 }
-
 
 async function postData(url, formData) {
 
