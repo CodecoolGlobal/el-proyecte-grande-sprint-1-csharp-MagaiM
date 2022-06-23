@@ -7,7 +7,7 @@ const Deals = () => {
     const [dealsData, setDealsData] = useState([]);
 
     useEffect(() => {
-        fetchData('https://localhost:7064/Deals?sortBy=Deal Rating')
+        fetchData('https://localhost:44321/Deals?sortBy=Deal Rating')
         .then(dealsData => {
             setDealsData(dealsData);
         })

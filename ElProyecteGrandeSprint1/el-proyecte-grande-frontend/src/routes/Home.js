@@ -9,7 +9,7 @@ const Home = ()  => {
     let timeout = '';
 
     useEffect(() => {
-        fetchData('https://localhost:7064/Home')
+        fetchData('https://localhost:44321/Home')
             .then(data => {
                 data = data.slice(0, 15);
                 setHomeData(data);
@@ -19,7 +19,7 @@ const Home = ()  => {
 
 
     useEffect(() => {
-        fetchData('https://localhost:7064/Deals?sortBy=Deal Rating&pageSize=20')
+        fetchData('https://localhost:44321/Deals?sortBy=Deal Rating&pageSize=20')
             .then(data => {
             data = data.slice(0, 15);
             setSlideData(data);

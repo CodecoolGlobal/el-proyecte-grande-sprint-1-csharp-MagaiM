@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 const RecentNews = () => {
 
     const [newsData, setNewsData] = useState([]);
-    const baseurl = 'https://localhost:7064/';
+    const baseurl = 'https://localhost:44321/';
 
     useEffect(() => {
         fetchData(`${baseurl}News/`)
