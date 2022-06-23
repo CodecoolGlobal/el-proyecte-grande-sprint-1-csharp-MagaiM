@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import './Design/index.css';
 import './Design/App.css';
+import './Design/FormCSS.css';
 import './Design/Imgs/KVMResized.jpg';
 import './Design/Imgs/KVM.jpg';
 import './Design/Imgs/BaseProfilepicture.jpg';
