@@ -122,9 +122,16 @@ namespace ElProyecteGrandeSprint1.Models
         }
         public async Task<string> ValidateLogin(RegisterUser user)
         {
-            User validateUser = await GetUserByName(user.UserName);
-            return JsonSerializer.Serialize(validateUser.Password.ValidatePassword(user.Password).ToString());
-            
+            try
+            {
+                User validateUser = await GetUserByName(user.UserName);
+                return JsonSerializer.Serialize(validateUser.Password.ValidatePassword(user.Password).ToString());
+            }
+            catch (Exception e)
+            {
+                return JsonSerializer.Serialize("false");
+            }
+
         }
     }
 }
