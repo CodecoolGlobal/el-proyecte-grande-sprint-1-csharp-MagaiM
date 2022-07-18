@@ -18,10 +18,9 @@ const UserForm = ({SendDataToBackEnd, Page}) => {
         console.log(inputs);
         SendDataToBackEnd(inputs).then(data => {
             console.log(data);
-
             if (data === "false"){
                 alert("Your username or password is incorrect")
-            }else if(data === "true" || data === "accepted"){
+            }else if(data === "True" || data === "Registered Successfully"){
                 window.location.href = "/";
             }
             else{
@@ -42,6 +41,7 @@ const UserForm = ({SendDataToBackEnd, Page}) => {
                     name="username"
                     value={inputs.username || ""}
                     onChange={handleChange}
+                    required
                 />
             </label>
             <br></br>
@@ -53,6 +53,7 @@ const UserForm = ({SendDataToBackEnd, Page}) => {
                     name="password"
                     value={inputs.password || ""}
                     onChange={handleChange}
+                    required
                 />
                 <br></br>
             </label>
