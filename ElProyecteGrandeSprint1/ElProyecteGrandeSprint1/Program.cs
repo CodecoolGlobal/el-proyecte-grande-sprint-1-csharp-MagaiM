@@ -2,7 +2,10 @@ using System.Text.Json.Serialization;
 using ElProyecteGrandeSprint1;
 using ElProyecteGrandeSprint1.Controllers;
 using ElProyecteGrandeSprint1.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using ElProyecteGrandeSprint1.Auth;
+using Newtonsoft.Json;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -22,7 +25,15 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddNewtonsoftJson(
+    options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+
+    }); ;
+
+builder.Services.AddAuthentication("BasicAuthentication")
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthentiactionHandler>("BasicAuthentication", null);
 
 //builder.Services.AddControllers().AddJsonOptions(x =>
 //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
@@ -47,6 +58,7 @@ app.UseRouting();
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
