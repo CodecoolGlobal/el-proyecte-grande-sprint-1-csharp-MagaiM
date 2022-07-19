@@ -11,13 +11,14 @@ namespace ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities
         public long ID { get; set; }
 
         public string UserName { get; set; }
+        public string Email { get; set; }
 
         [Newtonsoft.Json.JsonIgnore]
         [JsonIgnore]
         [IgnoreDataMember]
         public Password Password { get; set; }
 
-        public Rank Rank { get; set; }
+        public HashSet<UserRole> Roles { get; set; }
 
         public long Reputation { get; set; }
 
