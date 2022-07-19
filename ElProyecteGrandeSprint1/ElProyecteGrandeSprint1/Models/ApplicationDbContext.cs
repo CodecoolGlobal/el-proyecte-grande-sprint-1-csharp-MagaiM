@@ -207,6 +207,8 @@ namespace ElProyecteGrandeSprint1.Models
                 Issuer = "Who issued the token",
                 Claims = new Dictionary<string, object>
                 {
+                    ["userName"] = userName,
+                    ["userId"] = userId,
                     ["email"] = email, 
                 },
                 IssuedAt = now,
