@@ -1,18 +1,32 @@
-﻿using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
+﻿using System.IdentityModel.Tokens.Jwt;
+using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
 using ElProyecteGrandeSprint1.Models.Enums;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+
 namespace ElProyecteGrandeSprint1.Models
 {
     public class ApplicationDbContext : DbContext
     {
+        private byte[] secret = Encoding.ASCII.GetBytes("MY_SECRET_KEY_dasmd.-dDUNJUOFAOD");
+
+
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> Roles { get; set; }
+        public DbSet<UserToken> JWTTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,7 +52,8 @@ namespace ElProyecteGrandeSprint1.Models
                 {
                     UserName = user.UserName,
                     Password = new Password() { UserPassword = user.Password },
-                    Rank = Rank.Noob,
+                    Email = user.Email,
+                    Roles = Roles.Where(r => r.Name == "User").ToHashSet(),
                     Reputation = 0
                 };
                 Users.Add(registerUser);
@@ -118,20 +133,105 @@ namespace ElProyecteGrandeSprint1.Models
 
         public async Task<User> GetUserByName(string Username)
         {
-            return Users.ToListAsync().Result.First(x => x.UserName == Username);
+            return Users.Include(u => u.Roles).ToListAsync().Result.First(x => x.UserName == Username);
         }
-        public async Task<string> ValidateLogin(RegisterUser user)
+
+        public async Task<string> Login(LoginUser user)
+        {
+            try
+            {
+                if(await ValidateLogin(user))
+                {
+                    var searchedUser = await GetUserByName(user.UserName);
+                    var rolesList = searchedUser.Roles.Select(role => role.Name).ToList();
+                    return JsonSerializer.Serialize(new ValidatedUser(){
+                        UserName = searchedUser.UserName,
+                        Email = searchedUser.Email,
+                        Roles = rolesList,
+                        Reputation = searchedUser.Reputation,
+                        AccessToken = await JWTTokenGenerator(searchedUser.Email, searchedUser.UserName, searchedUser.ID)
+                    });
+                }
+                return JsonSerializer.Serialize("false");
+            }
+            catch (Exception)
+            {
+                return JsonSerializer.Serialize("false");
+            }
+        }
+
+        public async Task<bool> ValidateLogin(LoginUser user)
         {
             try
             {
                 User validateUser = await GetUserByName(user.UserName);
-                return JsonSerializer.Serialize(validateUser.Password.ValidatePassword(user.Password).ToString());
+                if (!validateUser.Password.ValidatePassword(user.Password)) return false;
+                    return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return JsonSerializer.Serialize("false");
+                return false;
             }
+        }
 
+        // private string makeJWTToken()
+        // {
+        //     JWTHeader header = new JWTHeader();
+        //     JWTPayload payload = new JWTPayload();
+        //     string encodedHeader = Base64UrlTextEncoder.Encode(SerializeObject(header));
+        //     string encodedPayload = Base64UrlTextEncoder.Encode(SerializeObject(payload));
+        //     string data = encodedHeader + '.' + encodedPayload;
+        //     string hashedData = Hash(data, secret);
+        //     string signature = Base64UrlTextEncoder.Encode(hashedData);
+        //     string JWTToken = encodedHeader + '.' + encodedPayload + "." + signature;
+        //     return JWTToken;
+        // }
+
+        // private byte[] ToByteArray(object source)
+        // {
+        //     var formatter = new BinaryFormatter();
+        //     using (var stream = new MemoryStream())
+        //     {
+        //         formatter.Serialize(stream, source);                
+        //         return stream.ToArray();
+        //     }
+        // }
+        // private byte[] SerializeObject(object value) => Encoding.UTF8.GetBytes(JsonSerializer.Serialize((value)));
+
+
+        private async Task<string> JWTTokenGenerator(string email, string userName, long userId){
+            var now = DateTime.UtcNow;
+            var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("sub", "customer") }),
+                Issuer = "Who issued the token",
+                Claims = new Dictionary<string, object>
+                {
+                    ["email"] = email, 
+                },
+                IssuedAt = now,
+                NotBefore = now,
+                Expires = now + TimeSpan.FromDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var serializedToken = tokenHandler.WriteToken(token);
+
+            await SaveTokenToDatabase(serializedToken);
+            return serializedToken;
+        }
+
+        private async Task SaveTokenToDatabase(string serializedToken)
+        {
+            JWTTokens.Add(
+                new UserToken
+                {
+                    Token = serializedToken,
+                    Date = DateTime.Now
+                }
+            );
+            await SaveChangesAsync();
         }
     }
 }
