@@ -38,13 +38,13 @@ namespace ElProyecteGrandeSprint1.Controllers
             return await _context.GetUserByName(name);
         }
 
-        [HttpPost("/validate")]
-        public async Task<string> ValidateLogin(RegisterUser user)
+        [HttpPost("/login")]
+        public async Task<string> Login(LoginUser user)
         {
-            return await _context.ValidateLogin(user);
+            return await _context.Login(user);
         }
 
-        [HttpPost]
+        [HttpPost("/register")]
         public async Task<string> Register([FromBody] RegisterUser user)
         {
             return await _context.RegisterUser(user);
