@@ -12,6 +12,7 @@ using System.Text;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using ElProyecteGrandeSprint1.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrandeSprint1.Models
@@ -19,10 +20,11 @@ namespace ElProyecteGrandeSprint1.Models
     public class ApplicationDbContext : DbContext
     {
         private byte[] secret = Encoding.ASCII.GetBytes("MY_SECRET_KEY_dasmd.-dDUNJUOFAOD");
-
+        private readonly EmailSender _emailSender = new EmailSender();
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
+
         }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> Roles { get; set; }
@@ -58,6 +60,8 @@ namespace ElProyecteGrandeSprint1.Models
                 };
                 Users.Add(registerUser);
                 await SaveChangesAsync();
+
+                _emailSender.SendConfirmationEmail(user.UserName, user.Email, "registration");
                 return JsonSerializer.Serialize("Registered Successfully");
             }
             return JsonSerializer.Serialize(ValidatePassword(user));
@@ -136,6 +140,11 @@ namespace ElProyecteGrandeSprint1.Models
             return Users.Include(u => u.Roles).ToListAsync().Result.First(x => x.UserName == Username);
         }
 
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return Users.Include(u => u.Roles).ToListAsync().Result.First(x => x.Email == email);
+        }
         public async Task<string> Login(LoginUser user)
         {
             try
@@ -157,6 +166,25 @@ namespace ElProyecteGrandeSprint1.Models
             catch (Exception)
             {
                 return JsonSerializer.Serialize("false");
+            }
+        }
+
+        public async Task<bool> ValidateEmailForPassword(string email)
+        {
+            try
+            {
+                foreach (var dbUser in Users)
+                {
+                    if (dbUser.Email == email)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -234,6 +262,12 @@ namespace ElProyecteGrandeSprint1.Models
                 }
             );
             await SaveChangesAsync();
+        }
+
+        public void SendForgotPasswordEmail(string email)
+        {
+            User user = GetUserByEmail(email).Result;
+            _emailSender.SendConfirmationEmail(user.UserName, email, "forgor");
         }
     }
 }
