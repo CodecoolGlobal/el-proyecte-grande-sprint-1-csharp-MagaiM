@@ -10,6 +10,7 @@ import Profile from "./routes/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import ForgotPassword from "./routes/ForgotPassword";
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -99,6 +100,7 @@ const App = () => {
           <Route path="/user" element={<BoardUser/>} />
           <Route path="/mod" element={<BoardModerator/>} />
           <Route path="/admin" element={<BoardAdmin/>} />
+          <Route path="/forgotPassword" element={<ForgotPassword/>} />
         </Routes>
       </div>
     </div>
