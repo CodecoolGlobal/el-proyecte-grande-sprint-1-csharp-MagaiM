@@ -81,7 +81,7 @@ const Register = () => {
           if (response.data === "Registered Successfully") {
             setMessage(response.data.message);
             setSuccessful(true);
-            navigate("/");
+            navigate("/login");
             window.location.reload();
           }
           else{
