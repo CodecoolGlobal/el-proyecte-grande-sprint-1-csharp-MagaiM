@@ -40,20 +40,28 @@ const Login = () => {
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.login(username, password).then(
-        () => {
-          navigate("/");
-          window.location.reload();
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          setLoading(false);
-          setMessage(resMessage);
-        }
+        (data) => {
+          console.log(data);
+          if (data !== 'false') {
+            navigate("/");
+            window.location.reload();
+          }
+          else{
+            setLoading(false);
+            const resMessage = 'Invalid User name or Password!'
+            setMessage(resMessage);
+          }
+        }//,
+        // (error) => {
+        //   const resMessage =
+        //   (error.response &&
+        //     error.response.data &&
+        //     error.response.data.message) ||
+        //     error.message ||
+        //     error.toString();
+        //   setLoading(false);
+        //   setMessage(resMessage);
+        // }
       );
     } else {
       setLoading(false);
@@ -68,12 +76,13 @@ const Login = () => {
           alt="profile-img"
           className="profile-img-card"
         />
-        <Form onSubmit={handleLogin} ref={form}>
+        <Form className='form-style-1' onSubmit={handleLogin} ref={form}>
+          <h3 style={{ textAlignLast: "center", padding: "1rem" }} >Login</h3>
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <Input
               type="text"
-              className="form-control"
+              className="form-control form-field-input-box btn-outline-light"
               name="username"
               value={username}
               onChange={onChangeUsername}
@@ -84,7 +93,7 @@ const Login = () => {
             <label htmlFor="password">Password</label>
             <Input
               type="password"
-              className="form-control"
+              className="form-control form-field-input-box btn-outline-light"
               name="password"
               value={password}
               onChange={onChangePassword}
@@ -92,7 +101,7 @@ const Login = () => {
             />
           </div>
           <div className="form-group">
-            <button className="btn btn-primary btn-block" disabled={loading}>
+            <button className="btn btn-primary btn-block btn-dark login-btn" disabled={loading}>
               {loading && (
                 <span className="spinner-border spinner-border-sm"></span>
               )}
