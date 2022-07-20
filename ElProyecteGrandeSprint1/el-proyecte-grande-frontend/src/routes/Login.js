@@ -41,7 +41,6 @@ const Login = () => {
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.login(username, password).then(
         (data) => {
-          console.log(data);
           if (data !== 'false') {
             navigate("/");
             window.location.reload();
