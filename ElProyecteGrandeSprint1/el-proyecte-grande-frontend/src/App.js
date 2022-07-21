@@ -9,7 +9,7 @@ import Home from "./routes/Home";
 import Profile from "./routes/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
-import BoardAdmin from "./components/BoardAdmin";
+import BoardAdmin from "./routes/BoardAdmin";
 import ForgotPassword from "./routes/ForgotPassword";
 import Header from './components/Header';
 import News from './routes/News';
@@ -22,6 +22,8 @@ const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
+
+
   useEffect(() => {
     if (currentUser) {
       setShowModeratorBoard(currentUser.Roles.includes("Moderator"));
