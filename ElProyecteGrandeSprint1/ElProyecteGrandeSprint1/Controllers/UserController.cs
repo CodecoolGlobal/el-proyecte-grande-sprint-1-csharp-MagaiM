@@ -5,6 +5,9 @@ using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
 using Microsoft.AspNetCore.Cors;
 
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ElProyecteGrandeSprint1.Controllers
@@ -76,6 +79,10 @@ namespace ElProyecteGrandeSprint1.Controllers
         public Task<string> ChangePassword(Guid emailId, [FromBody] RegisterUser user)
         {
             var email =_context.getEmailFromGuid(emailId);
+            if (email == null)
+            {
+                return Task.FromResult("No");
+            }
             long userId = _context.GetUserByEmail(email.Email).Result.ID;
             var result = _context.ChangeUserProfile(userId, user, email.Guid);
             if (result.Result == "\"Your profile was Changed successfully\"")
