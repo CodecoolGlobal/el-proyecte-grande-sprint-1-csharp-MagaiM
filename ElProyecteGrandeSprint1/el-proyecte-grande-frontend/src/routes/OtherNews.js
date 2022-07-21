@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import OtherNewsCard from '../components/OtherNewsCard'
 import { Link, useLocation } from "react-router-dom";
+import PropTypes from 'prop-types';
 
-const OtherNews = () => {
+const OtherNews = ({fetchData}) => {
     const [searchedNewsData, setSearchedNewsData] = useState([]);
     const baseurl = 'https://localhost:44321/';
     const search = useLocation().search;
@@ -37,15 +38,10 @@ const OtherNews = () => {
                 </div>
             )})}
         </div>)
-}
+};
 
-async function fetchData(url) {
-    const response = await fetch(url);
-    if (response.ok){
-        const data = await response.json();
-        return data;
-    }
-    throw response;
-}
+OtherNews.propTypes ={
+    fetchData: PropTypes.func
+};
 
-export default OtherNews
+export default OtherNews;

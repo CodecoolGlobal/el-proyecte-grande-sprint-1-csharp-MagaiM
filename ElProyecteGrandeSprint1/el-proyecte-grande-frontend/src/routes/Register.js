@@ -4,6 +4,7 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
 import AuthService from "../services/auth.service";
+import { useNavigate } from 'react-router-dom';
 
 const required = (value) => {
   if (!value) {
@@ -46,6 +47,7 @@ const vpassword = (value) => {
 };
 
 const Register = () => {
+  let navigate = useNavigate();
   const form = useRef();
   const checkBtn = useRef();
   const [username, setUsername] = useState("");
@@ -76,19 +78,27 @@ const Register = () => {
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.register(username, email, password).then(
         (response) => {
-          setMessage(response.data.message);
-          setSuccessful(true);
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          setMessage(resMessage);
-          setSuccessful(false);
-        }
+          if (response.data === "Registered Successfully") {
+            setMessage(response.data.message);
+            setSuccessful(true);
+            navigate("/login");
+            window.location.reload();
+          }
+          else{
+            const resMessage = response.data;
+            setMessage(resMessage);
+          }
+        }//,
+        // (error) => {
+        //   const resMessage =
+        //     (error.response &&
+        //       error.response.data &&
+        //       error.response.data.message) ||
+        //     error.message ||
+        //     error.toString();
+        //   setMessage(resMessage);
+        //   setSuccessful(false);
+        // }
       );
     }
   };
@@ -101,6 +111,7 @@ const Register = () => {
           alt="profile-img"
           className="profile-img-card"
         />
+        <h3 style={{ textAlignLast: "center", padding: "1rem" }} >Register</h3>
         <Form onSubmit={handleRegister} ref={form}>
           {!successful && (
             <div>
@@ -108,7 +119,7 @@ const Register = () => {
                 <label htmlFor="username">Username</label>
                 <Input
                   type="text"
-                  className="form-control"
+                  className="form-control search-by-game-news-button btn-outline-light"
                   name="username"
                   value={username}
                   onChange={onChangeUsername}
@@ -119,7 +130,7 @@ const Register = () => {
                 <label htmlFor="email">Email</label>
                 <Input
                   type="text"
-                  className="form-control"
+                  className="form-control search-by-game-news-button btn-outline-light"
                   name="email"
                   value={email}
                   onChange={onChangeEmail}
@@ -130,7 +141,7 @@ const Register = () => {
                 <label htmlFor="password">Password</label>
                 <Input
                   type="password"
-                  className="form-control"
+                  className="form-control search-by-game-news-button btn-outline-light"
                   name="password"
                   value={password}
                   onChange={onChangePassword}
@@ -138,7 +149,7 @@ const Register = () => {
                 />
               </div>
               <div className="form-group">
-                <button className="btn btn-primary btn-block">Sign Up</button>
+                <button className="btn btn-primary btn-block btn-dark login-btn">Sign Up</button>
               </div>
             </div>
           )}

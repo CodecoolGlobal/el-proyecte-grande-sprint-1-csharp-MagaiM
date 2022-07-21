@@ -8,9 +8,9 @@ import {sortByList} from '../utils/Sortby';
 import { filterDirectionList } from '../utils/FilterDirection';
 import { storeNames } from '../utils/StoreNames';
 import Checkboxes from '../components/Checkboxes';
+import PropTypes from 'prop-types';
 
-
-const Deals = () => {
+const Deals = ({fetchData}) => {
     const [dealsData, setDealsData] = useState([]);
     const [isChecked, setIsChecked] = useState(new Array(sortByList.length+filterDirectionList.length+storeNames.length).fill(false));
     const [baseSortBy, setBaseSortBy] = useState("Deal Rating");
@@ -82,14 +82,8 @@ const Deals = () => {
 return dealsPageContent;
 }
 
-
-async function fetchData(url) {
-    const response = await fetch(url);
-    if (response.ok){
-        const data = await response.json();
-        return data;
-    }
-    throw response;
-}
+Deals.propTypes ={
+  fetchData: PropTypes.func
+};
 
 export default Deals

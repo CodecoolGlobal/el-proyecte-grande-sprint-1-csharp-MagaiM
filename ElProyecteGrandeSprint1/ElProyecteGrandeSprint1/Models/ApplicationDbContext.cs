@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
 using ElProyecteGrandeSprint1.Models.Enums;
@@ -48,6 +49,7 @@ namespace ElProyecteGrandeSprint1.Models
             {
                 return JsonSerializer.Serialize("This Username is already taken");
             }
+            if(!ValidateEmail(user.Email)) return JsonSerializer.Serialize("This Email is already in use!");
             if (ValidatePassword(user) == "accepted")
             {
                 User registerUser = new User()
@@ -65,6 +67,11 @@ namespace ElProyecteGrandeSprint1.Models
                 return JsonSerializer.Serialize("Registered Successfully");
             }
             return JsonSerializer.Serialize(ValidatePassword(user));
+        }
+
+        private bool ValidateEmail(string userEmail)
+        {
+            return Enumerable.All(Users, dbUser => dbUser.Email != userEmail);
         }
 
 
