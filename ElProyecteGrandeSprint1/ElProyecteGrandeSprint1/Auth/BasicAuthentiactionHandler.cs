@@ -30,7 +30,7 @@ namespace ElProyecteGrandeSprint1.Auth
             if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null || endpoint?.Metadata?.GetMetadata<AuthorizeWithTokenAttribute>() != null)
                 return AuthenticateResult.NoResult();
 
-            if (!Request.Headers.ContainsKey("Authorization"))
+            if (!Request.Headers.ContainsKey("authorization"))
                 return AuthenticateResult.Fail("Missing Authorization Header");
 
             // implement your authentication logic here

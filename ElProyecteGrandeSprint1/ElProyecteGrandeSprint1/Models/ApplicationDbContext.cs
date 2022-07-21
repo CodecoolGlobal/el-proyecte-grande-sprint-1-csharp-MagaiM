@@ -5,7 +5,6 @@ using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
 using ElProyecteGrandeSprint1.Models.Enums;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -13,6 +12,7 @@ using System.Text;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using System.Text.Json;
 using ElProyecteGrandeSprint1.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +30,8 @@ namespace ElProyecteGrandeSprint1.Models
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> Roles { get; set; }
         public DbSet<UserToken> JWTTokens { get; set; }
+
+        public DbSet<Article> Articles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -271,6 +273,15 @@ namespace ElProyecteGrandeSprint1.Models
             await SaveChangesAsync();
         }
 
+
+        //public Task<String> GetArticles()
+        //{
+        //    return Task.FromResult(JsonSerializer.Serialize(Articles));
+        //}
+
+        public async Task<List<Article>> GetArticles() => await Articles.ToListAsync();
+        
+        
         public void SendForgotPasswordEmail(string email)
         {
             User user = GetUserByEmail(email).Result;

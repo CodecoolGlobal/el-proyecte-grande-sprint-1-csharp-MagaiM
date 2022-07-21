@@ -42,6 +42,23 @@ namespace ElProyecteGrandeSprint1
             {
                 context.Users.Add(s);
             }
+            LoremIpsum loremIpsum = new LoremIpsum();
+
+
+            if (context.Articles.Any()) return;   // DB has been seeded
+            var article = new Article[]
+            {
+                new Article{Title = "This is a text", Description = "Auto Generated Article", Author = users[0], Theme = Theme.AMA, ArticleText = loremIpsum.loremIpsum},
+                new Article{Title = "This is a text", Description = "Auto Generated Article", Author = users[0], Theme = Theme.Blog, ArticleText = loremIpsum.loremIpsum},
+                new Article{Title = "This is a text", Description = "Auto Generated Article", Author = users[0], Theme = Theme.Game, ArticleText = loremIpsum.loremIpsum},
+                new Article{Title = "This is a text", Description = "Auto Generated Article", Author = users[0], Theme = Theme.Worldnews, ArticleText = loremIpsum.loremIpsum},
+            };
+
+            foreach (Article s in article)
+            {
+                context.Articles.Add(s);
+            }
+
             context.SaveChanges();
 
 
