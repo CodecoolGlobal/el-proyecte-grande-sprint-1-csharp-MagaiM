@@ -1,7 +1,8 @@
 import RecentNewsCard from '../components/RecentNewsCard'
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
-const RecentNews = () => {
+const RecentNews = ({fetchData}) => {
 
     const [newsData, setNewsData] = useState([]);
     const baseurl = 'https://localhost:44321/';
@@ -35,13 +36,8 @@ const RecentNews = () => {
     )
 }
 
-async function fetchData(url) {
-    const response = await fetch(url);
-    if (response.ok){
-        const data = await response.json();
-        return data;
-    }
-    throw response;
-}
+RecentNews.propTypes ={
+    fetchData: PropTypes.func
+};
 
 export default RecentNews

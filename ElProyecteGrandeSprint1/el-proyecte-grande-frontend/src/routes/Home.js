@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {wait} from "@testing-library/user-event/dist/utils";
+import PropTypes from 'prop-types';
 
-const Home = ()  => {
+const Home = ({fetchData})  => {
     const [homeData, setHomeData] = useState([]);
     const [slideData, setSlideData] = useState([]);
     
@@ -25,15 +26,6 @@ const Home = ()  => {
             setSlideData(data);
         })
     }, [])
-
-    async function fetchData(url) {
-        const response = await fetch(url);
-        if (response.ok){
-            const data = await response.json();
-            return data;
-        }
-        throw response;
-    }
     
     function showSlides() {
          try {
@@ -74,7 +66,7 @@ const Home = ()  => {
                     {homeData.map((data, index) => (
                         <div key={index} className="col-md-auto col-md-auto bg-dark"
                              style={{display: 'inline-block', width: '300px', height: '475px', marginTop: '10px', marginBottom: '10px'}}>
-                            <div className="card bg-dark" style={{boxShadow: '1px 2px 3px 4px rgba(112,128,144,0.4)', margin:'10px 15px 20px 20px',height: '465px'}}>
+                            <div className="card" style={{boxShadow: '1px 2px 3px 4px rgba(112,128,144,0.4)', margin:'10px 15px 20px 20px',height: '465px'}}>
                                 <a href={data.GameUrl}><img src={data.Thumbnail} alt={"Thumbnail"}
                                                             style={{width: '100%'}}/></a>
                                 <div className="card-body inner-card" style={{backgroundColor: '#3A373F'}}>
@@ -92,5 +84,9 @@ const Home = ()  => {
             </div>
     );
 }
+
+Home.propTypes ={
+    fetchData: PropTypes.func
+  };
 
 export default Home;

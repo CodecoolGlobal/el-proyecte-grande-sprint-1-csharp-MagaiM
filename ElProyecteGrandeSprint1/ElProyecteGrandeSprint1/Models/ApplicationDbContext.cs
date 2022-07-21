@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
 using ElProyecteGrandeSprint1.Models.Enums;
@@ -12,6 +13,7 @@ using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text.Json;
+using ElProyecteGrandeSprint1.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrandeSprint1.Models
@@ -19,10 +21,11 @@ namespace ElProyecteGrandeSprint1.Models
     public class ApplicationDbContext : DbContext
     {
         private byte[] secret = Encoding.ASCII.GetBytes("MY_SECRET_KEY_dasmd.-dDUNJUOFAOD");
-
+        private readonly EmailSender _emailSender = new EmailSender();
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
+
         }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> Roles { get; set; }
@@ -48,6 +51,7 @@ namespace ElProyecteGrandeSprint1.Models
             {
                 return JsonSerializer.Serialize("This Username is already taken");
             }
+            if(!ValidateEmail(user.Email)) return JsonSerializer.Serialize("This Email is already in use!");
             if (ValidatePassword(user) == "accepted")
             {
                 User registerUser = new User()
@@ -60,9 +64,16 @@ namespace ElProyecteGrandeSprint1.Models
                 };
                 Users.Add(registerUser);
                 await SaveChangesAsync();
+
+                _emailSender.SendConfirmationEmail(user.UserName, user.Email, "registration");
                 return JsonSerializer.Serialize("Registered Successfully");
             }
             return JsonSerializer.Serialize(ValidatePassword(user));
+        }
+
+        private bool ValidateEmail(string userEmail)
+        {
+            return Enumerable.All(Users, dbUser => dbUser.Email != userEmail);
         }
 
 
@@ -138,6 +149,11 @@ namespace ElProyecteGrandeSprint1.Models
             return Users.Include(u => u.Roles).ToListAsync().Result.First(x => x.UserName == Username);
         }
 
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return Users.Include(u => u.Roles).ToListAsync().Result.First(x => x.Email == email);
+        }
         public async Task<string> Login(LoginUser user)
         {
             try
@@ -159,6 +175,25 @@ namespace ElProyecteGrandeSprint1.Models
             catch (Exception)
             {
                 return JsonSerializer.Serialize("false");
+            }
+        }
+
+        public async Task<bool> ValidateEmailForPassword(string email)
+        {
+            try
+            {
+                foreach (var dbUser in Users)
+                {
+                    if (dbUser.Email == email)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -238,11 +273,19 @@ namespace ElProyecteGrandeSprint1.Models
             await SaveChangesAsync();
         }
 
+
         //public Task<String> GetArticles()
         //{
         //    return Task.FromResult(JsonSerializer.Serialize(Articles));
         //}
 
         public async Task<List<Article>> GetArticles() => await Articles.ToListAsync();
+        
+        
+        public void SendForgotPasswordEmail(string email)
+        {
+            User user = GetUserByEmail(email).Result;
+            _emailSender.SendConfirmationEmail(user.UserName, email, "forgor");
+        }
     }
 }

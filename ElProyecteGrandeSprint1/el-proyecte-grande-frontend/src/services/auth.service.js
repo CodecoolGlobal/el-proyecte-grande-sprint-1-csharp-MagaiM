@@ -24,6 +24,20 @@ const login = (username, password) => {
     });
 };
 
+const validateEmail = (email) => {
+  return axios.post(API_URL + `${email}`, {
+    email
+  })
+  .then((response) => {
+    return response.data
+  })
+}
+
+const ForgotPassword = (email) => {
+  return axios.post(API_URL + "send/" +`${email}`, {
+    email
+  })
+}
 const logout = () => {
   localStorage.removeItem("user");
 };
@@ -37,6 +51,8 @@ const AuthService = {
   login,
   logout,
   getCurrentUser,
+  validateEmail,
+  ForgotPassword,
 };
 
 export default AuthService;
