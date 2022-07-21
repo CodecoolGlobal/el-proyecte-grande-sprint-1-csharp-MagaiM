@@ -3,6 +3,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Design/App.css";
 import AuthService from "./services/auth.service";
+import authHeader from "./services/auth-header";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
 import Home from "./routes/Home";
@@ -70,7 +71,7 @@ const App = () => {
 };
 
 async function fetchData(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, { headers: authHeader() });
   if (response.ok){
       const data = await response.json();
       return data;
