@@ -80,13 +80,13 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
                 )} */}
                 </div>
                 {currentUser ? (
-                <div className="navbar-nav ml-auto">
-                    <li className="nav-item">
+                <div className="navbar-nav ml-auto user-nav-item">
+                    <li className="nav-item ">
                     <Link to={"/profile"} className="nav-link">
                         {currentUser.UserName}
                     </Link>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item ">
                     <a href="/login" className="nav-link" onClick={logOut}>
                         LogOut
                     </a>
