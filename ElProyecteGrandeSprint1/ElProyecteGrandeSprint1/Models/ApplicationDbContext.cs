@@ -124,7 +124,7 @@ namespace ElProyecteGrandeSprint1.Models
                     Email = searchedUser.Email,
                     Roles = rolesList,
                     Reputation = searchedUser.Reputation,
-                    AccessToken = await JWTTokenGenerator(searchedUser.Email, searchedUser.UserName, searchedUser.ID)
+                    AccessToken = await _contextHelper.JWTTokenGenerator(searchedUser.Email, searchedUser.UserName, searchedUser.ID)
                 });
             }
             catch (Exception)
@@ -158,28 +158,6 @@ namespace ElProyecteGrandeSprint1.Models
             }
         }
 
-        public async Task<string> Login(LoginUser user)
-        {
-            try
-            {
-                if (!await ValidateLogin(user)) return JsonSerializer.Serialize("false");
-                var searchedUser = await GetUserByName(user.UserName);
-                var rolesList = searchedUser.Roles.Select(role => role.Name).ToList();
-                var JWT = await _contextHelper.JWTTokenGenerator(searchedUser.Email, searchedUser.UserName, searchedUser.ID);
-                await SaveTokenToDatabase(JWT);
-                return JsonSerializer.Serialize(new ValidatedUser(){
-                    UserName = searchedUser.UserName,
-                    Email = searchedUser.Email,
-                    Roles = rolesList,
-                    Reputation = searchedUser.Reputation,
-                    AccessToken = JWT
-                });
-            }
-            catch (Exception)
-            {
-                return JsonSerializer.Serialize("false");
-            }
-        }
 
         public async Task<List<Article>> GetArticles() => await Articles.Include(a => a.Author).ToListAsync();
 
