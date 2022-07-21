@@ -1,28 +1,14 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
+﻿using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
-using ElProyecteGrandeSprint1.Models.Enums;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.WebUtilities;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Security.Cryptography;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 using System.Text.Json;
 using ElProyecteGrandeSprint1.Helpers;
-using Microsoft.AspNetCore.Mvc;
-
 namespace ElProyecteGrandeSprint1.Models
 {
     public class ApplicationDbContext : DbContext
     {
-        private byte[] secret = Encoding.ASCII.GetBytes("MY_SECRET_KEY_dasmd.-dDUNJUOFAOD");
         private readonly EmailSender _emailSender = new EmailSender();
-
+        private readonly ApplicationDbContextHelper _contextHelper = new ApplicationDbContextHelper();
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
@@ -46,15 +32,14 @@ namespace ElProyecteGrandeSprint1.Models
 
         public async Task<List<User>> GetAllUserDataFromDataBase() => await Users.ToListAsync();
 
-
         public async Task<string> RegisterUser(RegisterUser user)
         {
-            if (!ValidateUsername(user.UserName))
+            if (!_contextHelper.ValidateUsername(user.UserName, Users))
             {
                 return JsonSerializer.Serialize("This Username is already taken");
             }
-            if(!ValidateEmail(user.Email)) return JsonSerializer.Serialize("This Email is already in use!");
-            if (ValidatePassword(user) == "accepted")
+            if(!_contextHelper.ValidateEmail(user.Email, Users)) return JsonSerializer.Serialize("This Email is already in use!");
+            if (_contextHelper.ValidatePassword(user) == "accepted")
             {
                 User registerUser = new User()
                 {
@@ -70,12 +55,7 @@ namespace ElProyecteGrandeSprint1.Models
                 _emailSender.SendConfirmationEmail(user.UserName, user.Email, "registration", Guid.Empty);
                 return JsonSerializer.Serialize("Registered Successfully");
             }
-            return JsonSerializer.Serialize(ValidatePassword(user));
-        }
-
-        private bool ValidateEmail(string userEmail)
-        {
-            return Enumerable.All(Users, dbUser => dbUser.Email != userEmail);
+            return JsonSerializer.Serialize(_contextHelper.ValidatePassword(user));
         }
 
         public async Task<string> DeleteUser(int id)
@@ -94,37 +74,16 @@ namespace ElProyecteGrandeSprint1.Models
             }
         }
 
-        private bool ValidateUsername(string userName)
-        {
-            return Enumerable.All(Users, dbUser => dbUser.UserName != userName);
-        }
-
-        private string ValidatePassword(RegisterUser user)
-        {
-            if (user.Password.Length < 5)
-            {
-                return "The password must be longer than 5 characters";
-            }
-            else if (user.Password.ToLower().Equals(user.Password))
-            {
-                return "The password must contain minimum 1 upper letter";
-            }
-            else
-            {
-                return "accepted";
-            }
-        }
-
         public async Task<string> ChangeUserProfile(long id, RegisterUser user, Guid guid)
         {
             var saveOutUser = GetUserDataFromDataBase(id);
             try
             {
-                if (user.UserName.Length > 0 && ValidateUsername(user.UserName))
+                if (user.UserName.Length > 0 && _contextHelper.ValidateUsername(user.UserName, Users))
                 {
                     saveOutUser.Result.UserName = user.UserName;
                 }
-                if (ValidatePassword(user) == "accepted")
+                if (_contextHelper.ValidatePassword(user) == "accepted")
                 {
                     saveOutUser.Result.Password = new Password() { UserPassword = user.Password };
 
@@ -141,7 +100,6 @@ namespace ElProyecteGrandeSprint1.Models
                 return JsonSerializer.Serialize(e.Message);
             }
         }
-
 
         public async Task<User> GetUserByName(string Username)
         {
@@ -175,16 +133,16 @@ namespace ElProyecteGrandeSprint1.Models
             }
         }
 
-        public async Task<bool> ValidateEmailForPassword(string email)
+        private async Task SaveTokenToDatabase(string serializedToken)
         {
-            try
-            {
-                return Enumerable.Any(Users, dbUser => dbUser.Email == email);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            JWTTokens.Add(
+                new UserToken
+                {
+                    Token = serializedToken,
+                    Date = DateTime.Now
+                }
+            );
+            await SaveChangesAsync();
         }
 
         public async Task<bool> ValidateLogin(LoginUser user)
@@ -200,48 +158,28 @@ namespace ElProyecteGrandeSprint1.Models
             }
         }
 
-        private async Task<string> JWTTokenGenerator(string email, string userName, long userId){
-            var now = DateTime.UtcNow;
-            var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim("sub", "customer") }),
-                Issuer = "Who issued the token",
-                Claims = new Dictionary<string, object>
-                {
-                    ["userName"] = userName,
-                    ["userId"] = userId,
-                    ["email"] = email, 
-                },
-                IssuedAt = now,
-                NotBefore = now,
-                Expires = now + TimeSpan.FromDays(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var serializedToken = tokenHandler.WriteToken(token);
-
-            await SaveTokenToDatabase(serializedToken);
-            return serializedToken;
-        }
-
-        private async Task SaveTokenToDatabase(string serializedToken)
+        public async Task<string> Login(LoginUser user)
         {
-            JWTTokens.Add(
-                new UserToken
-                {
-                    Token = serializedToken,
-                    Date = DateTime.Now
-                }
-            );
-            await SaveChangesAsync();
+            try
+            {
+                if (!await ValidateLogin(user)) return JsonSerializer.Serialize("false");
+                var searchedUser = await GetUserByName(user.UserName);
+                var rolesList = searchedUser.Roles.Select(role => role.Name).ToList();
+                var JWT = await _contextHelper.JWTTokenGenerator(searchedUser.Email, searchedUser.UserName, searchedUser.ID);
+                await SaveTokenToDatabase(JWT);
+                return JsonSerializer.Serialize(new ValidatedUser(){
+                    UserName = searchedUser.UserName,
+                    Email = searchedUser.Email,
+                    Roles = rolesList,
+                    Reputation = searchedUser.Reputation,
+                    AccessToken = JWT
+                });
+            }
+            catch (Exception)
+            {
+                return JsonSerializer.Serialize("false");
+            }
         }
-
-
-        //public Task<String> GetArticles()
-        //{
-        //    return Task.FromResult(JsonSerializer.Serialize(Articles));
-        //}
 
         public async Task<List<Article>> GetArticles() => await Articles.Include(a => a.Author).ToListAsync();
 
@@ -264,6 +202,18 @@ namespace ElProyecteGrandeSprint1.Models
                 ); 
             SaveChanges();
             _emailSender.SendConfirmationEmail(user.UserName, email, "forgor", guid);
+        }
+
+        public async Task<bool> ValidateEmailForPassword(string email)
+        {
+            try
+            {
+                return Enumerable.Any(Users, dbUser => dbUser.Email == email);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public  EmailGuid getEmailFromGuid(Guid emailId)
