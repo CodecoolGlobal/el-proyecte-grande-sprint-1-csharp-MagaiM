@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AuthService from "../services/auth.service";
-import { useNavigate } from 'react-router-dom';
+
+import ProfileDetails from "../components/ProfileDetails";
 
 const Profile = () => {
   const currentUser = AuthService.getCurrentUser();
-  const navigate = useNavigate();
 
-  if (currentUser === null) 
+  if (currentUser === null)
     window.location.href = '/login';
 
   return (

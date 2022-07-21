@@ -1,27 +1,27 @@
 import React, { Component, useEffect } from 'react';
 import { useState } from "react";
-import { DropdownButton, Dropdown, Table, FormCheck} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import DealCards from '../components/DealCards';
 import DealsTable from '../components/DealsTable';
 import {sortByList} from '../utils/Sortby';
 import { filterDirectionList } from '../utils/FilterDirection';
 import { storeNames } from '../utils/StoreNames';
 import Checkboxes from '../components/Checkboxes';
 import PropTypes from 'prop-types';
+import AuthService from '../services/auth.service';
 
 const Deals = ({fetchData}) => {
-    const [dealsData, setDealsData] = useState([]);
-    const [isChecked, setIsChecked] = useState(new Array(sortByList.length+filterDirectionList.length+storeNames.length).fill(false));
-    const [baseSortBy, setBaseSortBy] = useState("Deal Rating");
-    const [sortBy, setSortBy] = useState("Deal Rating");
-    const [basePageSize, setBasePageSize] = useState(60);
-    const [pageSize, setPageSize] = useState(60);
-    const [baseFilterDirection, setBaseFilterDirection] = useState(0);
-    const [filterDirection, setFilterDirection] = useState(0);
-    const [baseStoreId, setBaseStoreId] = useState("")
-    const [storeId, setStoreId] = useState("")
-    const [Url, setUrl] = useState(`https://localhost:44321/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
+  const currentUser = AuthService.getCurrentUser();
+  const [dealsData, setDealsData] = useState([]);
+  const [isChecked, setIsChecked] = useState(new Array(sortByList.length+filterDirectionList.length+storeNames.length).fill(false));
+  const [baseSortBy, setBaseSortBy] = useState("Deal Rating");
+  const [sortBy, setSortBy] = useState("Deal Rating");
+  const [basePageSize, setBasePageSize] = useState(60);
+  const [pageSize, setPageSize] = useState(60);
+  const [baseFilterDirection, setBaseFilterDirection] = useState(0);
+  const [filterDirection, setFilterDirection] = useState(0);
+  const [baseStoreId, setBaseStoreId] = useState("")
+  const [storeId, setStoreId] = useState("")
+  const [Url, setUrl] = useState(`https://localhost:44321/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
 
   useEffect(() => {
     fetchData(Url)
@@ -34,6 +34,8 @@ const Deals = ({fetchData}) => {
     setUrl(`https://localhost:44321/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
   }, [isChecked]);
 
+  if (currentUser === null) 
+    window.location.href = '/login';
 
   const handleOnChange = (checkboxIndex, value) => {
     const updatedCheckedState = isChecked.map((item, index) =>{

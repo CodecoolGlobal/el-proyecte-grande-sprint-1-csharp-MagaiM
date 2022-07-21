@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import logo from '../Design/Imgs/KVMResized.jpg';
 import AuthService from "../services/auth.service";
-import avatar from '../Design/Imgs/BaseProfilepicture.jpg';
 import { Link } from "react-router-dom";
-import { useCookies } from 'react-cookie';
-import PropTypes from 'prop-types'
 
 
 const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
@@ -91,10 +88,16 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
                         {currentUser.UserName}
                     </Link>
                     </li>
-                    <li className="nav-item ">
-                    <a href="/login" className="nav-link" onClick={logOut}>
-                        LogOut
-                    </a>
+                    {currentUser.Roles.includes("Admin") &&
+                        <li className="nav-item">
+                            <Link to={"/admin"} className="nav-link">
+                                AdminBoard
+                            </Link>
+                        </li>}
+                    <li className="nav-item">
+                        <a href="/login" className="nav-link" onClick={logOut}>
+                            LogOut
+                        </a>
                     </li>
                 </div>
                 ) : (

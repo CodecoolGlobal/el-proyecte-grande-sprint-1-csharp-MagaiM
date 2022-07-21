@@ -33,38 +33,39 @@ namespace ElProyecteGrandeSprint1.Auth
             if (!Request.Headers.ContainsKey("authorization"))
                 return AuthenticateResult.Fail("Missing Authorization Header");
 
+            return AuthenticateResult.NoResult();
             // implement your authentication logic here
-            var authorizationHeader = Request.Headers.Authorization.ToString();
+            //var authorizationHeader = Request.Headers.Authorization.ToString();
 
-            var userInfoEncoded = new string(authorizationHeader.Skip(6).ToArray()); // Remove the "Basic " start of the header value
+            //var userInfoEncoded = new string(authorizationHeader.Skip(6).ToArray()); // Remove the "Basic " start of the header value
 
-            var userInfoDecoded = Encoding.UTF8.GetString(Convert.FromBase64String(userInfoEncoded));
+            //var userInfoDecoded = Encoding.UTF8.GetString(Convert.FromBase64String(userInfoEncoded));
 
-            var userName = userInfoDecoded.Split(":")[0];
-            var password = userInfoDecoded.Split(":")[1];
-            var user = _applicationDbContext.Users.Include(u => u.Roles).FirstOrDefault(user => user.UserName == userName && user.Password.ValidatePassword(password));
-            // var user = _applicationDbContext.Users.FirstOrDefault(user => user.UserName == userName && user.Password == password);
+            //var userName = userInfoDecoded.Split(":")[0];
+            //var password = userInfoDecoded.Split(":")[1];
+            //var user = _applicationDbContext.Users.Include(u => u.Roles).FirstOrDefault(user => user.UserName == userName && user.Password.ValidatePassword(password));
+            //// var user = _applicationDbContext.Users.FirstOrDefault(user => user.UserName == userName && user.Password == password);
 
-            if (user == null)
-                return AuthenticateResult.Fail("Wrong username and or password!");
+            //if (user == null)
+            //    return AuthenticateResult.Fail("Wrong username and or password!");
 
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, user.UserName)
-            };
+            //var claims = new List<Claim>()
+            //{
+            //    new Claim(ClaimTypes.Name, user.UserName)
+            //};
 
-            // add user roles as claims here
-            foreach (var role in user.Roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role.Name));
-            }
+            //// add user roles as claims here
+            //foreach (var role in user.Roles)
+            //{
+            //    claims.Add(new Claim(ClaimTypes.Role, role.Name));
+            //}
 
 
-            var identity = new ClaimsIdentity(claims, Scheme.Name);
-            var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, Scheme.Name);
+            //var identity = new ClaimsIdentity(claims, Scheme.Name);
+            //var principal = new ClaimsPrincipal(identity);
+            //var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-            return AuthenticateResult.Success(ticket);
+            //return AuthenticateResult.Success(ticket);
         }
     }
 }

@@ -3,13 +3,14 @@ import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Design/App.css";
 import AuthService from "./services/auth.service";
+import authHeader from "./services/auth-header";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
 import Home from "./routes/Home";
 import Profile from "./routes/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
-import BoardAdmin from "./components/BoardAdmin";
+import BoardAdmin from "./routes/BoardAdmin";
 import ForgotPassword from "./routes/ForgotPassword";
 import Header from './components/Header';
 import News from './routes/News';
@@ -25,6 +26,8 @@ const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
+
+
 
   useEffect(() => {
     const localUser = AuthService.getCurrentUser();
@@ -68,7 +71,7 @@ const App = () => {
 };
 
 async function fetchData(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, { headers: authHeader() });
   if (response.ok){
       const data = await response.json();
       return data;
