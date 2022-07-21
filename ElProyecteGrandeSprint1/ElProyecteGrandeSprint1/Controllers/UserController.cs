@@ -62,7 +62,7 @@ namespace ElProyecteGrandeSprint1.Controllers
         [HttpPut("{id}")]
         public Task<string> ChangeUserData(int id, [FromBody] RegisterUser user)
         {
-            return _context.ChangeUserProfile(id, user);
+            return _context.ChangeUserProfile(id, user, Guid.Empty);
         }
 
         [HttpDelete("{id}")]
@@ -71,10 +71,25 @@ namespace ElProyecteGrandeSprint1.Controllers
             return _context.DeleteUser(id);
         }
 
-        [HttpPost("/send/{email}")]
-        public void SendEmail(string email)
+        [HttpPost("/send")]
+        public void SendEmail([FromBody] RegisterUser user)
         { 
-            _context.SendForgotPasswordEmail(email);
+            Guid guid = Guid.NewGuid();
+            _context.SendForgotPasswordEmail(user.Email, guid);
+        }
+
+        [HttpPost("/password/{emailId}")]
+        public Task<string> ChangePassword(Guid emailId, [FromBody] RegisterUser user)
+        {
+            var email =_context.getEmailFromGuid(emailId);
+            long userId = _context.GetUserByEmail(email.Email).Result.ID;
+            var result = _context.ChangeUserProfile(userId, user, email.Guid);
+            if (result.Result == "\"Your profile was Changed successfully\"")
+            {
+                _context.SendSuccesfulPasswordChangeEmail(emailId);
+                return result;
+            }
+            return result;
         }
 
     }

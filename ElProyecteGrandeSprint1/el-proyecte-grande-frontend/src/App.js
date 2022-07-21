@@ -18,6 +18,7 @@ import RecentNews from './routes/RecentNews';
 import OtherNews from './routes/OtherNews';
 import Articles from "./routes/Articles";
 import ArticleEditor from "./routes/ArticleEditor";
+import NewPassword from "./routes/NewPassword";
 
 
 const App = () => {
@@ -59,6 +60,7 @@ const App = () => {
                           <main style={{padding: "1rem"}}>
                             <p>There's nothing here!</p>
                           </main>}/>
+          <Route path={`/newPassword/:emailId`} element={<NewPassword/>} />
         </Routes>
       </div>
     </div>
