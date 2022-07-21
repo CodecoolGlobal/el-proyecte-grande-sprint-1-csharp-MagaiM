@@ -82,7 +82,6 @@ const Register = () => {
             setMessage(response.data.message);
             setSuccessful(true);
             navigate("/login");
-            window.location.reload();
           }
           else{
             const resMessage = response.data;

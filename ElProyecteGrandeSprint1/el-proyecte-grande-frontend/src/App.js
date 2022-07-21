@@ -17,18 +17,17 @@ import Deals from './routes/Deals';
 import RecentNews from './routes/RecentNews';
 import OtherNews from './routes/OtherNews';
 
+
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
   useEffect(() => {
-    const user = AuthService.getCurrentUser();
-    if (user) {
-      setCurrentUser(user);
-      setShowModeratorBoard(user.Roles.includes("Moderator"));
-      setShowAdminBoard(user.Roles.includes("Admin"));
+    if (currentUser) {
+      setShowModeratorBoard(currentUser.Roles.includes("Moderator"));
+      setShowAdminBoard(currentUser.Roles.includes("Admin"));
     }
-  }, []);
+  }, [currentUser]);
 
   return (
     <div className='bg-dark text-white app-container'>
@@ -42,7 +41,7 @@ const App = () => {
             <Route path='/news/other-news' element={<OtherNews fetchData={fetchData}/>}/>
           </Route>
           <Route path="deals" element={<Deals fetchData={fetchData}/>}/>
-          <Route path="/login" element={<Login/>} />
+          <Route path="/login" element={<Login setCurrentUser={setCurrentUser}/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/user" element={<BoardUser/>} />
