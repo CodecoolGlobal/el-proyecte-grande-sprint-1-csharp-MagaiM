@@ -2,10 +2,14 @@ import axios from "axios";
 import authHeader from "./auth-header";
 
 //const API_URL = "http://localhost:8080/api/test/";
-const API_URL = "https://localhost:44321";
+const API_URL = "https://localhost:44321/";
 
 const getPublicContent = () => {
   return axios.get(API_URL + "all");
+};
+
+const getArticleBoard = () => {
+  return axios.get(API_URL + "articles", {headers: authHeader() });
 };
 
 const getUserBoard = () => {
@@ -13,7 +17,7 @@ const getUserBoard = () => {
 };
 
 const getModeratorBoard = () => {
-  return axios.get(API_URL + "/articles", { headers: authHeader() });
+  return axios.get(API_URL + "articles", { headers: authHeader() });
 };
 
 const getAdminBoard = () => {
@@ -25,6 +29,7 @@ const UserService = {
   getUserBoard,
   getModeratorBoard,
   getAdminBoard,
+  getArticleBoard,
 };
 
 export default UserService;

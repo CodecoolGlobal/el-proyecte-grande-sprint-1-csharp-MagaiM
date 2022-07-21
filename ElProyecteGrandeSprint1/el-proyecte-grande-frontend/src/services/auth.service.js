@@ -33,9 +33,23 @@ const validateEmail = (email) => {
   })
 }
 
-const ForgotPassword = (email) => {
-  return axios.post(API_URL + "send/" +`${email}`, {
-    email
+const ChangePassword = (password, email, username, emailId) => {
+  return axios.post(API_URL + `password/` + `${emailId}`, {
+    username,
+    email,
+    password
+  })
+  .then((response) => {
+    return response.data
+  })
+}
+
+const ForgotPassword = (username, email, password) => {
+
+  return axios.post(API_URL + "send", {
+    username,
+    email,
+    password
   })
 }
 const logout = () => {
@@ -53,6 +67,7 @@ const AuthService = {
   getCurrentUser,
   validateEmail,
   ForgotPassword,
+  ChangePassword,
 };
 
 export default AuthService;

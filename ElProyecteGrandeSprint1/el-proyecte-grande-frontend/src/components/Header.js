@@ -26,8 +26,9 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
       };
       
     return (
+    <>
         <header>
-            <nav className="navbar navbar-expand navbar-dark bg-black border-bottom box-shadow mb-3">
+            <nav className="navbar navbar-expand navbar-dark bg-black box-shadow">
                 <Link className="navbar-brand" type='button' to="/">
                     <img className="header-logo" src={logo} alt={'KWMGAMING'}/>
                 </Link>
@@ -44,6 +45,11 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
                     <li className="nav-item">
                         <Link className="nav-link" type='button' to="/news">
                             News
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" type='button' to="/articles">
+                            Articles
                         </Link>
                     </li>
                     {currentUser ? (
@@ -163,6 +169,8 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
                 </div>
             </nav> */}
         </header>
+        <div className='divider' style={{marginTop: "0px"}}></div>
+    </>
   )
 }
 
