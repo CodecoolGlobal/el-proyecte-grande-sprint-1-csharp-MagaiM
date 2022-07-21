@@ -23,12 +23,6 @@ namespace ElProyecteGrandeSprint1.Controllers
             _context = context;
  
         }
-        [HttpGet]
-        public Task<List<User>> GetAllUserData()
-        {
-            return _context.GetAllUserDataFromDataBase();
-        }
-
         [HttpGet("{id}")]
         public async Task<User> GetUserData(int id)
         {
