@@ -31,13 +31,15 @@ namespace ElProyecteGrandeSprint1.Models
         public DbSet<UserRole> Roles { get; set; }
         public DbSet<UserToken> JWTTokens { get; set; }
 
+        public DbSet<EmailGuid> EmailGuid { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<User>().Property(x => x.Password).HasConversion(t => t.UserPassword, s => new Password(s));
         }
 
-        public async Task<User> GetUserDataFromDataBase(int id) => Users.ToListAsync().Result.First(x => x.ID == id);
+        public async Task<User> GetUserDataFromDataBase(long id) => Users.ToListAsync().Result.First(x => x.ID == id);
 
 
         public async Task<List<User>> GetAllUserDataFromDataBase() => await Users.ToListAsync();
@@ -63,7 +65,7 @@ namespace ElProyecteGrandeSprint1.Models
                 Users.Add(registerUser);
                 await SaveChangesAsync();
 
-                _emailSender.SendConfirmationEmail(user.UserName, user.Email, "registration");
+                _emailSender.SendConfirmationEmail(user.UserName, user.Email, "registration", Guid.Empty);
                 return JsonSerializer.Serialize("Registered Successfully");
             }
             return JsonSerializer.Serialize(ValidatePassword(user));
@@ -73,7 +75,6 @@ namespace ElProyecteGrandeSprint1.Models
         {
             return Enumerable.All(Users, dbUser => dbUser.Email != userEmail);
         }
-
 
         public async Task<string> DeleteUser(int id)
         {
@@ -119,7 +120,7 @@ namespace ElProyecteGrandeSprint1.Models
             }
         }
 
-        public async Task<string> ChangeUserProfile(int id, RegisterUser user)
+        public async Task<string> ChangeUserProfile(long id, RegisterUser user, Guid guid)
         {
             var saveOutUser = GetUserDataFromDataBase(id);
             try
@@ -131,6 +132,10 @@ namespace ElProyecteGrandeSprint1.Models
                 if (ValidatePassword(user) == "accepted")
                 {
                     saveOutUser.Result.Password = new Password() { UserPassword = user.Password };
+
+                }else
+                {
+                    return JsonSerializer.Serialize("Your profile was not Changed successfully");
                 }
                 await SaveChangesAsync();
                 return JsonSerializer.Serialize("Your profile was Changed successfully");
@@ -141,6 +146,7 @@ namespace ElProyecteGrandeSprint1.Models
                 return JsonSerializer.Serialize(e.Message);
             }
         }
+
 
         public async Task<User> GetUserByName(string Username)
         {
@@ -271,10 +277,36 @@ namespace ElProyecteGrandeSprint1.Models
             await SaveChangesAsync();
         }
 
-        public void SendForgotPasswordEmail(string email)
+        public async void SendForgotPasswordEmail(string email, Guid guid)
         {
             User user = GetUserByEmail(email).Result;
-            _emailSender.SendConfirmationEmail(user.UserName, email, "forgor");
+            EmailGuid.Add(
+                new EmailGuid 
+                    {
+                        Email = email, 
+                        Guid = guid
+
+                    }
+                ); 
+            SaveChangesAsync();
+            _emailSender.SendConfirmationEmail(user.UserName, email, "forgor", guid);
         }
+
+        public  EmailGuid getEmailFromGuid(Guid emailId)
+        {
+            return  EmailGuid.ToList().First(x => x.Guid == emailId);
+        }
+
+        public void SendSuccesfulPasswordChangeEmail(Guid guid)
+        {
+            var email =getEmailFromGuid(guid).Email;
+            var deleteEmailGuid = getEmailFromGuid(guid);
+            EmailGuid.Remove(deleteEmailGuid);
+            SaveChanges();
+            var user = GetUserByEmail(email).Result;
+            _emailSender.SendConfirmationEmail(user.UserName, email, "success", guid);
+        }
+
+
     }
 }
