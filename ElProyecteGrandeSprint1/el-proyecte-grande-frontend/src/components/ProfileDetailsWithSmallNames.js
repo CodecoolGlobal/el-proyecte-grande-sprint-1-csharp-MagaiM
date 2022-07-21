@@ -1,40 +1,37 @@
 import React from 'react'
 import PropTypes from "prop-types";
 
-const ProfileDetails = ({currentUser, closeProfile}) => {
-    console.log(currentUser)
+const ProfileDetailsWithSmallNames = ({currentUser, closeProfile}) => {
     return (
         <div className="container">
-            {closeProfile &&
             <div>
                 <button className="top-news-button btn-outline-light" type="button" onClick={closeProfile}>
-                    <span className="top-news-button-content">Bak to Articles</span>
+                    <span className="top-news-button-content">Back</span>
                 </button>
-            </div>}
+            </div>
             <header className="jumbotron">
                 <h3>
-                    <strong>{currentUser.UserName}</strong> Profile
+                    <strong>{currentUser.userName}'s</strong> Profile
                 </h3>
             </header>
             <p>
-                <strong>Token:</strong> {currentUser.AccessToken.substring(0, 20)} ...{" "}
-                {currentUser.AccessToken.substr(currentUser.AccessToken.length - 20)}
+                <strong>ID:</strong> {currentUser.id}
             </p>
             <p>
-                <strong>Email:</strong> {currentUser.Email}
+                <strong>Email:</strong> {currentUser.email}
+            </p>
+            <p>
+                <strong>Reputation:</strong> {currentUser.reputation}
             </p>
             <strong>Authorities:</strong>
             <ul>
-                {currentUser.Roles &&
-                    currentUser.Roles.map((role, index) => <li key={index}>{role}</li>)}
+                {currentUser.roles &&
+                    currentUser.roles.map((role, index) => <li key={index}>{role["name"]}</li>)}
             </ul>
         </div>
     )
 }
-
-
-ProfileDetails.propTypes ={
-  closeProfile: PropTypes.func
+ProfileDetailsWithSmallNames.propTypes ={
+    closeArticle: PropTypes.func
 };
-
-export default ProfileDetails
+export default ProfileDetailsWithSmallNames
