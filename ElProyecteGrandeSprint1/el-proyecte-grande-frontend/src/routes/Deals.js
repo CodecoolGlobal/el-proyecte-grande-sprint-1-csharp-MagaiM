@@ -1,8 +1,6 @@
 import React, { Component, useEffect } from 'react';
 import { useState } from "react";
-import { DropdownButton, Dropdown, Table, FormCheck} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import DealCards from '../components/DealCards';
 import DealsTable from '../components/DealsTable';
 import {sortByList} from '../utils/Sortby';
 import { filterDirectionList } from '../utils/FilterDirection';
