@@ -82,11 +82,11 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
                 )} */}
                 </div>
                 {currentUser ? (
-                <div className="navbar-nav ml-auto">
-                    <li className="nav-item">
-                        <Link to={"/profile"} className="nav-link">
-                            {currentUser.UserName}
-                        </Link>
+                <div className="navbar-nav ml-auto user-nav-item">
+                    <li className="nav-item ">
+                    <Link to={"/profile"} className="nav-link">
+                        {currentUser.UserName}
+                    </Link>
                     </li>
                     {currentUser.Roles.includes("Admin") &&
                         <li className="nav-item">
