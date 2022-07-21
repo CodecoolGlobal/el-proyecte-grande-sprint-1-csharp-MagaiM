@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import AuthService from '../services/auth.service';
 
 const Home = ({fetchData})  => {
+    const currentUser = AuthService.getCurrentUser();
     const [homeData, setHomeData] = useState([]);
     const [slideData, setSlideData] = useState([]);
     
@@ -19,18 +20,18 @@ const Home = ({fetchData})  => {
     
     }, [])
 
-
     useEffect(() => {
+        if (currentUser) {
         fetchData('https://localhost:44321/Deals?sortBy=Deal Rating&pageSize=20')
             .then(data => {
             data = data.slice(0, 15);
             setSlideData(data);
         });
         wait(2000).then(x => { showSlides() });
-    }, [])
+    }}, [])
     
     function showSlides() {
-         try {
+        try {
             if(timeout)
                 stopTimeout(timeout);
             let i;
@@ -41,8 +42,8 @@ const Home = ({fetchData})  => {
             slideIndex++;
             if (slideIndex > slides.length) { slideIndex = 1 }
             slides[slideIndex - 1].style.display = "block";
-            timeout = setTimeout(showSlides, 5000); // Change image every 2 seconds
-         } catch {}
+            timeout = setTimeout(showSlides, 5000); // Change image every 5 seconds
+        } catch {}
     }
     
     function stopTimeout(timeout) {
