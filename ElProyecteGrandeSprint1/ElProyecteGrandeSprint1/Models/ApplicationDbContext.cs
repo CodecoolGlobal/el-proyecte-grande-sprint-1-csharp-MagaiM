@@ -118,6 +118,9 @@ namespace ElProyecteGrandeSprint1.Models
                 if (!await ValidateLogin(user)) return JsonSerializer.Serialize("false");
                 var searchedUser = await GetUserByName(user.UserName);
                 var rolesList = searchedUser.Roles.Select(role => role.Name).ToList();
+                var JWT = await _contextHelper.JWTTokenGenerator(searchedUser.Email, searchedUser.UserName,
+                    searchedUser.ID);
+                await SaveTokenToDatabase(JWT);
                 return JsonSerializer.Serialize(new ValidatedUser(){
                     Id = searchedUser.ID,
                     UserName = searchedUser.UserName,
