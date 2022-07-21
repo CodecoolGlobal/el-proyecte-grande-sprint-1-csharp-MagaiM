@@ -127,7 +127,7 @@ namespace ElProyecteGrandeSprint1.Models
                     Email = searchedUser.Email,
                     Roles = rolesList,
                     Reputation = searchedUser.Reputation,
-                    AccessToken = await _contextHelper.JWTTokenGenerator(searchedUser.Email, searchedUser.UserName, searchedUser.ID)
+                    AccessToken = JWT
                 });
             }
             catch (Exception)
