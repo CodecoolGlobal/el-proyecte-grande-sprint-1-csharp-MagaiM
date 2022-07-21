@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 import AuthService from "../services/auth.service";
 import { useNavigate } from 'react-router-dom';
-import { BrowserRouter as Router, Switch, 
-  Route, Redirect,} from "react-router-dom";
 
 const Profile = () => {
   const currentUser = AuthService.getCurrentUser();
   const navigate = useNavigate();
 
   if (currentUser === null) 
-    window.location.replace("/");
+    window.location.href = '/login';
 
   return (
     <div className="container">

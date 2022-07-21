@@ -4,6 +4,8 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service";
+import authService from "../services/auth.service";
+import PropTypes from "prop-types";
 
 const required = (value) => {
   if (!value) {
@@ -15,7 +17,7 @@ const required = (value) => {
   }
 };
 
-const Login = () => {
+const Login = ({setCurrentUser}) => {
   let navigate = useNavigate();
   const form = useRef();
   const checkBtn = useRef();
@@ -42,8 +44,8 @@ const Login = () => {
       AuthService.login(username, password).then(
         (data) => {
           if (data !== 'false') {
+            setCurrentUser(authService.getCurrentUser())
             navigate("/");
-            window.location.reload();
           }
           else{
             setLoading(false);
@@ -124,6 +126,10 @@ const Login = () => {
     
   );
 };
+
+Login.propTypes ={
+    setCurrentUser: PropTypes.func
+  };
 
 export default Login;
 
