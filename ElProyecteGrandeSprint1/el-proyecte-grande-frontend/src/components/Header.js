@@ -50,6 +50,11 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
                             News
                         </Link>
                     </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" type='button' to="/articles">
+                            Articles
+                        </Link>
+                    </li>
                     {currentUser ? (
                         <li className="nav-item">
                             <Link className="nav-link" type='button' to="/deals">
@@ -82,9 +87,9 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
                 {currentUser ? (
                 <div className="navbar-nav ml-auto">
                     <li className="nav-item">
-                    <Link to={"/profile"} className="nav-link">
-                        {currentUser.UserName}
-                    </Link>
+                        <Link to={"/profile"} className="nav-link">
+                            {currentUser.UserName}
+                        </Link>
                     </li>
                     <li className="nav-item">
                     <a href="/login" className="nav-link" onClick={logOut}>

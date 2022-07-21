@@ -26,15 +26,25 @@ namespace ElProyecteGrandeSprint1.Auth
         }
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+
             var dbContext = context.HttpContext
                 .RequestServices
                 .GetService(typeof(ApplicationDbContext)) as ApplicationDbContext;
             var token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var userName = DecodeJWT(token).Claims.ElementAt(1).Value;
-            if (token == null || dbContext.JWTTokens.FirstOrDefault(t => t.Token == token) == null || CheckRoles(dbContext, userName))
+            if (token == null || dbContext.JWTTokens.FirstOrDefault(t => t.Token == token) == null)
             {
                 // not logged in
-                context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+                context.Result = new JsonResult(new {message = "Unauthorized"})
+                    {StatusCode = StatusCodes.Status401Unauthorized};
+                return;
+            }
+
+            var userName = DecodeJWT(token).Claims.ElementAt(1).Value;
+            if (CheckRoles(dbContext, userName))
+            {
+                context.Result = new JsonResult(new { message = "Unauthorized" }) 
+                    { StatusCode = StatusCodes.Status401Unauthorized };
+                return;
             }
         }
 

@@ -86,7 +86,7 @@ namespace ElProyecteGrandeSprint1.Controllers
             var result = _context.ChangeUserProfile(userId, user, email.Guid);
             if (result.Result == "\"Your profile was Changed successfully\"")
             {
-                _context.SendSuccesfulPasswordChangeEmail(emailId);
+                _context.SendSuccessfulPasswordChangeEmail(emailId);
                 return result;
             }
             return result;

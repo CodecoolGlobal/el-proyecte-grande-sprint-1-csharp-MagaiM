@@ -96,14 +96,7 @@ namespace ElProyecteGrandeSprint1.Models
 
         private bool ValidateUsername(string userName)
         {
-            foreach (var dbUser in Users)
-            {
-                if (dbUser.UserName == userName)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return Enumerable.All(Users, dbUser => dbUser.UserName != userName);
         }
 
         private string ValidatePassword(RegisterUser user)
@@ -164,19 +157,16 @@ namespace ElProyecteGrandeSprint1.Models
         {
             try
             {
-                if(await ValidateLogin(user))
-                {
-                    var searchedUser = await GetUserByName(user.UserName);
-                    var rolesList = searchedUser.Roles.Select(role => role.Name).ToList();
-                    return JsonSerializer.Serialize(new ValidatedUser(){
-                        UserName = searchedUser.UserName,
-                        Email = searchedUser.Email,
-                        Roles = rolesList,
-                        Reputation = searchedUser.Reputation,
-                        AccessToken = await JWTTokenGenerator(searchedUser.Email, searchedUser.UserName, searchedUser.ID)
-                    });
-                }
-                return JsonSerializer.Serialize("false");
+                if (!await ValidateLogin(user)) return JsonSerializer.Serialize("false");
+                var searchedUser = await GetUserByName(user.UserName);
+                var rolesList = searchedUser.Roles.Select(role => role.Name).ToList();
+                return JsonSerializer.Serialize(new ValidatedUser(){
+                    UserName = searchedUser.UserName,
+                    Email = searchedUser.Email,
+                    Roles = rolesList,
+                    Reputation = searchedUser.Reputation,
+                    AccessToken = await JWTTokenGenerator(searchedUser.Email, searchedUser.UserName, searchedUser.ID)
+                });
             }
             catch (Exception)
             {
@@ -188,14 +178,7 @@ namespace ElProyecteGrandeSprint1.Models
         {
             try
             {
-                foreach (var dbUser in Users)
-                {
-                    if (dbUser.Email == email)
-                    {
-                        return true;
-                    }
-                }
-                return false;
+                return Enumerable.Any(Users, dbUser => dbUser.Email == email);
             }
             catch (Exception)
             {
@@ -207,40 +190,14 @@ namespace ElProyecteGrandeSprint1.Models
         {
             try
             {
-                User validateUser = await GetUserByName(user.UserName);
-                if (!validateUser.Password.ValidatePassword(user.Password)) return false;
-                    return true;
+                var validateUser = await GetUserByName(user.UserName);
+                return validateUser.Password.ValidatePassword(user.Password);
             }
             catch (Exception)
             {
                 return false;
             }
         }
-
-        // private string makeJWTToken()
-        // {
-        //     JWTHeader header = new JWTHeader();
-        //     JWTPayload payload = new JWTPayload();
-        //     string encodedHeader = Base64UrlTextEncoder.Encode(SerializeObject(header));
-        //     string encodedPayload = Base64UrlTextEncoder.Encode(SerializeObject(payload));
-        //     string data = encodedHeader + '.' + encodedPayload;
-        //     string hashedData = Hash(data, secret);
-        //     string signature = Base64UrlTextEncoder.Encode(hashedData);
-        //     string JWTToken = encodedHeader + '.' + encodedPayload + "." + signature;
-        //     return JWTToken;
-        // }
-
-        // private byte[] ToByteArray(object source)
-        // {
-        //     var formatter = new BinaryFormatter();
-        //     using (var stream = new MemoryStream())
-        //     {
-        //         formatter.Serialize(stream, source);                
-        //         return stream.ToArray();
-        //     }
-        // }
-        // private byte[] SerializeObject(object value) => Encoding.UTF8.GetBytes(JsonSerializer.Serialize((value)));
-
 
         private async Task<string> JWTTokenGenerator(string email, string userName, long userId){
             var now = DateTime.UtcNow;
@@ -285,11 +242,9 @@ namespace ElProyecteGrandeSprint1.Models
         //    return Task.FromResult(JsonSerializer.Serialize(Articles));
         //}
 
-        public async Task<List<Article>> GetArticles() => await Articles.ToListAsync();
-        
-        
-        public void SendForgotPasswordEmail(string email)
-        public async void SendForgotPasswordEmail(string email, Guid guid)
+        public async Task<List<Article>> GetArticles() => await Articles.Include(a => a.Author).ToListAsync();
+
+        public void SendForgotPasswordEmail(string email, Guid guid)
         {
             User user = GetUserByEmail(email).Result;
             EmailGuid.Add(
@@ -300,7 +255,7 @@ namespace ElProyecteGrandeSprint1.Models
 
                     }
                 ); 
-            SaveChangesAsync();
+            SaveChanges();
             _emailSender.SendConfirmationEmail(user.UserName, email, "forgor", guid);
         }
 
@@ -309,7 +264,7 @@ namespace ElProyecteGrandeSprint1.Models
             return  EmailGuid.ToList().First(x => x.Guid == emailId);
         }
 
-        public void SendSuccesfulPasswordChangeEmail(Guid guid)
+        public void SendSuccessfulPasswordChangeEmail(Guid guid)
         {
             var email =getEmailFromGuid(guid).Email;
             var deleteEmailGuid = getEmailFromGuid(guid);
@@ -320,5 +275,38 @@ namespace ElProyecteGrandeSprint1.Models
         }
 
 
+        public async Task<string> UploadArticle(NewArticle article)
+        {
+
+            Article newArticle = await MakeArticleFromNewArticle(article);
+            Articles.Add(newArticle);
+            await SaveChangesAsync();
+            return JsonSerializer.Serialize("True");
+    
+        }
+
+
+        public async Task<string> ChangeArticle(long id, NewArticle article)
+        {
+            Article selectedArticle = Articles.First(a => a.ID == id);
+            Article changedArticle = await MakeArticleFromNewArticle(article);
+            selectedArticle = changedArticle;
+            await SaveChangesAsync();
+            return JsonSerializer.Serialize("True");
+    
+        }
+
+
+        private async Task<Article> MakeArticleFromNewArticle(NewArticle article){
+            var newArticle = new Article()
+            {
+                Title = article.Title,
+                Description = article.Description,
+                Author = await GetUserByName(article.Author),
+                Theme = article.Theme,
+                ArticleText = article.ArticleText
+            };
+            return newArticle;
+        }
     }
 }

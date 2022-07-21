@@ -1,5 +1,6 @@
 ﻿using ElProyecteGrandeSprint1.Auth;
 using ElProyecteGrandeSprint1.Models;
+using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,6 @@ namespace ElProyecteGrandeSprint1.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [AuthorizeWithToken("Admin,User")]
     //[Authorize(Roles = "Admin")]
     public class ArticlesController : ControllerBase
     {
@@ -26,6 +26,24 @@ namespace ElProyecteGrandeSprint1.Controllers
         public Task<List<Article>> GetArticles()
         {
             return _context.GetArticles();
+        }
+
+
+        [AuthorizeWithToken("Admin,User")]
+        [HttpPost("/upload")]
+        public async Task<string> UploadArticle([FromBody] NewArticle article)
+        {
+            return await _context.UploadArticle(article);
+    
+        }
+
+
+        [AuthorizeWithToken("Admin,User")]
+        [HttpPut("/change/{id}")]
+        public async Task<string> ChangeArticle([FromBody] NewArticle article, long id)
+        {
+            return await _context.ChangeArticle(id, article);
+    
         }
     }
 }
