@@ -14,14 +14,25 @@ namespace ElProyecteGrandeSprint1.Helpers
             return messageToBeSent.ToString();
         }
 
-        private string ForgotPasswordMessage(string name)
+        private string ForgotPasswordMessage(string name, Guid guid)
         {
             StringBuilder messageToBeSent = new StringBuilder();
             messageToBeSent.Append("Dear " + name + "<br><br>");
             messageToBeSent.Append("you forgor your password<br>");
+            messageToBeSent.Append("Please Click the link below to change your password<br>");
+            messageToBeSent.Append($"https://localhost:3000/newPassword/{guid}");
             return messageToBeSent.ToString();
         }
-        public void SendConfirmationEmail(string name, string email, string type)
+
+        private string ForgotPasswordMessageSuccess(string name)
+        {
+            StringBuilder messageToBeSent = new StringBuilder();
+            messageToBeSent.Append("Dear " + name + "<br><br>");
+            messageToBeSent.Append("your password was successfully changed<br>");
+            return messageToBeSent.ToString();
+        }
+
+        public void SendConfirmationEmail(string name, string email, string type, Guid guid)
         {
             SmtpClient smtpClient = new SmtpClient("smtp-mail.outlook.com");
             smtpClient.Port = 587;
@@ -43,9 +54,17 @@ namespace ElProyecteGrandeSprint1.Helpers
 
             if (type == "forgor")
             {
-                message.Body = ForgotPasswordMessage(name);
+                message.Body = ForgotPasswordMessage(name, guid);
                 message.Subject = "New Password";
             }
+
+            if (type == "success")
+            {
+                message.Body = ForgotPasswordMessageSuccess(name);
+                message.Subject = "Successful password change";
+            }
+
+
             smtpClient.Send(message);
         }
     }
