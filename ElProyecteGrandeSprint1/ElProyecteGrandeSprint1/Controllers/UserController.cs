@@ -1,4 +1,5 @@
-﻿using ElProyecteGrandeSprint1.Models;
+﻿using ElProyecteGrandeSprint1.Helpers;
+using ElProyecteGrandeSprint1.Models;
 using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
 using Microsoft.AspNetCore.Cors;
@@ -16,9 +17,11 @@ namespace ElProyecteGrandeSprint1.Controllers
 
         private readonly ApplicationDbContext _context;
 
+
         public UserController(ApplicationDbContext context)
         {
             _context = context;
+ 
         }
         [HttpGet]
         public Task<List<User>> GetAllUserData()
@@ -36,6 +39,12 @@ namespace ElProyecteGrandeSprint1.Controllers
         public async Task<User> GetUserData(string name)
         {
             return await _context.GetUserByName(name);
+        }
+
+        [HttpPost("/{email}")]
+        public async Task<bool> ValidateEmail(string email)
+        {
+            return await _context.ValidateEmailForPassword(email);
         }
 
         [HttpPost("/login")]
@@ -61,5 +70,12 @@ namespace ElProyecteGrandeSprint1.Controllers
         {
             return _context.DeleteUser(id);
         }
+
+        [HttpPost("/send/{email}")]
+        public void SendEmail(string email)
+        { 
+            _context.SendForgotPasswordEmail(email);
+        }
+
     }
 }

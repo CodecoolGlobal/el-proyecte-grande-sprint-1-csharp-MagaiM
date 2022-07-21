@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -116,8 +116,12 @@ const Login = () => {
           )}
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
+              <Link to={"/forgotPassword"} className="nav-link">
+                Forgot your password?
+              </Link>
       </div>
     </div>
+    
   );
 };
 

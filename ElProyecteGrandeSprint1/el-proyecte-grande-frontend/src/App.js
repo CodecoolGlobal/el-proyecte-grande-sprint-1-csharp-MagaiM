@@ -10,6 +10,7 @@ import Profile from "./routes/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import ForgotPassword from "./routes/ForgotPassword";
 import Header from './components/Header';
 import News from './routes/News';
 import Deals from './routes/Deals';
@@ -47,6 +48,7 @@ const App = () => {
           <Route path="/user" element={<BoardUser/>} />
           <Route path="/mod" element={<BoardModerator/>} />
           <Route path="/admin" element={<BoardAdmin/>} />
+          <Route path="/forgotPassword" element={<ForgotPassword/>} />
           <Route path="*" element={
                           <main style={{padding: "1rem"}}>
                             <p>There's nothing here!</p>
