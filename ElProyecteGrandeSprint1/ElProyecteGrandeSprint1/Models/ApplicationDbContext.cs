@@ -111,6 +111,27 @@ namespace ElProyecteGrandeSprint1.Models
         {
             return Users.Include(u => u.Roles).ToListAsync().Result.First(x => x.Email == email);
         }
+        public async Task<string> Login(LoginUser user)
+        {
+            try
+            {
+                if (!await ValidateLogin(user)) return JsonSerializer.Serialize("false");
+                var searchedUser = await GetUserByName(user.UserName);
+                var rolesList = searchedUser.Roles.Select(role => role.Name).ToList();
+                return JsonSerializer.Serialize(new ValidatedUser(){
+                    Id = searchedUser.ID,
+                    UserName = searchedUser.UserName,
+                    Email = searchedUser.Email,
+                    Roles = rolesList,
+                    Reputation = searchedUser.Reputation,
+                    AccessToken = await JWTTokenGenerator(searchedUser.Email, searchedUser.UserName, searchedUser.ID)
+                });
+            }
+            catch (Exception)
+            {
+                return JsonSerializer.Serialize("false");
+            }
+        }
 
         private async Task SaveTokenToDatabase(string serializedToken)
         {
@@ -165,6 +186,12 @@ namespace ElProyecteGrandeSprint1.Models
         public void SendForgotPasswordEmail(string email, Guid guid)
         {
             User user = GetUserByEmail(email).Result;
+            var emailGuid = EmailGuid.FirstOrDefault(e => e.Email == email);
+            if (email == emailGuid.Email)
+            {
+                EmailGuid.Remove(emailGuid);
+            }
+
             EmailGuid.Add(
                 new EmailGuid 
                     {
@@ -191,7 +218,7 @@ namespace ElProyecteGrandeSprint1.Models
 
         public  EmailGuid getEmailFromGuid(Guid emailId)
         {
-            return  EmailGuid.ToList().First(x => x.Guid == emailId);
+            return  EmailGuid.ToList().FirstOrDefault(x => x.Guid == emailId);
         }
 
         public void SendSuccessfulPasswordChangeEmail(Guid guid)
@@ -219,8 +246,9 @@ namespace ElProyecteGrandeSprint1.Models
         public async Task<string> ChangeArticle(long id, NewArticle article)
         {
             Article selectedArticle = Articles.First(a => a.ID == id);
+            Articles.Remove(selectedArticle);
             Article changedArticle = await MakeArticleFromNewArticle(article);
-            selectedArticle = changedArticle;
+            Articles.Add(changedArticle);
             await SaveChangesAsync();
             return JsonSerializer.Serialize("True");
     

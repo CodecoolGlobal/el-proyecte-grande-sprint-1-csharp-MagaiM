@@ -38,7 +38,7 @@ namespace ElProyecteGrandeSprint1.Controllers
         }
 
 
-        [AuthorizeWithToken("Admin,User")]
+        [AuthorizeWithToken("Admin,Editor")]
         [HttpPut("/change/{id}")]
         public async Task<string> ChangeArticle([FromBody] NewArticle article, long id)
         {

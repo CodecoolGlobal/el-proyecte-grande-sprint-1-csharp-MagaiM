@@ -1,8 +1,11 @@
 import React from 'react'
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import AuthService from "../services/auth.service";
 
 const Article = ({item, closeArticle}) => {
-    console.log(item);
+    const currentUser = AuthService.getCurrentUser();
+    console.log(currentUser);
     return (
         <>
             <div>
@@ -19,6 +22,8 @@ const Article = ({item, closeArticle}) => {
                     <a className='publisher-link'><p className="card-text">{item.author.userName}</p></a>
                 </div>
             </div>
+            {currentUser && item.author.id === currentUser.Id &&
+            <Link className="nav-link" type='button' to={`/articles-editor/${item.id}`}>Edit</Link>}
         </>
     )
 }

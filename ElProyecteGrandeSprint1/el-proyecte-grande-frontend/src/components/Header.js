@@ -58,7 +58,14 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
                                 Deals
                             </Link>
                         </li>
+
                     ) : null}
+                    {currentUser && currentUser.Roles.includes("Admin") &&
+                    <li className="nav-item">
+                        <Link to={"/admin"} className="nav-link">
+                            AdminBoard
+                        </Link>
+                    </li>}
                 {/* {showModeratorBoard && (
                     <li className="nav-item">
                     <Link to={"/mod"} className="nav-link">
@@ -88,12 +95,6 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
                         {currentUser.UserName}
                     </Link>
                     </li>
-                    {currentUser.Roles.includes("Admin") &&
-                        <li className="nav-item">
-                            <Link to={"/admin"} className="nav-link">
-                                AdminBoard
-                            </Link>
-                        </li>}
                     <li className="nav-item">
                         <a href="/login" className="nav-link" onClick={logOut}>
                             LogOut

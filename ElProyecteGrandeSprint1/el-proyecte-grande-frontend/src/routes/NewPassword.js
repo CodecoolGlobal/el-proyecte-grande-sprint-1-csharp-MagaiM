@@ -53,6 +53,10 @@ const NewPassword = () => {
                 if (data === "Your profile was Changed successfully"){
                   navigate("/login");
                   window.location.reload();
+                }else if(data === "No") {
+                  const resMessage = "Id expired"
+                  setLoading(false);
+                  setMessage(resMessage);
                 }else {
                   const resMessage = "Invalid password"
                   setLoading(false);

@@ -58,7 +58,7 @@ const App = () => {
           <Route path="/admin" element={<BoardAdmin/>} />
           <Route path="/forgotPassword" element={<ForgotPassword/>} />
           <Route path="/articles" element={<Articles />} />
-          <Route path="/articles-editor" element={<ArticleEditor />} />
+          <Route path="/articles-editor/:Id" element={<ArticleEditor />} />
           <Route path="*" element={
                           <main style={{padding: "1rem"}}>
                             <p>There's nothing here!</p>
