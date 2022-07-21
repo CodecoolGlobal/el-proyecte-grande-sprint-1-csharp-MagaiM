@@ -199,31 +199,6 @@ namespace ElProyecteGrandeSprint1.Models
             }
         }
 
-        // private string makeJWTToken()
-        // {
-        //     JWTHeader header = new JWTHeader();
-        //     JWTPayload payload = new JWTPayload();
-        //     string encodedHeader = Base64UrlTextEncoder.Encode(SerializeObject(header));
-        //     string encodedPayload = Base64UrlTextEncoder.Encode(SerializeObject(payload));
-        //     string data = encodedHeader + '.' + encodedPayload;
-        //     string hashedData = Hash(data, secret);
-        //     string signature = Base64UrlTextEncoder.Encode(hashedData);
-        //     string JWTToken = encodedHeader + '.' + encodedPayload + "." + signature;
-        //     return JWTToken;
-        // }
-
-        // private byte[] ToByteArray(object source)
-        // {
-        //     var formatter = new BinaryFormatter();
-        //     using (var stream = new MemoryStream())
-        //     {
-        //         formatter.Serialize(stream, source);                
-        //         return stream.ToArray();
-        //     }
-        // }
-        // private byte[] SerializeObject(object value) => Encoding.UTF8.GetBytes(JsonSerializer.Serialize((value)));
-
-
         private async Task<string> JWTTokenGenerator(string email, string userName, long userId){
             var now = DateTime.UtcNow;
             var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
@@ -268,10 +243,8 @@ namespace ElProyecteGrandeSprint1.Models
         //}
 
         public async Task<List<Article>> GetArticles() => await Articles.Include(a => a.Author).ToListAsync();
-        
-        
-        public void SendForgotPasswordEmail(string email)
-        public async void SendForgotPasswordEmail(string email, Guid guid)
+
+        public void SendForgotPasswordEmail(string email, Guid guid)
         {
             User user = GetUserByEmail(email).Result;
             EmailGuid.Add(
@@ -282,7 +255,7 @@ namespace ElProyecteGrandeSprint1.Models
 
                     }
                 ); 
-            SaveChangesAsync();
+            SaveChanges();
             _emailSender.SendConfirmationEmail(user.UserName, email, "forgor", guid);
         }
 
@@ -291,7 +264,7 @@ namespace ElProyecteGrandeSprint1.Models
             return  EmailGuid.ToList().First(x => x.Guid == emailId);
         }
 
-        public void SendSuccesfulPasswordChangeEmail(Guid guid)
+        public void SendSuccessfulPasswordChangeEmail(Guid guid)
         {
             var email =getEmailFromGuid(guid).Email;
             var deleteEmailGuid = getEmailFromGuid(guid);
