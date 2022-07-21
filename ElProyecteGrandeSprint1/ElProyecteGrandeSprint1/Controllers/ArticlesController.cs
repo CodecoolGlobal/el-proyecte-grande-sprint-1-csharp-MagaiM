@@ -21,7 +21,7 @@ namespace ElProyecteGrandeSprint1.Controllers
             _context = context;
         }
 
-
+        [AllowAnonymous]
         [HttpGet("/articles")]
         public Task<List<Article>> GetArticles()
         {
