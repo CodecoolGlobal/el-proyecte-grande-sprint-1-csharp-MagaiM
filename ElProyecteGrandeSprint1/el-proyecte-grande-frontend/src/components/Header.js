@@ -50,6 +50,11 @@ const Header = ({currentUser, showModeratorBoard, showAdminBoard}) => {
                             News
                         </Link>
                     </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" type='button' to="/articles">
+                            Articles
+                        </Link>
+                    </li>
                     {currentUser ? (
                         <li className="nav-item">
                             <Link className="nav-link" type='button' to="/deals">

@@ -16,6 +16,8 @@ import News from './routes/News';
 import Deals from './routes/Deals';
 import RecentNews from './routes/RecentNews';
 import OtherNews from './routes/OtherNews';
+import Articles from "./routes/Articles";
+import ArticleEditor from "./routes/ArticleEditor";
 import NewPassword from "./routes/NewPassword";
 
 
@@ -23,7 +25,10 @@ const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
+
   useEffect(() => {
+    const localUser = AuthService.getCurrentUser();
+    if (localUser && !currentUser) setCurrentUser(localUser)
     if (currentUser) {
       setShowModeratorBoard(currentUser.Roles.includes("Moderator"));
       setShowAdminBoard(currentUser.Roles.includes("Admin"));
@@ -49,6 +54,8 @@ const App = () => {
           <Route path="/mod" element={<BoardModerator/>} />
           <Route path="/admin" element={<BoardAdmin/>} />
           <Route path="/forgotPassword" element={<ForgotPassword/>} />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/articles-editor" element={<ArticleEditor />} />
           <Route path="*" element={
                           <main style={{padding: "1rem"}}>
                             <p>There's nothing here!</p>
@@ -70,25 +77,3 @@ async function fetchData(url) {
 }
 
 export default App;
-
-// import React, {useState} from 'react';
-// import Header from './components/Header';
-// import { Outlet } from "react-router-dom";
-// import { AppContext } from "./lib/contextLib";
-// import "bootstrap/dist/css/bootstrap.min.css";
-
-// function App() {
-//     const [isAuthenticated, userHasAuthenticated] = useState(false);
-//     function handleLogout() {
-//   userHasAuthenticated(false);
-// }
-//     return (
-//         <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
-//         <div className='bg-dark text-white'>
-//             <Header handleLogout={handleLogout} isAuthenticated={isAuthenticated}/>
-//             <Outlet />
-//         </div>
-//         </AppContext.Provider>
-//     );
-// }
-// export default App;
