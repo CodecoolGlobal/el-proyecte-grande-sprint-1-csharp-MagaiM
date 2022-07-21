@@ -24,12 +24,17 @@ const getAdminBoard = () => {
   return axios.get(API_URL + "admin/users", {headers: authHeader()});
 };
 
+const ChangeArticle = (Title, Description, Theme, ArticleText, Id, author) => {
+  return axios.put(API_URL + "change/" + `${Id}`,  { Title, Description, author ,Theme, ArticleText}, {headers: authHeader()} );
+};
+
 const UserService = {
   getPublicContent,
   getUserBoard,
   getModeratorBoard,
   getAdminBoard,
   getArticleBoard,
+  ChangeArticle,
 };
 
 export default UserService;
