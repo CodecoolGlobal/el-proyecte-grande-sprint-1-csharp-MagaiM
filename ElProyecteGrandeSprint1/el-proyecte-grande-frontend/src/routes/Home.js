@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {wait} from "@testing-library/user-event/dist/utils";
 import PropTypes from 'prop-types';
+import AuthService from '../services/auth.service';
 
 const Home = ({fetchData})  => {
     const [homeData, setHomeData] = useState([]);
@@ -15,7 +16,7 @@ const Home = ({fetchData})  => {
                 data = data.slice(0, 15);
                 setHomeData(data);
         });
-    wait(2000).then(x => {showSlides()})
+    
     }, [])
 
 
@@ -24,7 +25,8 @@ const Home = ({fetchData})  => {
             .then(data => {
             data = data.slice(0, 15);
             setSlideData(data);
-        })
+        });
+        wait(2000).then(x => { showSlides() });
     }, [])
     
     function showSlides() {
