@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Text.Json;
 using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
+using ElProyecteGrandeSprint1.Services;
 
 namespace ElProyecteGrandeSprint1.Controllers
 {
@@ -11,17 +12,17 @@ namespace ElProyecteGrandeSprint1.Controllers
     [Route("[controller]")]
     public class HomeController : ControllerBase
     {
-        private readonly ApiHelper _apiController;
+        private readonly ApiService _apiService;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, ApiHelper apiController)
+        public HomeController(ILogger<HomeController> logger, ApiService apiService)
         {
             _logger = logger;
-            _apiController = apiController;
+            _apiService = apiService;
         }
 
         [HttpGet]
-        public async Task<string> GetRecentFreeToPlayGames()
+        public string GetRecentFreeToPlayGames()
         {
             var request = new HttpRequestMessage
             {
@@ -33,7 +34,7 @@ namespace ElProyecteGrandeSprint1.Controllers
                     { "X-RapidAPI-Key", "44c0067568mshcd96a9adc6db887p13ebcfjsnc1d0ab0bf882" },
                 },
             };
-            return _apiController.GetDataFromApi<FreeGame>(request);
+            return _apiService.GetDataFromApi<FreeGame>(request);
         }
     }
 }
