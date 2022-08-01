@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using ElProyecteGrandeSprint1.Models;
 using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
+using ElProyecteGrandeSprint1.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -15,21 +16,22 @@ namespace ElProyecteGrandeSprint1.Auth
     public class AuthorizeWithTokenAttribute : Attribute, IAuthorizationFilter
     {
         private readonly string[] _acceptedRole;
+
         public AuthorizeWithTokenAttribute(string acceptedRole)
         {
             _acceptedRole = acceptedRole.Split(",");
         }
 
-
         public AuthorizeWithTokenAttribute()
         {
         }
+
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-
             var dbContext = context.HttpContext
                 .RequestServices
                 .GetService(typeof(ApplicationDbContext)) as ApplicationDbContext;
+            var userService = context.HttpContext.RequestServices.GetService(typeof(UserService)) as UserService;
             var token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             if (token == null || dbContext.JWTTokens.FirstOrDefault(t => t.Token == token) == null)
             {
@@ -40,7 +42,7 @@ namespace ElProyecteGrandeSprint1.Auth
             }
 
             var userName = DecodeJWT(token).Claims.ElementAt(1).Value;
-            if (CheckRoles(dbContext, userName))
+            if (!CheckRoles(userService, userName))
             {
                 context.Result = new JsonResult(new { message = "Unauthorized" }) 
                     { StatusCode = StatusCodes.Status401Unauthorized };
@@ -48,18 +50,18 @@ namespace ElProyecteGrandeSprint1.Auth
             }
         }
 
-        private bool CheckRoles(ApplicationDbContext dbContext, string username)
+        private bool CheckRoles(UserService userService, string username)
         {
             if (_acceptedRole is null)
-                return false;
-            var searchedUser = dbContext.GetUserByName(username);
+                return true;
+            var searchedUser = userService.GetUserByName(username);
             var rolesList = searchedUser.Result.Roles.Select(role => role.Name).ToList();
             foreach (var role in _acceptedRole)
             {
                 if (rolesList.Contains(role))
-                    return false;
+                    return true;
             }
-            return true;
+            return false;
         }
 
         private JwtSecurityToken DecodeJWT(string JWT)
