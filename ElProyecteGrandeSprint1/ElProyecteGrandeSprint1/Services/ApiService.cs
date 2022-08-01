@@ -4,12 +4,13 @@ using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace ElProyecteGrandeSprint1.Controllers
+namespace ElProyecteGrandeSprint1.Services
 {
 
-    public class ApiHelper
+    public class ApiService
     {
         private readonly ServiceHelper _serviceHelper = new ServiceHelper();
+
         public string GetDataFromApi<T>(HttpRequestMessage request)
         {
             var body = _serviceHelper.GetJsonStringFromApi(request);
@@ -20,6 +21,7 @@ namespace ElProyecteGrandeSprint1.Controllers
                 if (typeof(T) == typeof(GNewsResponse))
                 {
                     var deserialization = JsonConvert.DeserializeObject<GNewsResponse>(body.Result);
+                    if (deserialization == null) throw new Exception("deserialization was null");
                     newData = _serviceHelper.SerializeData(deserialization.Articles);
                 }
                 else
@@ -30,7 +32,7 @@ namespace ElProyecteGrandeSprint1.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
                 throw;
             }
 
@@ -40,7 +42,8 @@ namespace ElProyecteGrandeSprint1.Controllers
         public async Task<string> GetDeals(HttpRequestMessage request)
         {
             var body = await _serviceHelper.GetJsonStringFromApi(request);
-            List<Deal> deserializedData = _serviceHelper.DeserializeData<Deal>(body);
+            var deserializedData = _serviceHelper.DeserializeData<Deal>(body);
+            if (deserializedData == null) throw new Exception("deserializedData was null");
             deserializedData = new List<Deal>(deserializedData.DistinctBy(x => x.Title));
             var newListDeal = _serviceHelper.MakeDealsObject(deserializedData);
             var newData = _serviceHelper.SerializeData(newListDeal ?? throw new NullReferenceException());

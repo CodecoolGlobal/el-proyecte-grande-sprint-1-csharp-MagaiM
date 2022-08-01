@@ -1,5 +1,6 @@
 ﻿using ElProyecteGrandeSprint1.Auth;
 using ElProyecteGrandeSprint1.Models;
+using ElProyecteGrandeSprint1.Services;
 using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,18 +14,17 @@ namespace ElProyecteGrandeSprint1.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
+        private readonly UserService _userService;
 
-        private readonly ApplicationDbContext _context;
-        public AdminController(ApplicationDbContext context)
+        public AdminController(UserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
-
 
         [HttpGet("/admin/users")]
         public Task<List<User>> GetUsers()
         {
-            return _context.GetAllUserDataFromDataBase();
+            return _userService.GetAllUserDataFromDataBase();
         }
     }
 }

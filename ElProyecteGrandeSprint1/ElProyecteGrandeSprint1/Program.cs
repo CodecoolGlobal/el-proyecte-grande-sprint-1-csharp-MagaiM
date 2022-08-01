@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using ElProyecteGrandeSprint1.Auth;
 using Newtonsoft.Json;
+using ElProyecteGrandeSprint1.Services;
+using ElProyecteGrandeSprint1.Helpers;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -38,7 +40,12 @@ builder.Services.AddAuthentication("BasicAuthentication")
 //builder.Services.AddControllers().AddJsonOptions(x =>
 //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
-builder.Services.AddTransient<ApiHelper>();
+builder.Services.AddTransient<ApiService>();
+builder.Services.AddTransient<ArticleService>();
+builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<ApplicationDbContextHelper>();
+builder.Services.AddTransient<EmailSender>();
+
 
 var app = builder.Build();
 

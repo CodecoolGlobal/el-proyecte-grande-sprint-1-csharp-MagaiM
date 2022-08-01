@@ -20,12 +20,9 @@ namespace ElProyecteGrandeSprint1.Helpers
             }
         }
 
-        public List<T>? DeserializeData<T>(string data)
-        {
-            return JsonConvert.DeserializeObject<List<T>>(data);
-        }
+        public List<T>? DeserializeData<T>(string data) => JsonConvert.DeserializeObject<List<T>>(data);
 
-        public string SerializeData<T>(List<T> deserializedData)
+        public string SerializeData<T>(List<T>? deserializedData)
         {
             return System.Text.Json.JsonSerializer.Serialize(deserializedData);
         }
@@ -33,23 +30,26 @@ namespace ElProyecteGrandeSprint1.Helpers
         public List<Deal> MakeDealsObject(List<Deal>? deserializedData)
         {
             List<Deal> newListDeal = new List<Deal>();
-            foreach (var element in deserializedData)
+            if (deserializedData != null)
             {
-                newListDeal.Add(new Deal
+                foreach (var element in deserializedData)
                 {
-                    StoreName = ((Stores)Int32.Parse(element.StoreName)).ToString(),
-                    Title = element.Title,
-                    SalePrice = element.SalePrice,
-                    NormalPrice = element.NormalPrice,
-                    IsOnSale = element.IsOnSale,
-                    MetacriticScore = element.MetacriticScore,
-                    SteamRatingCount = element.SteamRatingCount,
-                    SteamRatingPercent = element.SteamRatingPercent,
-                    SteamRatingText = element.SteamRatingText,
-                    DealRating = element.DealRating,
-                    Image = element.Image,
+                    newListDeal.Add(new Deal
+                    {
+                        StoreName = ((Stores)Int32.Parse(element.StoreName)).ToString(),
+                        Title = element.Title,
+                        SalePrice = element.SalePrice,
+                        NormalPrice = element.NormalPrice,
+                        IsOnSale = element.IsOnSale,
+                        MetacriticScore = element.MetacriticScore,
+                        SteamRatingCount = element.SteamRatingCount,
+                        SteamRatingPercent = element.SteamRatingPercent,
+                        SteamRatingText = element.SteamRatingText,
+                        DealRating = element.DealRating,
+                        Image = element.Image,
 
-                });
+                    });
+                }
             }
 
             return newListDeal;

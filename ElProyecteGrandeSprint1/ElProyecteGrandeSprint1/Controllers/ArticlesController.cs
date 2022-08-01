@@ -1,5 +1,6 @@
 ﻿using ElProyecteGrandeSprint1.Auth;
 using ElProyecteGrandeSprint1.Models;
+using ElProyecteGrandeSprint1.Services;
 using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using ElProyecteGrandeSprint1.Models.Entities.DatabaseEntities;
 using Microsoft.AspNetCore.Authorization;
@@ -14,36 +15,32 @@ namespace ElProyecteGrandeSprint1.Controllers
     //[Authorize(Roles = "Admin")]
     public class ArticlesController : ControllerBase
     {
+        private readonly ArticleService _articleService;
 
-        private readonly ApplicationDbContext _context;
-        public ArticlesController(ApplicationDbContext context)
+        public ArticlesController(ArticleService articleService)
         {
-            _context = context;
+            _articleService = articleService;
         }
 
         [AllowAnonymous]
         [HttpGet("/articles")]
         public Task<List<Article>> GetArticles()
         {
-            return _context.GetArticles();
+            return _articleService.GetArticles();
         }
-
 
         [AuthorizeWithToken("Admin,User")]
         [HttpPost("/upload")]
         public async Task<string> UploadArticle([FromBody] NewArticle article)
         {
-            return await _context.UploadArticle(article);
-    
+            return await _articleService.UploadArticle(article);
         }
-
 
         [AuthorizeWithToken("Admin,Editor")]
         [HttpPut("/change/{id}")]
         public async Task<string> ChangeArticle([FromBody] NewArticle article, long id)
         {
-            return await _context.ChangeArticle(id, article);
-    
+            return await _articleService.ChangeArticle(id, article);
         }
     }
 }
