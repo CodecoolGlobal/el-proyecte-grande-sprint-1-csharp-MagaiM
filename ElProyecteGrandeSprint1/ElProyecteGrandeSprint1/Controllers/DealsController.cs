@@ -4,6 +4,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Text.Json.Nodes;
 using ElProyecteGrandeSprint1.Auth;
 using ElProyecteGrandeSprint1.Models;
+using ElProyecteGrandeSprint1.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
@@ -14,13 +15,13 @@ namespace ElProyecteGrandeSprint1.Controllers
     [Route("[controller]")]
     public class DealsController : ControllerBase
     {
-        private readonly ApiHelper _apiController;
+        private readonly ApiService _apiHelper;
         private readonly ILogger<DealsController> _logger;
 
-        public DealsController(ILogger<DealsController> logger, ApiHelper apiController)
+        public DealsController(ILogger<DealsController> logger, ApiService apiHelper)
         {
             _logger = logger;
-            _apiController = apiController;
+            _apiHelper = apiHelper;
         }
 
         [AuthorizeWithToken("User")]
@@ -42,7 +43,7 @@ namespace ElProyecteGrandeSprint1.Controllers
                
                 RequestUri = requestUri
         };
-            var deals = await _apiController.GetDeals(request);
+            var deals = await _apiHelper.GetDeals(request);
             return deals;
         }
     }
