@@ -1,4 +1,4 @@
-FROM node:16.15.1-alpine
+FROM node
 
 # set working directory
 WORKDIR /app
@@ -8,9 +8,9 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
 COPY package.json ./
-COPY package-lock.json ./
+COPY -v /package-lock.json ./
 RUN npm install
-RUN npm install react-scripts@5.0.1 -g
+RUN npm install react-scripts -g
 
 # add app
 COPY . ./
