@@ -116,10 +116,10 @@ jobs:
         run: heroku container:login
 
       - name: "Build and push to heroku registry"
-        run: heroku container:push web --app ${{ secrets.HEROKU_APP_NAME }}
+        run: heroku container:push ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande-backend --app ${{ secrets.HEROKU_APP_NAME }}
 
       - name: "Releases the container"
-        run: heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
+        run: heroku container:release ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande-backend --app ${{ secrets.HEROKU_APP_NAME }}
 
 
   deploy_to_Heroku_React:
@@ -147,7 +147,7 @@ jobs:
         run: heroku container:login
 
       - name: "Build and push to heroku registry"
-        run: heroku container:push web --app ${{ secrets.HEROKU_REACT_APP_NAME }}
+        run: heroku container:push ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande --app ${{ secrets.HEROKU_REACT_APP_NAME }}
 
       - name: "Releases the container"
-        run: heroku container:release web --app ${{ secrets.HEROKU_REACT_APP_NAME }}
+        run: heroku container:release ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande --app ${{ secrets.HEROKU_REACT_APP_NAME }}
