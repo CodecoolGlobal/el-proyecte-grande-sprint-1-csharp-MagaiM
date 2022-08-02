@@ -39,7 +39,7 @@ namespace ElProyecteGrandeSprint1.Helpers
         }
 
 
-        public string JWTTokenGenerator(string email, string userName, long userId)
+        public string JWTGenerator(string email, string userName, long userId)
         {
             var now = DateTime.UtcNow;
             var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
