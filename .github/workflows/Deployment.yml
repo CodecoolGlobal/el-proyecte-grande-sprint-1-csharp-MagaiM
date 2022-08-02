@@ -36,15 +36,15 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./
+          context: .
           file: ElProyecteGrandeSprint1/ElProyecteGrandeSprint1/Dockerfile
           push: true
-          tags: el-proyecte-grande-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande-backend:latest
 
       - name: Run the image in a container
         uses: addnab/docker-run-action@v3
         with:
-          image: el-proyecte-grande:latest
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande-backend:latest
           run: |
             echo "runing the docker image"
             echo "Testing the nodejs  app endpoints"
@@ -77,15 +77,15 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./
+          context: .
           file: ElProyecteGrandeSprint1/el-proyecte-grande-frontend/Dockerfile
           push: true
-          tags: el-proyecte-grande-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande:latest
 
       - name: Run the image in a container
         uses: addnab/docker-run-action@v3
         with:
-          image: el-proyecte-grande:latest
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande:latest
           run: |
             echo "runing the docker image"
             echo "Testing the nodejs  app endpoints"
