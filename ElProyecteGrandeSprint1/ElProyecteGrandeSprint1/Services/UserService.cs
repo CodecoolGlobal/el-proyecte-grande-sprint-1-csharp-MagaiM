@@ -10,18 +10,18 @@ namespace ElProyecteGrandeSprint1.Services
     public class UserService
     {
         private readonly ApplicationDbContext _context;
-        private ApplicationDbContextHelper _contextHelper;
+        private UserServiceHelper _contextHelper;
         private EmailSender _emailSender;
 
-        public UserService(ApplicationDbContext context, ApplicationDbContextHelper applicationDbContextHelper, EmailSender emailSender)
+        public UserService(ApplicationDbContext context, UserServiceHelper userServiceHelper, EmailSender emailSender)
         {
             _context = context;
-            _contextHelper = applicationDbContextHelper;
+            _contextHelper = userServiceHelper;
             _emailSender = emailSender;
         }
 
 
-        public Task<User> GetUserDataFromDataBase(long id) => Task.FromResult(_context.Users.ToListAsync().Result.First(x => x.ID == id));
+        public Task<User> GetUserDataFromDataBase(long id) => Task.FromResult(_context.Users.Include(u => u.Roles).ToListAsync().Result.First(x => x.ID == id));
 
         public async Task<List<User>> GetAllUserDataFromDataBase() => await _context.Users.ToListAsync();
 
@@ -31,7 +31,7 @@ namespace ElProyecteGrandeSprint1.Services
             {
                 return JsonSerializer.Serialize("This Username is already taken");
             }
-            if (!_contextHelper.ValidateEmail(user.Email, _context.Users)) return JsonSerializer.Serialize("This Email is already in use!");
+            if (ValidateEmailForPassword(user.Email).Result) return JsonSerializer.Serialize("This Email is already in use!");
             if (_contextHelper.ValidatePassword(user) == "accepted")
             {
                 User registerUser = new User()
@@ -69,9 +69,9 @@ namespace ElProyecteGrandeSprint1.Services
 
         public async Task<string> ChangeUserProfile(long id, RegisterUser user, Guid guid)
         {
-            var saveOutUser = GetUserDataFromDataBase(id);
             try
             {
+                var saveOutUser = GetUserDataFromDataBase(id);
                 if (user.UserName.Length > 0 && _contextHelper.ValidateUsername(user.UserName, _context.Users))
                 {
                     saveOutUser.Result.UserName = user.UserName;
@@ -107,9 +107,7 @@ namespace ElProyecteGrandeSprint1.Services
         }
         public async Task<string> Login(LoginUser user)
         {
-            try
-            {
-                if (!await ValidateLogin(user)) return JsonSerializer.Serialize("false");
+            if (!await ValidateLogin(user)) return JsonSerializer.Serialize("false");
                 var searchedUser = await GetUserByName(user.UserName);
                 var rolesList = searchedUser.Roles.Select(role => role.Name).ToList();
                 var JWT = _contextHelper.JWTGenerator(searchedUser.Email, searchedUser.UserName,
@@ -125,11 +123,6 @@ namespace ElProyecteGrandeSprint1.Services
                     AccessToken = JWT
                 });
             }
-            catch (Exception)
-            {
-                return JsonSerializer.Serialize("false");
-            }
-        }
 
         private async Task SaveTokenToDatabase(string serializedToken)
         {
@@ -159,12 +152,13 @@ namespace ElProyecteGrandeSprint1.Services
         public void SendForgotPasswordEmail(string email, Guid guid)
         {
             User user = GetUserByEmail(email).Result;
-            var emailGuid = _context.EmailGuid.FirstOrDefault(e => e.Email == email);
-            if (email == emailGuid.Email)
+            if (_context.EmailGuid.FirstOrDefault(e => e.Email == email) is { } emailGuid)
             {
-                _context.EmailGuid.Remove(emailGuid);
+                if (email == emailGuid.Email)
+                {
+                    _context.EmailGuid.Remove(emailGuid);
+                }
             }
-
             _context.EmailGuid.Add(
                 new EmailGuid
                 {
@@ -179,25 +173,18 @@ namespace ElProyecteGrandeSprint1.Services
 
         public Task<bool> ValidateEmailForPassword(string email)
         {
-            try
-            {
-                return Task.FromResult(Enumerable.Any(_context.Users, dbUser => dbUser.Email == email));
-            }
-            catch (Exception)
-            {
-                return Task.FromResult(false);
-            }
+            return Task.FromResult(Enumerable.Any(_context.Users, dbUser => dbUser.Email == email));
         }
 
-        public EmailGuid getEmailFromGuid(Guid emailId)
+        public EmailGuid GetEmailFromGuid(Guid emailId)
         {
             return _context.EmailGuid.ToList().FirstOrDefault(x => x.Guid == emailId);
         }
 
         public void SendSuccessfulPasswordChangeEmail(Guid guid)
         {
-            var email = getEmailFromGuid(guid).Email;
-            var deleteEmailGuid = getEmailFromGuid(guid);
+            var email = GetEmailFromGuid(guid).Email;
+            var deleteEmailGuid = GetEmailFromGuid(guid);
             _context.EmailGuid.Remove(deleteEmailGuid);
             _context.SaveChanges();
             var user = GetUserByEmail(email).Result;
