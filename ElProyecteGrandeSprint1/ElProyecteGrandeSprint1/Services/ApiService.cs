@@ -9,7 +9,12 @@ namespace ElProyecteGrandeSprint1.Services
 
     public class ApiService
     {
-        private readonly ServiceHelper _serviceHelper = new ServiceHelper();
+        private readonly ServiceHelper _serviceHelper;
+
+        public ApiService(ServiceHelper serviceHelper)
+        {
+            _serviceHelper = serviceHelper;
+        }
 
         public string GetDataFromApi<T>(HttpRequestMessage request)
         {
