@@ -1,0 +1,70 @@
+name: Deployment
+
+on:
+  workflow_run:
+    workflows: [Build-and-test]
+    types:
+      - completed
+
+  workflow_dispatch:
+
+jobs:
+  push_to_DockerHub:
+    name: Push Images to DockerHub
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+    # build Docker image and push to docker hub
+    # only if the app build and test successfully
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: "knurla"
+          password: "dckr_pat_YD5I38v1n0EFtD-wc7GZbD7-qyg"
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: true
+          tags: el-proyecte-grande:latest
+
+      - name: Run the image in a container
+        uses: addnab/docker-run-action@v3
+        with:
+          image: el-proyecte-grande:latest
+          run: |
+            echo "runing the docker image"
+            echo "Testing the nodejs  app endpoints"
+            echo ${{ steps.docker_build.outputs.digest }}
+
+  deploy_to_Heroku:
+    name: Deploy to Heroku
+    runs-on: windows-latest
+    # only run this after deploying to docker
+    needs: [push_to_DockerHub]
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+      # more info on deploy to Heroku:
+      # https://github.com/marketplace/actions/deploy-to-heroku
+      - name: deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: "e3897d52-b3ea-421a-a0c8-33e407f64184"
+          heroku_app_name: "dependent-devops-knur"
+          heroku_email: "bkristof54@gmail.com"
+          # build the app docker image using the Dockerfile
+          # and run that image in a container that's pushed to Heroku
+          usedocker: true
