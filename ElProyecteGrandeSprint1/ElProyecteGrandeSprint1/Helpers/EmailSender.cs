@@ -32,7 +32,7 @@ namespace ElProyecteGrandeSprint1.Helpers
             return messageToBeSent.ToString();
         }
 
-        public void SendConfirmationEmail(string name, string email, string type, Guid guid)
+        public virtual void SendConfirmationEmail(string name, string email, string type, Guid guid)
         {
             SmtpClient smtpClient = new SmtpClient("smtp-mail.outlook.com");
             smtpClient.Port = 587;
