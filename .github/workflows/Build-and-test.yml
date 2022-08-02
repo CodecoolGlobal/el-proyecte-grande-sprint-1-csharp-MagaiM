@@ -30,7 +30,7 @@ jobs:
       
     - name: Test
       run: dotnet test --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
-      working-directory: ElProyecteGrandeSprint1
+      working-directory: ElProyecteGrandeSprint1/TestBackend
       
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v3
