@@ -22,13 +22,15 @@ jobs:
         
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: ElProyecteGrandeSprint1\ElProyecteGrandeSprint1
+      working-directory: ElProyecteGrandeSprint1
       
     - name: Build
       run: dotnet build
+      working-directory: ElProyecteGrandeSprint1
       
     - name: Test
       run: dotnet test --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+      working-directory: ElProyecteGrandeSprint1
       
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v3
