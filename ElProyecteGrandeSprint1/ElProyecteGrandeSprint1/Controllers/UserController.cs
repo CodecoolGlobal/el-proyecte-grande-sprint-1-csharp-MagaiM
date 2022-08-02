@@ -78,7 +78,8 @@ namespace ElProyecteGrandeSprint1.Controllers
         [HttpPost("/password/{emailId}")]
         public Task<string> ChangePassword(Guid emailId, [FromBody] RegisterUser user)
         {
-            var email = _userService.getEmailFromGuid(emailId);
+            var email = _userService.
+                GetEmailFromGuid(emailId);
             if (email == null)
             {
                 return Task.FromResult("No");
