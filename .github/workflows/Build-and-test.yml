@@ -22,9 +22,10 @@ jobs:
         
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: ElProyecteGrandeSprint1\ElProyecteGrandeSprint1
       
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build
       
     - name: Test
       run: dotnet test --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
