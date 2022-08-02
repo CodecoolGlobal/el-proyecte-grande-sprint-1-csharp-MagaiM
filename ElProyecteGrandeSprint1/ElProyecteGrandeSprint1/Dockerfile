@@ -11,10 +11,10 @@ COPY ["ElProyecteGrandeSprint1/ElProyecteGrandeSprint1/ElProyecteGrandeSprint1.c
 RUN dotnet restore "ElProyecteGrandeSprint1/ElProyecteGrandeSprint1.csproj"
 COPY . .
 WORKDIR "/src/ElProyecteGrandeSprint1"
-RUN dotnet build "ElProyecteGrandeSprint1.csproj" -c Release -o /app/build
+RUN dotnet build "ElProyecteGrandeSprint1/ElProyecteGrandeSprint1/ElProyecteGrandeSprint1.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ElProyecteGrandeSprint1.csproj" -c Release -o /app/publish
+RUN dotnet publish "ElProyecteGrandeSprint1/ElProyecteGrandeSprint1/ElProyecteGrandeSprint1.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
