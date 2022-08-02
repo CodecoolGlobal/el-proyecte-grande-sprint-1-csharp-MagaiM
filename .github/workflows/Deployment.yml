@@ -36,9 +36,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          working-directory: ElProyecteGrandeSprint1/ElProyecteGrandeSprint1
           context: ./
-          file: ./Dockerfile
+          file: ElProyecteGrandeSprint1/ElProyecteGrandeSprint1/Dockerfile
           push: true
           tags: el-proyecte-grande-backend:latest
 
@@ -78,9 +77,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          working-directory: ElProyecteGrandeSprint1/el-proyecte-grande-frontend
           context: ./
-          file: ./Dockerfile
+          file: ElProyecteGrandeSprint1/el-proyecte-grande-frontend/Dockerfile
           push: true
           tags: el-proyecte-grande-backend:latest
 
