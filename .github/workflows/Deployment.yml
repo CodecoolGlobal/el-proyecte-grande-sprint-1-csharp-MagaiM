@@ -110,6 +110,16 @@ jobs:
           # build the app docker image using the Dockerfile
           # and run that image in a container that's pushed to Heroku
           usedocker: true
+          justlogin: true
+
+      - name: "Login to heroku registry"
+        run: heroku container:login
+
+      - name: "Build and push to heroku registry"
+        run: heroku container:push web --app ${{ secrets.HEROKU_APP_NAME }}
+
+      - name: "Releases the container"
+        run: heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
 
 
   deploy_to_Heroku_React:
@@ -131,3 +141,13 @@ jobs:
           # build the app docker image using the Dockerfile
           # and run that image in a container that's pushed to Heroku
           usedocker: true
+          justlogin: true
+
+      - name: "Login to heroku registry"
+        run: heroku container:login
+
+      - name: "Build and push to heroku registry"
+        run: heroku container:push web --app ${{ secrets.HEROKU_REACT_APP_NAME }}
+
+      - name: "Releases the container"
+        run: heroku container:release web --app ${{ secrets.HEROKU_REACT_APP_NAME }}
