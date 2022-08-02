@@ -41,9 +41,10 @@ builder.Services.AddAuthentication("BasicAuthentication")
 //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
 builder.Services.AddTransient<ApiService>();
+builder.Services.AddTransient<ServiceHelper>();
 builder.Services.AddTransient<ArticleService>();
 builder.Services.AddTransient<UserService>();
-builder.Services.AddTransient<ApplicationDbContextHelper>();
+builder.Services.AddTransient<UserServiceHelper>();
 builder.Services.AddTransient<EmailSender>();
 
 
