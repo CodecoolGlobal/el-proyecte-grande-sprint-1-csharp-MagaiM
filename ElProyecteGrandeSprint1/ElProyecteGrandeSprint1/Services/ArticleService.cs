@@ -18,6 +18,8 @@ namespace ElProyecteGrandeSprint1.Services
 
         public async Task<List<Article>> GetArticles() => await _context.Articles.Include(a => a.Author).ToListAsync();
 
+        public Task<Article> GetArticle(long id) => Task.FromResult(_context.Articles.Include(a => a.Author).First(a => a.ID == id));
+
         public async Task<string> UploadArticle(NewArticle article)
         {
             Article newArticle = await MakeArticleFromNewArticle(article);
@@ -29,9 +31,9 @@ namespace ElProyecteGrandeSprint1.Services
 
         public async Task<string> ChangeArticle(long id, NewArticle article)
         {
-            Article selectedArticle = _context.Articles.First(a => a.ID == id);
-            _context.Articles.Remove(selectedArticle);
+            Article selectedArticle = await GetArticle(id);
             Article changedArticle = await MakeArticleFromNewArticle(article);
+            _context.Articles.Remove(selectedArticle);
             _context.Articles.Add(changedArticle);
             await _context.SaveChangesAsync();
             return JsonSerializer.Serialize("True");
