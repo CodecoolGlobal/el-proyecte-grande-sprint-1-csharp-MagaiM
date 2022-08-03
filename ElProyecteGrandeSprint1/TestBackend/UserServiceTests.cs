@@ -24,7 +24,7 @@ namespace TestBackend;
 public class UserServiceTests : DatabaseMockInSetup
 {
     private readonly UserServiceHelper _serviceHelper = new();
-    private EmailSender _mockedEmailSender;
+    private EmailSender _mockedEmailSender; 
     private UserService _service;
 
     [SetUp]
@@ -170,11 +170,13 @@ public class UserServiceTests : DatabaseMockInSetup
         };
         string response = await _service.Login(newUserData);
         ValidatedUser deserializedResponse = JsonConvert.DeserializeObject<ValidatedUser>(response);
-        Assert.IsNotNull(deserializedResponse.Roles);
-        Assert.IsNotNull(deserializedResponse.Reputation);
-        Assert.IsNotNull(deserializedResponse.Email);
+        var rolesForAdmin = _context.Roles.Where(r => r.Name == "User" || r.Name == "Admin").ToList();
         Assert.IsNotNull(deserializedResponse.AccessToken);
-        Assert.IsNotNull(deserializedResponse.Id);
+        Assert.AreEqual(1, deserializedResponse.Id);
+        Assert.AreEqual(rolesForAdmin[0].Name, deserializedResponse.Roles[0]);
+        Assert.AreEqual(rolesForAdmin[1].Name, deserializedResponse.Roles[1]);
+        Assert.AreEqual(5000, deserializedResponse.Reputation);
+        Assert.AreEqual("Admin@Admin.Admin", deserializedResponse.Email);
         Assert.AreEqual(newUserData.UserName, deserializedResponse.UserName);
 
     }
