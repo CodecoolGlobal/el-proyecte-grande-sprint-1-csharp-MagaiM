@@ -11,12 +11,12 @@ using NUnit.Framework;
 
 namespace TestBackend
 {
-    internal class UserServiceHelperTests : DatabaseMockInSetup
+    public class UserServiceHelperTests : DatabaseMockInSetup
     {
         private UserServiceHelper _serviceHelper = new();
 
         [Test]
-        public void TestApplicationDbContextHelperValidateUsernameMethod()
+        public void TestUserServiceHelperValidateUsernameMethod()
         {
             Assert.IsFalse(_serviceHelper.ValidateUsername("Moderator", _context.Users));
             Assert.IsTrue(_serviceHelper.ValidateUsername("Moderator@Moderator.Mderator", _context.Users));
@@ -25,7 +25,7 @@ namespace TestBackend
         [TestCase("Nincsen", ExpectedResult = "accepted")]
         [TestCase("nin", ExpectedResult = "The password must be longer than 5 characters")]
         [TestCase("nincsen", ExpectedResult = "The password must contain minimum 1 upper letter")]
-        public string TestApplicationDbContextHelperValidatePasswordMethod(string password)
+        public string TestUserServiceHelperValidatePasswordMethod(string password)
         {
             RegisterUser newUserWithCorrectPassword = new RegisterUser
             {
@@ -37,7 +37,7 @@ namespace TestBackend
         [TestCase("Moderator@Moderator.Moderator", "Moderator", 3, ExpectedResult = true)]
         [TestCase("Admin@Admin.Admin", "Admin", 1, ExpectedResult = true)]
         [TestCase("Editor@Editor.Editor", "Editor", 2, ExpectedResult = true)]
-        public bool TestApplicationDbContextHelperJWTGeneratorMethod(string email, string name, long id)
+        public bool TestUserServiceHelperJWTGeneratorMethod(string email, string name, long id)
         {
             var generatedJWT = _serviceHelper.JWTGenerator(email, name, id);
             var decodedJWT = DecodeJWT(generatedJWT);
