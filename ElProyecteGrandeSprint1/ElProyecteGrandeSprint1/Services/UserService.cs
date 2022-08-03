@@ -178,7 +178,14 @@ namespace ElProyecteGrandeSprint1.Services
 
         public EmailGuid GetEmailFromGuid(Guid emailId)
         {
-            return _context.EmailGuid.ToList().FirstOrDefault(x => x.Guid == emailId);
+            try
+            {
+                return _context.EmailGuid.ToList().FirstOrDefault(x => x.Guid == emailId);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         public void SendSuccessfulPasswordChangeEmail(Guid guid)
