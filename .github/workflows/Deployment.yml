@@ -114,6 +114,9 @@ jobs:
 
       - name: "Login to heroku registry"
         run: heroku container:login
+        
+      - name: "Pull docker container" 
+        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande-backend:latest
 
       - name: "push to heroku registry"
         run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande-backend:latest registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
@@ -145,6 +148,9 @@ jobs:
 
       - name: "Login to heroku registry"
         run: heroku container:login
+        
+      - name: "Pull docker container" 
+        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande:latest
 
       - name: "Build and push to heroku registry"
         run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande:latest registry.heroku.com/${{ secrets.HEROKU_REACT_APP_NAME }}/web
