@@ -5,9 +5,11 @@ using Newtonsoft.Json;
 using System.Text.Json;
 using ElProyecteGrandeSprint1.Models.Entities.ApiEntities;
 using ElProyecteGrandeSprint1.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElProyecteGrandeSprint1.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("[controller]")]
     public class HomeController : ControllerBase
