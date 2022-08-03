@@ -121,8 +121,11 @@ jobs:
       - name: "push to heroku registry"
         run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande-backend:latest registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
-      - name: "Releases the container"
+      - name: "Push the container"
         run: docker push registry.heroku.com//${{ secrets.HEROKU_APP_NAME }}/web
+        
+      - name: "Releases the container"
+        run: heroku container:release web
 
 
   deploy_to_Heroku_React:
@@ -155,5 +158,8 @@ jobs:
       - name: "Build and push to heroku registry"
         run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/el-proyecte-grande:latest registry.heroku.com/${{ secrets.HEROKU_REACT_APP_NAME }}/web
 
-      - name: "Releases the container"
+      - name: "Push the container"
         run: docker push registry.heroku.com/${{ secrets.HEROKU_REACT_APP_NAME }}/web
+        
+      - name: "Releases the container"
+        run: heroku container:release web
