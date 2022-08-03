@@ -14,7 +14,7 @@ RUN npm install
 RUN npm install react-scripts -g
 
 # add app
-COPY . ./
+COPY ElProyecteGrandeSprint1/el-proyecte-grande-frontend/. ./
 
 EXPOSE 3000
 

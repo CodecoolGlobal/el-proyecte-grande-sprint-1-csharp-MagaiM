@@ -13,19 +13,18 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
-        policy =>
-        {
-            policy.WithOrigins("https://localhost:3000", "https://localhost:3000/register").AllowAnyHeader().AllowAnyMethod();
+        policy => {
+            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            //policy.WithOrigins("http://localhost:3000", "http://localhost:3000/register").AllowAnyHeader().AllowAnyMethod();
         });
 });
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("ConnectionSqlite")));
 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(
     options =>
@@ -50,6 +49,11 @@ builder.Services.AddTransient<EmailSender>();
 
 var app = builder.Build();
 
+if (app.Environment.IsProduction())
+{
+    var port = Environment.GetEnvironmentVariable("PORT");
+    app.Urls.Add($"http://*:{port}");
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
