@@ -52,7 +52,7 @@ var app = builder.Build();
 if (app.Environment.IsProduction())
 {
     var port = Environment.GetEnvironmentVariable("PORT");
-    app.Urls.Add($"http://*:{port}");
+    app.Urls.Add($"http://Kecske:{port}");
 }
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
