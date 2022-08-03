@@ -9,7 +9,7 @@ namespace ElProyecteGrandeSprint1.Helpers
 {
     public class ServiceHelper
     {
-        public async Task<string> GetJsonStringFromApi(HttpRequestMessage request)
+        public virtual async Task<string> GetJsonStringFromApi(HttpRequestMessage request)
         {
             var client = new HttpClient();
             using (var response = await client.SendAsync(request))
@@ -20,14 +20,14 @@ namespace ElProyecteGrandeSprint1.Helpers
             }
         }
 
-        public List<T>? DeserializeData<T>(string data) => JsonConvert.DeserializeObject<List<T>>(data);
+        public virtual List<T>? DeserializeData<T>(string data) => JsonConvert.DeserializeObject<List<T>>(data);
 
-        public string SerializeData<T>(List<T>? deserializedData)
+        public virtual string SerializeData<T>(List<T>? deserializedData)
         {
             return System.Text.Json.JsonSerializer.Serialize(deserializedData);
         }
 
-        public List<Deal> MakeDealsObject(List<Deal>? deserializedData)
+        public virtual List<Deal> MakeDealsObject(List<Deal>? deserializedData)
         {
             List<Deal> newListDeal = new List<Deal>();
             if (deserializedData != null)
