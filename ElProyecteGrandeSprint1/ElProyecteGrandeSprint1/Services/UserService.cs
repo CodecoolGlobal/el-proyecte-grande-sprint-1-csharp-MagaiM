@@ -178,13 +178,8 @@ namespace ElProyecteGrandeSprint1.Services
 
         public EmailGuid GetEmailFromGuid(Guid emailId)
         {
-            try
             {
                 return _context.EmailGuid.ToList().FirstOrDefault(x => x.Guid == emailId);
-            }
-            catch (Exception e)
-            {
-                return null;
             }
         }
 
