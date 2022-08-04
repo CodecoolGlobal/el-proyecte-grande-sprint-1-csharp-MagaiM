@@ -83,21 +83,11 @@ const Register = () => {
             setSuccessful(true);
             navigate("/login");
           }
-          else{
+          else {
             const resMessage = response.data;
             setMessage(resMessage);
           }
-        }//,
-        // (error) => {
-        //   const resMessage =
-        //     (error.response &&
-        //       error.response.data &&
-        //       error.response.data.message) ||
-        //     error.message ||
-        //     error.toString();
-        //   setMessage(resMessage);
-        //   setSuccessful(false);
-        // }
+        }
       );
     }
   };
@@ -155,7 +145,7 @@ const Register = () => {
           {message && (
             <div className="form-group">
               <div
-                className={ successful ? "alert alert-success" : "alert alert-danger" }
+                className={successful ? "alert alert-success" : "alert alert-danger"}
                 role="alert"
               >
                 {message}
@@ -170,30 +160,3 @@ const Register = () => {
 };
 
 export default Register;
-
-// import React from 'react';
-// import PropTypes from "prop-types";
-// import UserForm from "../components/UserForm";
-// import Form from "react-validation/build/form";
-// import Input from "react-validation/build/input";
-// import CheckButton from "react-validation/build/button";
-// import { isEmail } from "validator";
-
-// const Register = ({postData}) => {
-
-
-//   const SendDataToBackEnd = async (inputs) => {
-//        return await postData("User", inputs);
-//   }
-
-
-//   return (
-//     <UserForm postData={postData} SendDataToBackEnd={SendDataToBackEnd} Page={"Register"}></UserForm>
-//   )
-// }
-// Register.prototype = {
-//     postData: PropTypes.func
-// }
-
-
-// export default Register

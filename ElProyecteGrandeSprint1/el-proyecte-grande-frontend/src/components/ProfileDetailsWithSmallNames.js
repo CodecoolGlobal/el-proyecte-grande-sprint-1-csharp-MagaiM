@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from "prop-types";
 
-const ProfileDetailsWithSmallNames = ({currentUser, closeProfile}) => {
+const ProfileDetailsWithSmallNames = ({ currentUser, closeProfile }) => {
     return (
         <div className="container">
             <div>
@@ -11,7 +11,7 @@ const ProfileDetailsWithSmallNames = ({currentUser, closeProfile}) => {
             </div>
             <header className="jumbotron">
                 <h3>
-                    <strong>{currentUser.userName}'s</strong> Profile
+                    <strong>{currentUser.userName}&apos;s</strong> Profile
                 </h3>
             </header>
             <p>
@@ -31,7 +31,7 @@ const ProfileDetailsWithSmallNames = ({currentUser, closeProfile}) => {
         </div>
     )
 }
-ProfileDetailsWithSmallNames.propTypes ={
+ProfileDetailsWithSmallNames.propTypes = {
     closeArticle: PropTypes.func
 };
 export default ProfileDetailsWithSmallNames

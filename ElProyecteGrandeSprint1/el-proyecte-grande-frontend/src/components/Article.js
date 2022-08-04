@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
-const Article = ({item, closeArticle}) => {
+const Article = ({ item, closeArticle }) => {
     const currentUser = AuthService.getCurrentUser();
     console.log(currentUser);
     return (
@@ -17,18 +17,18 @@ const Article = ({item, closeArticle}) => {
                 <div className="card-body inner-card">
                     <a className='card-title'><h5 className="card-title">{item.title}</h5></a>
                     <p className="card-text">{item.description}</p>
-                    <br/>
+                    <br />
                     <p className="card-text">{item.articleText}</p>
                     <a className='publisher-link'><p className="card-text">{item.author.userName}</p></a>
                 </div>
             </div>
             {currentUser && item.author.id === currentUser.Id &&
-            <Link className="nav-link" type='button' to={`/articles-editor/${item.id}`}>Edit</Link>}
+                <Link className="nav-link" type='button' to={`/articles-editor/${item.id}`}>Edit</Link>}
         </>
     )
 }
 
-Article.propTypes ={
+Article.propTypes = {
     closeArticle: PropTypes.func
 };
 

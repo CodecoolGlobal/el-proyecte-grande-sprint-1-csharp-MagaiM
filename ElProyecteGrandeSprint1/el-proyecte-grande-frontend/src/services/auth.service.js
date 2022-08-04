@@ -28,9 +28,9 @@ const validateEmail = (email) => {
   return axios.post(API_URL + `${email}`, {
     email
   })
-  .then((response) => {
-    return response.data
-  })
+    .then((response) => {
+      return response.data
+    })
 }
 
 const ChangePassword = (password, email, username, emailId) => {
@@ -39,9 +39,9 @@ const ChangePassword = (password, email, username, emailId) => {
     email,
     password
   })
-  .then((response) => {
-    return response.data
-  })
+    .then((response) => {
+      return response.data
+    })
 }
 
 const ForgotPassword = (username, email, password) => {
@@ -50,7 +50,7 @@ const ForgotPassword = (username, email, password) => {
     username,
     email,
     password
-  })
+  });
 }
 const logout = () => {
   localStorage.removeItem("user");

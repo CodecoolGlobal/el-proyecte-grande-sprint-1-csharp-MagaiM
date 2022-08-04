@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Design/App.css";
 import AuthService from "./services/auth.service";
@@ -46,24 +46,24 @@ const App = () => {
           <Route path="/" element={<Home fetchData={fetchData} />} />
           <Route path="/home" element={<Home fetchData={fetchData} />} />
           <Route path="/news" element={<News />}>
-            <Route path='' element={<RecentNews fetchData={fetchData}/>}/>
-            <Route path='/news/other-news' element={<OtherNews fetchData={fetchData}/>}/>
+            <Route path='' element={<RecentNews fetchData={fetchData} />} />
+            <Route path='/news/other-news' element={<OtherNews fetchData={fetchData} />} />
           </Route>
-          <Route path="deals" element={<Deals fetchData={fetchData}/>}/>
-          <Route path="/login" element={<Login setCurrentUser={setCurrentUser}/>} />
-          <Route path="/register" element={<Register/>} />
-          <Route path="/profile" element={<Profile/>} />
-          <Route path="/user" element={<BoardUser/>} />
-          <Route path="/mod" element={<BoardModerator/>} />
-          <Route path="/admin" element={<BoardAdmin/>} />
-          <Route path="/forgotPassword" element={<ForgotPassword/>} />
+          <Route path="deals" element={<Deals fetchData={fetchData} />} />
+          <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/user" element={<BoardUser />} />
+          <Route path="/mod" element={<BoardModerator />} />
+          <Route path="/admin" element={<BoardAdmin />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/articles-editor/:Id" element={<ArticleEditor />} />
           <Route path="*" element={
-                          <main style={{padding: "1rem"}}>
-                            <p>There's nothing here!</p>
-                          </main>}/>
-          <Route path={`/newPassword/:emailId`} element={<NewPassword/>} />
+            <main style={{ padding: "1rem" }}>
+              <p>There&apos;s nothing here!</p>
+            </main>} />
+          <Route path={`/newPassword/:emailId`} element={<NewPassword />} />
         </Routes>
       </div>
     </div>
@@ -72,9 +72,9 @@ const App = () => {
 
 async function fetchData(url) {
   const response = await fetch(url, { headers: authHeader() });
-  if (response.ok){
-      const data = await response.json();
-      return data;
+  if (response.ok) {
+    const data = await response.json();
+    return data;
   }
   throw response;
 }

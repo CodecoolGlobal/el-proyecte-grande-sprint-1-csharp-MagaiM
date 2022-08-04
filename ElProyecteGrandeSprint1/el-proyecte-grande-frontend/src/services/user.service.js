@@ -9,7 +9,7 @@ const getPublicContent = () => {
 };
 
 const getArticleBoard = () => {
-  return axios.get(API_URL + "articles", {headers: authHeader() });
+  return axios.get(API_URL + "articles", { headers: authHeader() });
 };
 
 const getUserBoard = () => {
@@ -21,11 +21,11 @@ const getModeratorBoard = () => {
 };
 
 const getAdminBoard = () => {
-  return axios.get(API_URL + "admin/users", {headers: authHeader()});
+  return axios.get(API_URL + "admin/users", { headers: authHeader() });
 };
 
 const ChangeArticle = (Title, Description, Theme, ArticleText, Id, author) => {
-  return axios.put(API_URL + "change/" + `${Id}`,  { Title, Description, author ,Theme, ArticleText}, {headers: authHeader()} );
+  return axios.put(API_URL + "change/" + `${Id}`, { Title, Description, author, Theme, ArticleText }, { headers: authHeader() });
 };
 
 const UserService = {
