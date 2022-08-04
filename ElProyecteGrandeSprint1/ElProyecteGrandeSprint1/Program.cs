@@ -48,21 +48,21 @@ builder.Services.AddTransient<UserServiceHelper>();
 builder.Services.AddTransient<EmailSender>();
 
 
-if (!builder.Environment.IsDevelopment())
-{
-    builder.Services.AddHttpsRedirection(options => {
-        options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
-        options.HttpsPort = 443;
-    });
-}
+//if (!builder.Environment.IsDevelopment())
+//{
+//    builder.Services.AddHttpsRedirection(options => {
+//        options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+//        options.HttpsPort = 443;
+//    });
+//}
 
 var app = builder.Build();
 
-if (app.Environment.IsProduction())
-{
-    var port = Environment.GetEnvironmentVariable("PORT");
-    app.Urls.Add($"http://*:{port}");
-}
+//if (app.Environment.IsProduction())
+//{
+//    var port = Environment.GetEnvironmentVariable("PORT");
+//    app.Urls.Add($"https://*:{80}");
+//}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
