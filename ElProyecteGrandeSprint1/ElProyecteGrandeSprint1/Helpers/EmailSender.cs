@@ -38,7 +38,7 @@ namespace ElProyecteGrandeSprint1.Helpers
             smtpClient.Port = 587;
             smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtpClient.UseDefaultCredentials = false;
-            NetworkCredential credential = new NetworkCredential("kvmgamenews@outlook.hu", "KVMGameNew01");
+            NetworkCredential credential = new NetworkCredential(Environment.GetEnvironmentVariable("EMAIL_USERNAME"), Environment.GetEnvironmentVariable("EMAIL_PASSWORD"));
             smtpClient.EnableSsl = true;
             smtpClient.Credentials = credential;
 
