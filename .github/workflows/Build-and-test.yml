@@ -40,5 +40,5 @@ jobs:
       if: ${{ always() }}
       
     - name: Lint
-      run: |
-        npm run lint
+      run: npm run lint
+      working-directory: ElProyecteGrandeSprint1/el-proyecte-grande-frontend
