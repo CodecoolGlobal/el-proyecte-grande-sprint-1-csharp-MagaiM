@@ -12,7 +12,7 @@ const Home = ({fetchData})  => {
     let timeout = '';
 
     useEffect(() => {
-        fetchData('https://el-proyecte-grande-kvm-gaming.herokuapp.com:44321/Home')
+        fetchData('https://el-proyecte-grande-kvm-gaming.herokuapp.com/Home')
             .then(data => {
                 data = data.slice(0, 15);
                 setHomeData(data);
@@ -22,7 +22,7 @@ const Home = ({fetchData})  => {
 
     useEffect(() => {
         if (currentUser) {
-            fetchData('https://el-proyecte-grande-kvm-gaming.herokuapp.com:44321/Deals?sortBy=Deal Rating&pageSize=20')
+            fetchData('https://el-proyecte-grande-kvm-gaming.herokuapp.com/Deals?sortBy=Deal Rating&pageSize=20')
             .then(data => {
             data = data.slice(0, 15);
             setSlideData(data);
