@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.Json.Serialization;
 using ElProyecteGrandeSprint1;
 using ElProyecteGrandeSprint1.Controllers;
@@ -46,6 +47,14 @@ builder.Services.AddTransient<UserService>();
 builder.Services.AddTransient<UserServiceHelper>();
 builder.Services.AddTransient<EmailSender>();
 
+
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Services.AddHttpsRedirection(options => {
+        options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+        options.HttpsPort = 44321;
+    });
+}
 
 var app = builder.Build();
 
