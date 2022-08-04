@@ -10,7 +10,7 @@ namespace ElProyecteGrandeSprint1.Helpers
 {
     public class UserServiceHelper
     {
-        private byte[] secret = Encoding.ASCII.GetBytes("MY_SECRET_KEY_dasmd.-dDUNJUOFAOD");
+        private byte[] secret = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"));
         public bool ValidateUsername(string userName, DbSet<User> users)
         {
             return Enumerable.All(users, dbUser => dbUser.UserName != userName);

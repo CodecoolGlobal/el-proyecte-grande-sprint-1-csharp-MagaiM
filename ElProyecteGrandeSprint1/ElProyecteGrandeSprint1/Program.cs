@@ -21,8 +21,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy => {
-            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-            //policy.WithOrigins("http://localhost:3000", "http://localhost:3000/register").AllowAnyHeader().AllowAnyMethod();
+            //policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            policy.WithOrigins("https://el-proyecte-grande-kvmgaming-r.herokuapp.com", "https://el-proyecte-grande-kvmgaming-r.herokuapp.com/register").AllowAnyHeader().AllowAnyMethod();
         });
 });
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
