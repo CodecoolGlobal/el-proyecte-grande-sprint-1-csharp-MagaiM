@@ -15,7 +15,7 @@ namespace TestBackend
 
         private EmailSender _emailSender = new EmailSender();
 
-        [Test]
+        //[Test]
         public void SendConfirmationEmailTest()
         { 
             _emailSender.SendConfirmationEmail("admin", "admin@admin.com", "registration", new Guid());
