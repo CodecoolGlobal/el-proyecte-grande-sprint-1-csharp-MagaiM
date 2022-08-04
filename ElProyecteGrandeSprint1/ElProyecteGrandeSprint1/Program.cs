@@ -102,4 +102,4 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.Run($"https://0.0.0.0:{Environment.GetEnvironmentVariable("PORT")}");
+app.Run($"http://0.0.0.0:{Environment.GetEnvironmentVariable("PORT")}");
