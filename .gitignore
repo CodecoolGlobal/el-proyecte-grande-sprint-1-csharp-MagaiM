@@ -409,3 +409,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+*.db
+*.db-shm
+*.db-wal
