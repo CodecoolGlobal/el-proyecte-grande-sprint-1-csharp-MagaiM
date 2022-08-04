@@ -52,7 +52,7 @@ if (!builder.Environment.IsDevelopment())
 {
     builder.Services.AddHttpsRedirection(options => {
         options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
-        options.HttpsPort = 44321;
+        options.HttpsPort = 443;
     });
 }
 
