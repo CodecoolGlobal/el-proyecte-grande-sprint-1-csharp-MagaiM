@@ -2,7 +2,7 @@ import axios from "axios";
 import authHeader from "./auth-header";
 
 //const API_URL = "http://localhost:8080/api/test/";
-const API_URL = "https://localhost:44321/";
+const API_URL = "https://el-proyecte-grande-kvm-gaming.herokuapp.com/";
 
 const getPublicContent = () => {
   return axios.get(API_URL + "all");

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const OtherNews = ({fetchData}) => {
     const [searchedNewsData, setSearchedNewsData] = useState([]);
-    const baseurl = 'https://localhost:44321/';
+    const baseurl = 'https://el-proyecte-grande-kvm-gaming.herokuapp.com/';
     const search = useLocation().search;
     const searchName = new URLSearchParams(search).get('search');
 

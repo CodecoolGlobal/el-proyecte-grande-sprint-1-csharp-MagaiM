@@ -21,7 +21,7 @@ const Deals = ({fetchData}) => {
   const [filterDirection, setFilterDirection] = useState(0);
   const [baseStoreId, setBaseStoreId] = useState("")
   const [storeId, setStoreId] = useState("")
-  const [Url, setUrl] = useState(`https://localhost:44321/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
+    const [Url, setUrl] = useState(`https://el-proyecte-grande-kvm-gaming.herokuapp.com/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
 
   useEffect(() => {
     fetchData(Url)
@@ -31,7 +31,7 @@ const Deals = ({fetchData}) => {
   }, [Url]);
 
   useEffect(() => {
-    setUrl(`https://localhost:44321/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
+      setUrl(`https://el-proyecte-grande-kvm-gaming.herokuapp.com/Deals?sortBy=${sortBy}&pageSize=${pageSize}&desc=${filterDirection}&storeId=${storeId}`)
   }, [isChecked]);
 
   if (currentUser === null) 

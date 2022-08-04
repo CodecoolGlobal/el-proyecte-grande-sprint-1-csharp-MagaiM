@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const RecentNews = ({fetchData}) => {
 
     const [newsData, setNewsData] = useState([]);
-    const baseurl = 'https://localhost:44321/';
+    const baseurl = 'https://el-proyecte-grande-kvm-gaming.herokuapp.com/';
 
     useEffect(() => {
         fetchData(`${baseurl}News/`)
