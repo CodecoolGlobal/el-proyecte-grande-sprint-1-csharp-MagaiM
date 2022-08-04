@@ -5,7 +5,6 @@ import AuthService from "../services/auth.service";
 
 const Article = ({ item, closeArticle }) => {
     const currentUser = AuthService.getCurrentUser();
-    console.log(currentUser);
     return (
         <>
             <div>

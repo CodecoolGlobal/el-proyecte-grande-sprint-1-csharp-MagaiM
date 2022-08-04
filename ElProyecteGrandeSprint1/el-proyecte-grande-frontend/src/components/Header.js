@@ -54,7 +54,7 @@ const Header = ({ currentUser }) => {
                     </div>
                     {currentUser ? (
                         <div className="navbar-nav ml-auto user-nav-item">
-                            <li className="nav-item ">
+                            <li className="nav-item user-name">
                                 <Link to={"/profile"} className="nav-link">
                                     {currentUser.UserName}
                                 </Link>
