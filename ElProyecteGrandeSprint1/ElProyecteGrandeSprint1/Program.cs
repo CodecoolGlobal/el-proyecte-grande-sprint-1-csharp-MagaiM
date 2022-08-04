@@ -64,6 +64,9 @@ var app = builder.Build();
 //    app.Urls.Add($"https://*:{80}");
 //}
 // Configure the HTTP request pipeline.
+
+Console.WriteLine(Environment.GetEnvironmentVariable("PORT"));
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -99,4 +102,4 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.Run();
+app.Run($"https://0.0.0.0:{Environment.GetEnvironmentVariable("PORT")}");
