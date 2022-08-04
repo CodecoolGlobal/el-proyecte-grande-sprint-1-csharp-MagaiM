@@ -10,7 +10,14 @@ namespace ElProyecteGrandeSprint1.Helpers
 {
     public class UserServiceHelper
     {
-        private byte[] secret = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"));
+        public UserServiceHelper()
+        {
+            var secretKey = Environment.GetEnvironmentVariable("SECRET_KEY");
+            _secret = Encoding.ASCII.GetBytes(secretKey ?? "TestKey-For-Development-You-Cant-Use-This-Look-Elsewhere");
+        }
+
+        private readonly byte[] _secret;
+        
         public bool ValidateUsername(string userName, DbSet<User> users)
         {
             return Enumerable.All(users, dbUser => dbUser.UserName != userName);
@@ -49,7 +56,7 @@ namespace ElProyecteGrandeSprint1.Helpers
                 IssuedAt = now,
                 NotBefore = now,
                 Expires = now + TimeSpan.FromDays(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_secret), SecurityAlgorithms.HmacSha256Signature)
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
