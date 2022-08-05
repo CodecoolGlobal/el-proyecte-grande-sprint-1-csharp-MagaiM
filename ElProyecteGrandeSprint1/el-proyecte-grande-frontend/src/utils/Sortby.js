@@ -1,4 +1,4 @@
-export const sortByList=[
+export const sortByList = [
     {
         setData: "Deal Rating",
         Title: "Deal Rating"
@@ -30,7 +30,7 @@ export const sortByList=[
     {
         setData: "Store",
         Title: "Store"
-    }, 
+    },
     {
         setData: "recent",
         Title: "recent"

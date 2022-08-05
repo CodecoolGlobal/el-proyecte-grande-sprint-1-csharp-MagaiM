@@ -12,7 +12,7 @@ const InvalidLoginPopUp = () => {
                 <div className="content"> {' '} valami</div>
                 <div className="actions">
                     <Popup trigger={<button className="button"> Trigger </button>}
-                           position="top center" nested>
+                        position="top center" nested>
                         <span>valami</span>
                     </Popup>
                     <button className="button" onClick={() => {
@@ -21,7 +21,7 @@ const InvalidLoginPopUp = () => {
                     }}> close modal
                     </button>
                 </div>
-        </div>)}
+            </div>)}
         </Popup>
     );
 

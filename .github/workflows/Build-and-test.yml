@@ -10,7 +10,7 @@ jobs:
   build_test:
     name: Build & Test App
     runs-on: windows-latest
-    if: "contains(github.event.commits[0].message, '[build app]')"
+    # if: "contains(github.event.commits[0].message, '[build app]')"
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -40,5 +40,5 @@ jobs:
       if: ${{ always() }}
       
     - name: Lint
-      run: |
-        npm run lint
+      run: npm run lint
+      working-directory: ElProyecteGrandeSprint1/el-proyecte-grande-frontend

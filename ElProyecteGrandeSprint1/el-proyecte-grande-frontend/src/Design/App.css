@@ -463,3 +463,7 @@ label {
   max-width: 60% !important;
   padding: 40px 40px;
 }
+
+.user-name{
+  min-width: fit-content;
+}

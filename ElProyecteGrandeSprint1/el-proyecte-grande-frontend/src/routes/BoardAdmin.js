@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import UserService from "../services/user.service";
 import ProfileDetailsWithSmallNames from "../components/ProfileDetailsWithSmallNames";
 
@@ -33,14 +33,14 @@ const BoardAdmin = () => {
     };
 
 
-    const closeProfile = () =>{
+    const closeProfile = () => {
         setcurrentProfile(undefined);
     }
 
-    if (currentProfile) return (<ProfileDetailsWithSmallNames currentUser={currentProfile} closeProfile={closeProfile}/>);
+    if (currentProfile) return (<ProfileDetailsWithSmallNames currentUser={currentProfile} closeProfile={closeProfile} />);
     return (
         <div className="container">
-            <h1><strong style={{color: "rgba(255,255,255,.55)"}}>Users</strong></h1>
+            <h1><strong style={{ color: "rgba(255,255,255,.55)" }}>Users</strong></h1>
             {content.map((item, index) => {
                 return (
                     <div key={index} className="other-news-card">

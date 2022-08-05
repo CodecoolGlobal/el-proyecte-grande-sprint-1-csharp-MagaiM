@@ -1,4 +1,4 @@
-export const filterDirectionList=[
+export const filterDirectionList = [
     {
         setData: 0,
         Title: "a-Z"

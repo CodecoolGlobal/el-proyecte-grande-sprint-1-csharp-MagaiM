@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, Link, useParams } from 'react-router-dom';
-import Form  from "react-validation/build/form";
+import { useParams } from 'react-router-dom';
+import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import UserService from "../services/user.service";
@@ -21,26 +21,26 @@ const ArticleEditor = () => {
   const [Theme, setTheme] = useState("");
   const [Text, setText] = useState("");
   const currentUser = AuthService.getCurrentUser();
-  
+
   if (currentUser === null)
     window.location.href = '/login';
 
   useEffect(() => {
     UserService.getArticleBoard().then(
-        (response) => {
-            setContent(response.data);
-        },
-        (error) => {
-          const _content =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          setContent(_content);
-        }
+      (response) => {
+        setContent(response.data);
+      },
+      (error) => {
+        const _content =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setContent(_content);
+      }
     );
-    }, []);
+  }, []);
 
 
   useEffect(() => {
@@ -82,33 +82,33 @@ const ArticleEditor = () => {
     setLoading(true);
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
-      UserService.ChangeArticle(Title,Desc,Theme,Text, Id, currentArticle.author.userName).then(
+      UserService.ChangeArticle(Title, Desc, Theme, Text, Id, currentArticle.author.userName).then(
         (data) => {
-            if (data.data === "True"){
-              window.location.href = '/articles';
-            }
+          if (data.data === "True") {
+            window.location.href = '/articles';
+          }
         },
       );
     } else {
       setLoading(false);
     }
-    
+
   };
 
-    const openArticle = () => {
-      console.log(content)
-      content.forEach(element => {
-          if (element.id == Id) {
-              setCurrentArticle(element);
-          }
-      });
-    };
+  const openArticle = () => {
+    console.log(content)
+    content.forEach(element => {
+      if (element.id == Id) {
+        setCurrentArticle(element);
+      }
+    });
+  };
 
   return (
     <div className="col-md-12">
-    <div className="card form-card">
-      <Form onSubmit={onSubmit} ref={form}>
-      <div className="form-group">
+      <div className="card form-card">
+        <Form onSubmit={onSubmit} ref={form}>
+          <div className="form-group">
             <label htmlFor="Title">Edit title</label>
             <Input
               type="text"
@@ -149,25 +149,25 @@ const ArticleEditor = () => {
               onChange={onChangeText}
             />
           </div>
-        <div className="form-group">
-          <button className="btn btn-primary btn-block btn-dark login-btn" disabled={loading}>
-            {loading && (
-              <span className="spinner-border spinner-border-sm"></span>
-            )}
-            <span>Edit article</span>
-          </button>
-        </div>
-        {message && (
-        <div className="form-group">
-          <div className="alert alert-danger" role="alert">
-            {message}
+          <div className="form-group">
+            <button className="btn btn-primary btn-block btn-dark login-btn" disabled={loading}>
+              {loading && (
+                <span className="spinner-border spinner-border-sm"></span>
+              )}
+              <span>Edit article</span>
+            </button>
           </div>
-        </div>
-      )}
-        <CheckButton style={{ display: "none" }} ref={checkBtn} />
-      </Form>
+          {message && (
+            <div className="form-group">
+              <div className="alert alert-danger" role="alert">
+                {message}
+              </div>
+            </div>
+          )}
+          <CheckButton style={{ display: "none" }} ref={checkBtn} />
+        </Form>
+      </div>
     </div>
-  </div>
   )
 }
 

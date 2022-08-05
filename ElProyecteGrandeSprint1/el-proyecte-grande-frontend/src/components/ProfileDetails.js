@@ -1,7 +1,6 @@
 import React from 'react'
-import PropTypes from "prop-types";
 
-const ProfileDetails = ({currentUser}) => {
+const ProfileDetails = ({ currentUser }) => {
     console.log(currentUser)
     return (
         <div className="container">

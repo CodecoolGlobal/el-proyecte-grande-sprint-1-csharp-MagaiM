@@ -1,8 +1,6 @@
 import React from "react";
 import AuthService from "../services/auth.service";
 
-import ProfileDetails from "../components/ProfileDetails";
-
 const Profile = () => {
   const currentUser = AuthService.getCurrentUser();
 
@@ -13,28 +11,28 @@ const Profile = () => {
     <div className="profile-container">
       <header className="jumbotron profile-name">
         <h3>
-          <strong>{currentUser.UserName}</strong>'s Profile
+          <strong>{currentUser.UserName}</strong>&apos;s Profile
         </h3>
       </header>
       <div className="content-div">
-      <div>
-      <p className="profile-text">
-        <strong>Token:</strong> {currentUser.AccessToken.substring(0, 20)} ...{" "}
-        {currentUser.AccessToken.substr(currentUser.AccessToken.length - 20)}
-      </p>
-      <p className="profile-text">
-        <strong>Email:</strong> {currentUser.Email}
-      </p>
+        <div>
+          <p className="profile-text">
+            <strong>Token:</strong> {currentUser.AccessToken.substring(0, 20)} ...{" "}
+            {currentUser.AccessToken.substr(currentUser.AccessToken.length - 20)}
+          </p>
+          <p className="profile-text">
+            <strong>Email:</strong> {currentUser.Email}
+          </p>
 
-      <p className="profile-text">
-        <strong>reputation:</strong> {currentUser.Reputation}
-      </p>
-      <strong className="profile-text">Authorities: </strong>
-      <ul className="profile-text">
-        {currentUser.Roles &&
-          currentUser.Roles.map((role, index) => <li key={index}>{role}</li>)}
-      </ul>
-      </div>
+          <p className="profile-text">
+            <strong>reputation:</strong> {currentUser.Reputation}
+          </p>
+          <strong className="profile-text">Authorities: </strong>
+          <ul className="profile-text">
+            {currentUser.Roles &&
+              currentUser.Roles.map((role, index) => <li key={index}>{role}</li>)}
+          </ul>
+        </div>
       </div>
     </div>
   );

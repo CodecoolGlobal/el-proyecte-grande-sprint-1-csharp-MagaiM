@@ -1,4 +1,4 @@
-export const storeNames=[
+export const storeNames = [
     {
         setData: "",
         Title: "All"

@@ -3,7 +3,7 @@ import OtherNewsCard from '../components/OtherNewsCard'
 import { Link, useLocation } from "react-router-dom";
 import PropTypes from 'prop-types';
 
-const OtherNews = ({fetchData}) => {
+const OtherNews = ({ fetchData }) => {
     const [searchedNewsData, setSearchedNewsData] = useState([]);
     const baseurl = 'https://el-proyecte-grande-kvm-gaming.herokuapp.com/';
     const search = useLocation().search;
@@ -11,7 +11,7 @@ const OtherNews = ({fetchData}) => {
 
     useEffect(() => {
         fetchData(`${baseurl}News/${searchName}`)
-            .then(data=>{setSearchedNewsData(data)})
+            .then(data => { setSearchedNewsData(data) })
     }, [searchName])
 
     const formatDate = (timestamp) => {
@@ -31,16 +31,17 @@ const OtherNews = ({fetchData}) => {
             {searchedNewsData.map((item, index) => {
                 let date = new Date(item.Date);
                 let formattedDate = formatDate(date);
-                return(
-                <div key={index} className="other-news-card">
-                    <OtherNewsCard item={item} formattedDate={formattedDate}/>
-                    <br/>
-                </div>
-            )})}
+                return (
+                    <div key={index} className="other-news-card">
+                        <OtherNewsCard item={item} formattedDate={formattedDate} />
+                        <br />
+                    </div>
+                )
+            })}
         </div>)
 };
 
-OtherNews.propTypes ={
+OtherNews.propTypes = {
     fetchData: PropTypes.func
 };
 
